@@ -1,0 +1,334 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div id="solar-tool-prototype" class="section level1">
+    <h1 class="data-header">Solar Tool Prototype for <em>Locality</em></h1>
+    <div class="row">
+        <div id="side-by-side-comparison" class="section level3 col col-xl-6">
+            <h3 class="table-title">Side by side comparison:</h3>
+            <p class="sub-label">Yearly Cashflows from M&amp;T vs. Revenue Share in Surry County, Virginia</p> 
+            <p>(Rounded to the nearest thousand)</p>
+            <!-- <pre>
+                    <code>
+## 'data.frame':    31 obs. of  3 variables:
+##  $ Year         : int  2020 2021 2022 2023 2024 2025 2026 2027 2028 2029 ...
+##  $ MT_Tax       : num  0 0 120000 100000 80000 60000 40000 60000 60000 60000 ...
+##  $ Revenue_Share: num  0 0 75000 75000 75000 75000 75000 75000 75000 75000 ...
+                    </code> 
+            </pre> -->
+            <table class="side-table">
+                <thead>
+                    <tr class="header">
+                        <th align="left">Year</th>
+                        <th align="left">MT_Tax</th>
+                        <th align="left" >Revenue_Share</th>
+                        <th>MT_Tax_2020</th>
+                        <th class="last-data">Revenue_Share_2020</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="odd">
+                        <td align="left">2020</td>
+                        <td align="left">$0</td>
+                        <td align="left">$0</td>
+                        <td align="left">$0.0</td>
+                        <td align="left">$0.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2021</td>
+                        <td align="left">$0</td>
+                        <td align="left">$0</td>
+                        <td align="left">$0.0</td>
+                        <td align="left">$0.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2022</td>
+                        <td align="left">$120</td>
+                        <td align="left">$75</td>
+                        <td align="left">$107.0</td>
+                        <td align="left">$67.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2023</td>
+                        <td align="left">$100</td>
+                        <td align="left">$75</td>
+                        <td align="left">$84.0</td>
+                        <td align="left">$63.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2024</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$63.0</td>
+                        <td align="left">$59.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2025</td>
+                        <td align="left">$60</td>
+                        <td align="left">$75</td>
+                        <td align="left">$45.0</td>
+                        <td align="left">$56.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2026</td>
+                        <td align="left">$40</td>
+                        <td align="left">$75</td>
+                        <td align="left">$28.0</td>
+                        <td align="left">$53.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2027</td>
+                        <td align="left">$60</td>
+                        <td align="left">$75</td>
+                        <td align="left">$40.0</td>
+                        <td align="left">$50.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2028</td>
+                        <td align="left">$60</td>
+                        <td align="left">$75</td>
+                        <td align="left">$38.0</td>
+                        <td align="left">$47.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2029</td>
+                        <td align="left">$60</td>
+                        <td align="left">$75</td>
+                        <td align="left">$36.0</td>
+                        <td align="left">$44.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2030</td>
+                        <td align="left">$60</td>
+                        <td align="left">$75</td>
+                        <td align="left">$34.0</td>
+                        <td align="left">$42.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2031</td>
+                        <td align="left">$60</td>
+                        <td align="left">$75</td>
+                        <td align="left">$32.0</td>
+                        <td align="left">$40.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2032</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$40.0</td>
+                        <td align="left">$37.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2033</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$38.0</td>
+                        <td align="left">$35.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2034</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$35.0</td>
+                        <td align="left">$33.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2035</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$33.0</td>
+                        <td align="left">$31.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2036</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$31.0</td>
+                        <td align="left">$30.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2037</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$28.0</td>
+                        <td align="left">$26.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2038</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$38.0</td>
+                        <td align="left">$47.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2039</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$26.0</td>
+                        <td align="left">$25.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2040</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$25.0</td>
+                        <td align="left">$23.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2041</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$24.0</td>
+                        <td align="left">$22.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2042</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$22.0</td>
+                        <td align="left">$21.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2043</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$21.0</td>
+                        <td align="left">$20.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2044</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$20.0</td>
+                        <td align="left">$19.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2045</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$19.0</td>
+                        <td align="left">$17.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2046</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$18.0</td>
+                        <td align="left">$16.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2047</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$17.0</td>
+                        <td align="left">$16.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2048</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$16.0</td>
+                        <td align="left">$15.0</td>
+                    </tr>
+                    <tr class="even">
+                        <td align="left">2049</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$15.0</td>
+                        <td align="left">$14.0</td>
+                    </tr>
+                    <tr class="odd">
+                        <td align="left">2050</td>
+                        <td align="left">$80</td>
+                        <td align="left">$75</td>
+                        <td align="left">$14.0</td>
+                        <td align="left">$13.0</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section level3 col col-xl-6 right-col">
+            <div class="chart">
+                <h3 class="chart-title">Lineplot of cashflows through 2050:</h3>
+                {% load static %}
+                <img src="{% static "models/graph.png" %}" alt="prototype graph" class="prototype-graph">
+                <div class="graph-bottom-text">
+                    <p>Total expected lifetime revenue (Thousands of 2020$, discounted at 6% per year):</p>
+                    <pre><code>## Revenue Share:  962</code></pre>
+                    <pre><code>## MT Tax:  979</code></pre>
+                </div>
+            </div>
+            <div class="entered-data">
+                <h2 class="entered-data-title">Parameters</h2>
+                <table class="parameter-table">
+                    <thead>
+                        <tr>
+                            <th>
+                                Project Parameter
+                            </th>
+                            <th class="value-header">
+                                Value
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Year of Construction</td>
+                            <td class="value">2022</td>
+                        </tr>
+                        <tr>
+                            <td>Initial Investment</td>
+                            <td class="value">$100,000,000</td>
+                        </tr>
+                        <tr>
+                            <td>Revenue Share Rate</td>
+                            <td class="value">$750/MW</td>
+                        </tr>
+                        <tr>
+                            <td>Project Size</td>
+                            <td class="value">100 MW</td>
+                        </tr>
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td class="value">6%</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">Effective M&T Tax Rate per $100 Assessed Value</td>
+                            <!-- <td></td> -->
+                        </tr>
+                        <tr>
+                            <td class="value-rate">Year 1</td>
+                            <td class="value">0.60</td>
+                        </tr>
+                        <tr>
+                            <td class="value-rate">Year 2</td>
+                            <td class="value">0.50</td>
+                        </tr>
+                        <tr>
+                            <td class="value-rate">Year 3</td>
+                            <td class="value">0.40</td>
+                        </tr>
+                        <tr>
+                            <td class="value-rate">Year 4</td>
+                            <td class="value">0.30</td>
+                        </tr>
+                        <tr>
+                            <td class="value-rate">Year 5 & on</td>
+                            <td class="value">0.20</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="back-button">
+                    <form action="form">
+                        <button type="submit" class="btn btn-primary back-btn">Edit Information</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}

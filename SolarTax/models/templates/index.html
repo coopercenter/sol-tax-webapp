@@ -1,0 +1,228 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="model-description">
+        <p>With passage of HB 1434, Virginia now offers localities two options to generate revenues from
+            utility-scale
+            solar
+            development. The default option is for localities to levy a <em>Machinery and Tools (M&amp;T) tax</em>
+            on
+            capital investments in solar generation facilities. Alternatively, a locality may adopt an ordinance to
+            replace
+            the M&amp;T tax with a <em>Revenue Share</em> arrangement. Under the Revenue Share model, localities
+            receive
+            income from solar facilities at a flat rate in dollars per megawatt of generation capacity per year. To
+            estimate
+            the revenues that a locality could realize under each of these two taxation arrangements involve
+            calculations
+            that are non-trivial in complexity.</p>
+        <p>The UVA SolTax Model is designed to assist Virginia localities to estimate the revenues they could
+            realize
+            under
+            these two distinct policy regimes. Its purpose is to provide local official with insights regarding
+            which
+            model
+            will provide the greatest financial benefits for a locality.</p>
+        <p>In order to facilitate apples-to-apples comparison, the tool will generate predicted tax payments to
+            localities
+            for a well-defined base case: A new 100 MW utility-scale solar project that requires a capital
+            investment of
+            $100 million and that commences operation in year 2022 where the revenue share rate is assumed to be set
+            at
+            $750/MW.</p>
+        <p>The tool will permit adjustment in this project specification as well as the ability to consider new
+            investments
+            in multiple years to allow examination of the revenue implications of alternative scenarios.</p>
+        <div id="important-comments-and-cautions" class="section level3">
+            <h3><strong>Important comments and cautions:</strong></h3>
+            <p><strong>THIS TOOL COMES WITH ABSOLUTELY NO WARRANTY.</strong></p>
+            <p><strong>THIS IS NOT A FORECASTING TOOL.</strong></p>
+            <p>
+                 
+            </p>
+        </div>
+        <div id="the-decision-a-choice-between-two-revenue-model-options" class="section level2">
+            <h2>The decision: A choice between two revenue model options</h2>
+            <div id="the-machinery-tools-tax-model" class="section level3">
+                <h3>The Machinery &amp; Tools Tax Model</h3>
+                <p>The Machinery &amp; Tools (M&amp;T) Tax is the default mechanism for localities to realize
+                    revenues
+                    from
+                    utility-scale solar projects. The tax is calculated as a percentage of the assessed value of
+                    certain
+                    capital investments made within a locality. In the case of utility-scale solar projects, the
+                    annual
+                    amount of the tax levy depends on several parameters:</p>
+                <ul>
+                    <li>The notional dollar value of the initial capital investment made by project developers.</li>
+                    <li>The schedule of exemptions that apply specifically to utility-scale solar projects, as
+                        codified
+                        in
+                        <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1434">HB 1434</a>, which was
+                        passed
+                        by the Virginia General Assembly and signed into law in 2020.</li>
+                    <li>The depreciation schedule applied to capital investments, which may vary by locality.</li>
+                    <li>The local M&amp;T tax rate, which may vary by locality.</li>
+                </ul>
+                <p>In addition to these direct factors, the use of the M&amp;T tax may cause an additional indirect
+                    effect
+                    on local revenues, through its influence on state funding for education. Under Virginia law, the
+                    costs
+                    of supporting public schools is effectively shared between state and local governments. The
+                    state’s
+                    per-pupil contribution varies by locality: it is lower for wealthier counties that are better
+                    positioned
+                    to fund schools on their own, and greater for poorer counties. The exact amount of the state’s
+                    contribution is based on the value of something called the <a
+                        href="https://www.solunesco.com/2018/12/20/revisiting-the-composite-index-of-virginia/#:~:text=What%20is%20the%20Composite%20Index%20and%20how%20is%20it%20related%20to%20solar%3F&amp;text=The%20Composite%20Index%20of%20Local,paid%20by%20the%20local%20government.">Composite
+                        Index of Local Ability-to-Pay</a> (CI), an estimate of each locality’s taxable wealth. To
+                    put
+                    the
+                    issue briefly: a new solar project may increase a locality’s CI, triggering a decrease in
+                    education
+                    funding from the state.</p>
+            </div>
+            <div id="the-revenue-share-model" class="section level3">
+                <h3>The Revenue Share Model</h3>
+                <p>The Revenue Share is an alternative method for localities to extract value from solar projects
+                    that
+                    was
+                    established in <a
+                        href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a>
+                    after being passed during the spring 2020 Virginia General Assembly session. The legislation
+                    allows
+                    a
+                    locality to assess a yearly flat rate through ordinance of up to $1400/MW on solar projects
+                    built
+                    within
+                    the jursidiction. Adopting this option grants an 100% tax exemption for solar projects in
+                    exchange
+                    for
+                    the revenue share.</p>
+            </div>
+        </div>
+        <div id="procedures-for-computing-cash-flows-under-the-two-models" class="section level1">
+            <h1>Procedures for computing cash flows under the two models</h1>
+            <p>The tool will prompt the user for four pieces of information:</p>
+            <ul>
+                <li>which Virginia locality they are interested in investigating,</li>
+                <li>the rate at which the revenue share will be set (max. $1400/MW), and two schedules: one schedule
+                    of
+                    expected solar investments greater than 5MW in the locality, and the other schedule of expected
+                    solar
+                    investments greater than 20MW (each schedule should specify the expected added MW and the
+                    expected
+                    total
+                    assessed value of all new projects for each year).</li>
+            </ul>
+            <p>Based on these data, the tool will calculate the expected tax revenue for a locality for each of the
+                two
+                tax
+                models. Results will be presented side by side, allowing for comparison.</p>
+            <div id="the-mt-model" class="section level2">
+                <h2>The M&amp;T model</h2>
+                <p>To calculate the expected tax revenue from the M&amp;T system, the model will take each year’s
+                    expected
+                    solar investments from the schedule provided by the user and break their lifetime into three
+                    periods
+                    that represent each stepdown in the M&amp;T tax exemption. Within each period, the yearly
+                    expected
+                    tax
+                    revenue will be calculated by multiplying the project’s assessed value with the exemption level
+                    outlined
+                    in HB 1434 (80% exempt in the first 5 years, 70% for the next 5 years, then 60% for the rest of
+                    the
+                    project’s life) and the effective M&amp;T tax rate for the indicated locality. The effective
+                    M&amp;T
+                    tax
+                    rate is derived by multiplying a locality’s statutory rate per $100 by its depreciation
+                    schedule,
+                    should
+                    it have one.</p>
+            </div>
+            <div id="the-revenue-share-model-1" class="section level2">
+                <h2>The Revenue Share model</h2>
+                <p>To calculate the value of tax revenue in an individual year from solar projects larger than 5 MW
+                    built in
+                    year <span class="math inline">\(t\)</span>, the revenue share rate is multiplied by the total
+                    number of
+                    qualifying megawatts built in year <span class="math inline">\(t\)</span>.</p>
+            </div>
+        </div>
+        <div id="converting-future-cash-flows-to-net-present-value" class="section level1">
+            <h1>Converting future cash flows to Net Present Value</h1>
+            <p>Under either taxation model, a stream of future revenue flows can be converted to present-value
+                equivalents
+                by discounting at an appropriate discount rate. Let <span class="math inline">\(t = 0, 1, \ldots,
+                    T\)</span>
+                index the several years over the planning period, where <span class="math inline">\(t=0\)</span>
+                corresponds
+                to the present year (here, 2020), and <span class="math inline">\(T\)</span> denotes the number of
+                years
+                until the limit of the planning horizon (say, <span class="math inline">\(T = 30\)</span>). For each
+                year
+                <span class="math inline">\(t\)</span>, let <span class="math inline">\(c_t\)</span> denote the cash
+                flow
+                received by the locality as revenue. The Net Present Value of this stream of cash flows is given by
+                the
+                well-known <span class="math inline">\(NPV\)</span> formula</p>
+            <p><span class="math display">\[ NPV = \sum_{t=0}^T \frac{c_t}{(1+r)^t} \]</span> where <span
+                    class="math inline">\(r\)</span> denotes the discount rate the locality uses for its capital
+                budgeting.
+                The appropriate choice of the discount rate <span class="math inline">\(r\)</span> is not obvious,
+                and
+                can
+                have a significant effect on the NPV calculation. For our base case, we will assume a six-percent
+                discount
+                rate (<span class="math inline">\(r = 0.06\)</span>). The tool will also allow users to enter
+                alternative
+                discount rates, allowing for the performance of a sensitivity analysis.</p>
+        </div>
+        <div id="auxiliary-assumptions" class="section level1">
+            <h1>Auxiliary assumptions</h1>
+            <ul>
+                <li>The policy environment will remain stable (i.e. the M&amp;T tax program will not sunset in 2030,
+                    and
+                    the
+                    revenue sharing model remains in its current form in perpetuity).</li>
+                <li>All new investments solar will continue to exist through 2050.</li>
+                <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
+                    level
+                    is
+                    higher for earlier dates)</li>
+            </ul>
+        </div>
+        <div id="uncertainties-and-risks" class="section level1">
+            <h1>Uncertainties and risks</h1>
+            <ul>
+                <li>This calculation ignores any revenue that might come from already existing solar projects. If a
+                    revenue
+                    share is adopted, although the locality cannot mandate that a preexisting project pay a revenue
+                    share
+                    rather than the traditional M&amp;T, they may</li>
+                <li>As revenue from new solar builds increases, may trigger reductions in state education funding,
+                    whihc
+                    may
+                    not be fully offset by solar revenue.</li>
+                <li>Competition from neighboring counties on revenue share rates may lead to over- or underestimates
+                    of
+                    the
+                    extent of solar development in a locality.</li>
+            </ul>
+        </div>
+        <div class="locality-dropup">
+            <div class="dropup">
+                <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenuButtonBottom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Choose Your Locality
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonBottom">
+                    <a class="dropdown-item" href="form/">Albermarle</a>
+                    <a class="dropdown-item" href="form/">Alexandria</a>
+                    <a class="dropdown-item" href="form/">Arlington</a>
+                </div>
+            </div>   
+        </div>
+    </div>
+</div>
+{% endblock content%}

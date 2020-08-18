@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="selected-locality">
+        Generate SolTax Model for <em>Locality</em>
+    </h1>
+    
+    <div class="form-group">
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <br>
+            <button class="btn btn-primary"> Generate Model </button>
+        </form>
+    </div>
+    <br><br>
+
+    <!-- <form action="/dash/" method="post" class="data-form">
+        {{ form.non_field_errors }}
+        <div class="fieldWrapper">
+          {{ form.initial_year.errors }}
+          {{ form.initial_year.label_tag }}
+          <br>
+          {{ form.initial_year }}
+          <span class="helptext">{{ form.initial_year.help_text }}</span>
+        </div>
+        <br>
+        <div class="fieldWrapper">
+            {{ form.initial_investment.errors }}
+            {{ form.initial_investment.label_tag }}
+            <br>
+            {{ form.initial_investment }}
+            <span class="helptext">{{ form.initial_investment.help_text }}</span>
+        </div>
+        <br>
+        <div class="fieldWrapper">
+            {{ form.revenue_share_rate.errors }}
+            {{ form.revenue_share_rate.label_tag }}
+            <br>
+            {{ form.revenue_share_rate }}
+            <span class="helptext">{{ form.revenue_share_rate.help_text }}</span>
+        </div>
+        <br>
+        <div class="fieldWrapper">
+            {{ form.project_size.errors }}
+            {{ form.project_size.label_tag }}
+            <br>
+            {{ form.project_size }}
+            <span class="helptext">{{ form.project_size.help_text }}</span>
+        </div>
+        <br>
+        <div class="fieldWrapper">
+            {{ form.discount_rate.errors }}
+            {{ form.discount_rate.label_tag }}
+            <br>
+            {{ form.discount_rate }}
+            <span class="helptext">{{ form.discount_rate.help_text }}</span>
+        </div>
+        <br>
+        <input type="submit" class="btn btn-primary">
+    </form> -->
+
+    <!-- <form class="data-form needs-validation" action="/dash/" method="POST" novalidate>
+        {% csrf_token %}
+        <table>
+            {{ form.as_table}}
+        </table> -->
+        <!-- {{ form }} -->
+        <!-- <div class="form-group">
+            <label for="initialYear">Year of Construction</label>
+            <input type="text" min ="2020" minlength="4" maxlength= "4" class="form-control" id="initialYear" required>
+            <div class="invalid-feedback">
+                Please enter a valid starting year.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="investment">Initial Investment</label>
+            <input data-type="number" min ="0" class="form-control" id="investment" required>
+            <div class="invalid-feedback">
+                Please enter an initial investment.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="investment">Revenue Share Rate ($/MW)</label>
+            <input data-type="number" min ="0" class="form-control" id="investment" required>
+            <div class="invalid-feedback">
+                Please enter a revenue share rate.
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="Megawatts">Project Size (MW)</label>
+            <input data-type="number" min ="0" class="form-control" id="Megawatts" aria-describedby="Megawatts" required>
+            <div class="invalid-feedback">
+                Please enter a MW value.
+            </div>
+        </div>
+        
+        
+        <div class="form-group">
+            <label for="otherInput">Discount Rate %</label>
+            <input data-type="number" min ="0" max="100" class="form-control interest-rate" id="otherInput" required>
+            <div class="invalid-feedback">
+                Please enter a valid discount rate.
+            </div>
+        </div> -->
+        <!-- <button type="submit" class="btn btn-primary">Generate</button>
+    </form> -->
+
+    <!-- <div class="back-button">
+        <form action="prototype.html">
+            <button type="submit" class="btn btn-primary back-btn" href="prototy">Go Back to Home Page</button>
+        </form>
+    </div> -->
+</div>
+{% endblock content %}
