@@ -1,1 +1,1 @@
-web: gunicorn SolTax.wsgi
+web: gunicorn SolarTax.wsgi
