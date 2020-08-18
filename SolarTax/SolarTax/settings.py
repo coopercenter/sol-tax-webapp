@@ -16,7 +16,7 @@ import psycopg2
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+# BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -134,9 +134,9 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-STATICFILES_DIRS = [
-    os.path.join(BASE_DIR,'QuickLearnApp/static')
-]
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR,'QuickLearnApp/static')
+# ]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
