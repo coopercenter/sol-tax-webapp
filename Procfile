@@ -1,2 +1,2 @@
-release: python SolarTax/manage.py migrate
+release: python manage.py migrate
 web: gunicorn SolarTax.wsgi
