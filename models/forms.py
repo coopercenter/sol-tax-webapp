@@ -12,8 +12,8 @@ class SimulationForm(forms.ModelForm):
         model = Simulation
         fields = ('locality', 'initial_year', 'initial_investment', 'revenue_share_rate', 'project_size', 'discount_rate')
         widgets = {
-            'locality': forms.Select(attrs={'class':'form-control', 'editable':'False'}),
-            'initial_year': forms.NumberInput(attrs={'class': 'form-control'}),
+            'locality': forms.HiddenInput(),
+            'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control'}),
             'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control'}),
             'project_size': forms.NumberInput(attrs={'class': 'form-control'}),
