@@ -21,6 +21,7 @@ li{
 /* Navbar */
 .site-name{
     color: #232D4B;
+    /* color: red; */
     text-decoration: none;
 }
 .site-name:hover{
@@ -41,7 +42,7 @@ li{
 /* Footer */
 .footer{
     background-color: #232D4B;
-    padding: 5px;
+    padding: 5px 0;
     line-height: 1;
 }
 .footer-text{
@@ -66,8 +67,8 @@ li{
 }
 
 /* Form */
-.data-form{
-    padding: 2% 10% 4%;
+.form-group{
+    padding: 0 10%;
 }
 .selected-locality{
     padding: 1% 0;
@@ -146,4 +147,11 @@ li{
 /* Technical Page */
 .technical-text{
     padding: 3%;
+}
+.locality-row{
+    margin-right:0px;
+}
+.locality-card{
+    width: 16rem;
+    margin: 25px 0 25px 60px;
 }

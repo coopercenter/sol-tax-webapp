@@ -21,20 +21,16 @@
             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                 <h4> <a href="technical.html" class="technical-appendix"> Technical Appendix</a></h4>
             </ul>
-            <form method='POST' action="">
-                {% csrf_token %}
-                <div class="dropdown">
-                    <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                        aria-haspopup="true" aria-expanded="false">
-                        Choose Your Locality
-                    </button>
-                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <!-- <div class="dropdown"> -->
+                    <form action="/locality-list">
+                        <button type="submit" class="btn btn-primary back-btn">Choose Your Locality</button>
+                    </form>
+                    <!-- <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                         <a class="dropdown-item" href="/form">Albermarle</a>
                         <a class="dropdown-item" href="/form">Alexandria</a>
                         <a class="dropdown-item" href="/form">Arlington</a>
                     </div>
-                </div>
-            </form>
+                </div> -->
         </div>
     </nav>
 
