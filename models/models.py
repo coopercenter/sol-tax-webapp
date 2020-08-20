@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 
+
 class Locality(models.Model):
     name = models.CharField(max_length=200)
     # mt_tax_rate = ArrayField(ArrayField(models.IntegerField()))

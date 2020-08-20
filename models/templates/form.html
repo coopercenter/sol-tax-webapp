@@ -3,11 +3,11 @@
 {% block content %}
 <div class="container-fluid">
     <h1 class="selected-locality">
-        Generate SolTax Model for <em>Locality</em>
+        Generate SolTax Model for {{ county }}
     </h1>
     
     <div class="form-group">
-        <form method="POST">
+        <form action = "/dash/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <br>

@@ -1,76 +1,11 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import CreateView
-from django.views import generic
-from .models import Locality, Simulation
-from .forms import SimulationForm 
-from django.core import serializers
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Version history: 
+2020-07-25 asmall@virginia.edu
+2020-07-22 egn2kv@virginia.edu
 
-
-def index(request):
-    return render(request, 'index.html')
-
-def dash(request):
-    if request.method == 'POST':
-        form = SimulationForm(request.POST)
-        if form.is_valid():
-            simulation = form.save(commit = False)
-            simulation.locality = Locality.objects.get(id = request.POST['locality'])
-            simulation.initial_investment = request.POST['initial_investment']
-            simulation.initial_year = request.POST['initial_year']
-            simulation.revenue_share_rate = request.POST['revenue_share_rate']
-            simulation.project_size = request.POST['project_size']
-            simulation.discount_rate = request.POST['discount_rate']
-            simulation.save()
-            sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0].name
-            print(type(simulation.discount_rate))
-
-
-
-            years = [int(simulation.initial_year)]
-            assessed_20 = [int(simulation.initial_investment)]
-            rs_rate = int(simulation.revenue_share_rate)
-            effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
-            mw = [int(simulation.project_size)]
-            interest_rate = int(simulation.discount_rate) *.01
-            #Run each function & extract table of values
-            cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
-            cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
-            tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
-            tot_mt_sum = sum(tot_mt)
-            tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
-            tot_rs_sum = sum(tot_rs)
-            print(cas_mt)
-            print(cas_rs)
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc})
-    else:
-        return HttpResponse('Error please select fill out the model generation form')
-# Create your views here.
-
-def request_page(request):
-    locality_name = request.POST.get('generateButton')
-    return render(request, 'testing.html' , {'county': locality_name})
-
-class IndexView(generic.ListView):
-    template_name = 'locality-list.html'
-    context_object_name = 'all_locality_list'
-
-    def get_queryset(self):
-        return Locality.objects.order_by('name')
-
-class NewSimulationView(CreateView):
-
-    def post(self, request):
-        locality_name = request.POST.get('generateButton')
-        form_class = SimulationForm() 
-        form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
-        return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
-
-
-
-'''
-Calculations
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+General functions
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 '''
 def effective_rate_ext (effective_rate_list):
     '''
@@ -281,3 +216,20 @@ def total_cashflow_rs(years, rate, megawatts, interest_rate):
         total[val] = round(total[val] / 1000)
         
     return total
+
+# Paramters to be entered
+years = [2020]
+assessed_20 = [20000000]
+rs_rate = 1400
+effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
+mw = [100]
+interest_rate = .06
+#Run each function & extract table of values
+cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
+cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
+tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
+tot_mt_sum = sum(tot_mt)
+tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
+tot_rs_sum = sum(tot_rs)
+print(cas_mt)
+print(cas_rs)

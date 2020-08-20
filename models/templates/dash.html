@@ -3,7 +3,7 @@
 {% block content %}
 
 <div id="solar-tool-prototype" class="section level1">
-    <h1 class="data-header">Solar Tool Prototype for <em>Locality</em></h1>
+    <h1 class="data-header">Solar Tool Model for {{locality}}</h1>
     <div class="row">
         <div id="side-by-side-comparison" class="section level3 col col-xl-6">
             <h3 class="table-title">Side by side comparison:</h3>
@@ -274,26 +274,46 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Year of Construction</td>
-                            <td class="value">2022</td>
-                        </tr>
-                        <tr>
-                            <td>Initial Investment</td>
-                            <td class="value">$100,000,000</td>
-                        </tr>
-                        <tr>
-                            <td>Revenue Share Rate</td>
-                            <td class="value">$750/MW</td>
-                        </tr>
-                        <tr>
-                            <td>Project Size</td>
-                            <td class="value">100 MW</td>
-                        </tr>
-                        <tr>
-                            <td>Discount Rate</td>
-                            <td class="value">6%</td>
-                        </tr>
+                        {% for i in simulation %}
+                            {% for field,value in i.fields.items %}
+                                {% if field == 'locality' %}
+                                    <tr>
+                                        <td>Locality</td>
+                                        <td class="value">{{locality}}</td>
+                                    </tr>
+                                {% elif field == 'initial_investment' %}
+                                    <tr>
+                                        <td>Initial Investment</td>
+                                        <td class="value">${{value}}</td>
+                                    </tr>
+                                {% elif field == 'initial_year' %}
+                                <tr>
+                                    <td>Initial Year</td>
+                                    <td class="value">{{value}}</td>
+                                </tr>
+                                {% elif field == 'revenue_share_rate' %}
+                                    <tr>
+                                        <td>Revenue Share Rate</td>
+                                        <td class="value">{{value}} $/MW</td>
+                                    </tr>
+                                {% elif field == 'project_size' %}
+                                <tr>
+                                    <td>Project Size</td>
+                                    <td class="value">{{value}} MW</td>
+                                </tr>
+                                {% elif field == 'discount_rate' %}
+                                <tr>
+                                    <td>Discount Rate</td>
+                                    <td class="value">{{value}}%</td>
+                                </tr>
+                                {% else %}
+                                    <tr>
+                                        <td>{{field}}</td>
+                                        <td class="value">{{value}}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                        {% endfor %}
                         <tr>
                             <td colspan="2">Effective M&T Tax Rate per $100 Assessed Value</td>
                             <!-- <td></td> -->
