@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import CreateView
 from django.views import generic
-from .models import Locality, Simulation
+from .models import Locality, Simulation, Calculations
 from .forms import SimulationForm 
 from django.core import serializers
 
@@ -22,11 +22,9 @@ def dash(request):
             simulation.project_size = request.POST['project_size']
             simulation.discount_rate = request.POST['discount_rate']
             simulation.save()
+
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
             loc = Locality.objects.filter(name = simulation.locality)[0].name
-            print(type(simulation.discount_rate))
-
-
 
             years = [int(simulation.initial_year)]
             assessed_20 = [int(simulation.initial_investment)]
@@ -34,16 +32,13 @@ def dash(request):
             effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
             mw = [int(simulation.project_size)]
             interest_rate = int(simulation.discount_rate) *.01
-            #Run each function & extract table of values
-            cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
-            cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
-            tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
-            tot_mt_sum = sum(tot_mt)
-            tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
-            tot_rs_sum = sum(tot_rs)
-            print(cas_mt)
-            print(cas_rs)
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc})
+            calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
+            calc.save()
+            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
+            
+
+            #n is the number of years from 2020 to 2050
+            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31)})
     else:
         return HttpResponse('Error please select fill out the model generation form')
 # Create your views here.
@@ -67,6 +62,20 @@ class NewSimulationView(CreateView):
         form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
         return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
 
+
+
+def performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate):
+    #Run each function & extract table of values
+    cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
+    cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
+    tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
+    tot_mt_sum = sum(tot_mt)
+    tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
+    tot_rs_sum = sum(tot_rs)
+    
+
+    calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
+    return calc
 
 
 '''
