@@ -49,7 +49,9 @@
             <div class="chart">
                 <h3 class="chart-title">Lineplot of cashflows through 2050:</h3>
                 {% load static %}
-                <img src="{% static "models/graph.png" %}" alt="prototype graph" class="prototype-graph">
+                {% load plotly_dash %}
+                {{ graph.plot1 | safe}}
+                <!-- <img src="{% static "models/graph.png" %}" alt="prototype graph" class="prototype-graph"> -->
                 <div class="graph-bottom-text">
                     <p>Total expected lifetime revenue (Thousands of 2020$, discounted at 6% per year):</p>
                     <pre><code>## Revenue Share:  {% get_totals calculations.tot_rs %}</code></pre>
