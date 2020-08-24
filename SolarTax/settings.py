@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig',
+    'channels',
+    'channels_redis'
 ]
 
 MIDDLEWARE = [
@@ -75,7 +78,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'SolarTax.wsgi.application'
-
+X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
@@ -137,9 +140,30 @@ USE_TZ = True
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# STATICFILES_DIRS = [
-#     os.path.join(BASE_DIR,'QuickLearnApp/static')
-# ]
+ASGI_APPLICATION = 'SolarTax.routing.applications'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG':{
+            'hosts': [{'localhost', '8000'}],
+        }
+    }
+}
+
+STATIC_FINDERS ={
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    'django.plotly.dash.finders.DashAssestFinder',
+    'django.plotly.dash.finders.DashComponentFinder'
+}
+
+PLOTLY_COMPONENTS=[
+    'dash_core_components',
+    'dash_html_components',
+    'dash_renderer',
+    'dpd_components'
+]
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 

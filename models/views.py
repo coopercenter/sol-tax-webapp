@@ -1,10 +1,43 @@
+from matplotlib import pylab
+from pylab import *
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.views import generic
 from .models import Locality, Simulation, Calculations
 from .forms import SimulationForm 
 from django.core import serializers
+import urllib, base64
+import PIL, PIL.Image, io
+
+from plotly.offline import plot
+import plotly.graph_objects as go
+
+
+def chart(request):
+    def scatter():
+        x1 = [1,2,3,4]
+        y1 = [30, 35, 25, 45]
+
+        trace = go.Scatter(
+            x=x1,
+            y = y1
+        )
+        layout = dict(
+            title='Simple Graph',
+            xaxis=dict(range=[min(x1), max(x1)]),
+            yaxis = dict(range=[min(y1), max(y1)])
+        )
+
+        fig = go.Figure(data=[trace], layout=layout)
+        plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+        return plot_div
+
+    context ={
+        'plot1': scatter()
+    }
+
+    return render(request, 'chart.html', context)
 
 
 def index(request):
@@ -35,10 +68,38 @@ def dash(request):
             calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
             calc.save()
             # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
+
+            def scatter():
+                x1 = [i for i in range(2020, 2051)]
+                y1 = calc.cas_mt
+                y2 = calc.cas_rs
+
+                trace = go.Scatter(
+                    x= x1,
+                    y = y1,
+                    name = "M&T Tax"
+                )
+                trace2 = go.Scatter(
+                    x = x1,
+                    y = y2,
+                    name = "Revenue Share"
+                )
+                layout = dict(
+                    xaxis=dict(range=[min(x1), max(x1)]),
+                    yaxis = dict(range=[0, max(max(y1), max(y2))+20])
+                )
+
+                fig = go.Figure(data=[trace, trace2], layout=layout)
+                plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+                return plot_div
+
+            context ={
+                'plot1': scatter()
+            }
             
 
             #n is the number of years from 2020 to 2050
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31)})
+            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
     else:
         return HttpResponse('Error please select fill out the model generation form')
 # Create your views here.
