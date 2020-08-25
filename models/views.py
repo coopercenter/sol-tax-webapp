@@ -1,6 +1,7 @@
 from matplotlib import pylab
 from pylab import *
 from django.shortcuts import render
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import CreateView, ListView
 from django.views import generic
@@ -9,6 +10,7 @@ from .forms import SimulationForm
 from django.core import serializers
 import urllib, base64
 import PIL, PIL.Image, io
+from django.db.models import Count
 
 from plotly.offline import plot
 import plotly.graph_objects as go
@@ -42,6 +44,11 @@ def chart(request):
 
 def index(request):
     return render(request, 'index.html')
+
+def locality_home(request, locality_name):
+    locality = Locality.objects.get(name = locality_name.capitalize())
+    simulations = locality.simulation_set.all()
+    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
 
 def dash(request):
     if request.method == 'POST':
@@ -108,20 +115,47 @@ def request_page(request):
     locality_name = request.POST.get('generateButton')
     return render(request, 'testing.html' , {'county': locality_name})
 
-class IndexView(generic.ListView):
-    template_name = 'locality-list.html'
-    context_object_name = 'all_locality_list'
 
-    def get_queryset(self):
-        return Locality.objects.order_by('name')
+def index_page(request):
+    localities = Locality.objects.order_by('name')
+    simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
+    print(simulations[0].name)
+    # sim = serializers.serialize("python", Locality.objects.annotate(number_of_simulations=Count('simulation')))
+    # print(sim[0].number_of_simulations)
+    return render(request, 'locality-list.html', {'localities': localities, 'simulations':simulations})
+
+# class IndexView(generic.ListView):
+#     template_name = 'locality-list.html'
+#     context_object_name = 'all_locality_list'
+
+#     def get_queryset(self):
+#         localities = Locality.objects.order_by('name')
+#         simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
+#         return Locality.objects.order_by('name')
 
 class NewSimulationView(CreateView):
 
     def post(self, request):
-        locality_name = request.POST.get('generateButton')
-        form_class = SimulationForm() 
-        form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
-        return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
+        if(request.POST.get('viewButton') == None):
+            locality_name = request.POST.get('generateButton')
+            form_class = SimulationForm() 
+            form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+            return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
+        else:
+            # locality_name = request.POST.get('viewButton')
+            print(request.POST)
+            print(request.POST.get("viewButton"))
+            return HttpResponseRedirect('/' + request.POST.get('viewButton'))
+            # return locality_home(request, locality_name)
+            # locality = Locality.objects.get(name = locality_name.capitalize())
+            # simulations = locality.simulation_set.all()
+            # return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
+
+        # print(request.POST.get('viewButton') == None)
+        # print(request.POST.get('viewButton'))
+        # print(request.POST.get('generateButton'))
+        # locality_name = request.POST.get('generateButton')
+
 
 
 

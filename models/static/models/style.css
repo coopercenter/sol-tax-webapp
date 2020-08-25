@@ -152,6 +152,16 @@ li{
     margin-right:0px;
 }
 .locality-card{
-    width: 16rem;
-    margin: 25px 0 25px 60px;
+    width: 12rem;
+    margin: 25px 0 25px 25px;
+}
+.simulation-card{
+    margin: 25px;
+    width: 18rem;
+}
+.view-button{
+    margin-top: 4%;
+}
+.delete-button{
+    margin: 4% 4% 0;
 }
