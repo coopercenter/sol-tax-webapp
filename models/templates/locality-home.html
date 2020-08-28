@@ -21,10 +21,14 @@
                             <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
                             <p class="card-text">Discout Rate: {{simulation.discount_rate}}%</p>
                             <form action="/dash/" method="POST">
-                                {% csrf_token %}
+                                
                                 <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
                                 <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Model</button>
-                                <button type="submit" class="btn btn-sm btn-danger delete-button">Delete Model</button>
+                            </form>
+                            <form action="/locality-{{simulation.locality.name}}/" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
+                                <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Model</button>
                             </form>
                         </div>
                     </div>

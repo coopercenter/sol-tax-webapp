@@ -46,6 +46,9 @@ def index(request):
     return render(request, 'index.html')
 
 def locality_home(request, locality_name):
+    if request.method =='POST':
+        simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
+        simulation.delete()
     locality = Locality.objects.get(name = locality_name.capitalize())
     simulations = locality.simulation_set.all()
     return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
@@ -74,7 +77,9 @@ def scatter(mt, rs):
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     return plot_div
 
+def delete_locality(request):
 
+    return HttpResponse("Deleted")
 
 
 def dash(request):
