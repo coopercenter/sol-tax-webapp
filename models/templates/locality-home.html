@@ -15,16 +15,14 @@
                 <div class="col-md-3 col-sm-6">
                     <div class="card simulation-card">
                         <div class="card-body">
-                            <!-- <h5 class="card-title">{{ simulation.locality.name }}</h5> -->
                             <p class="card-text">Initial Year: {{simulation.initial_year}}</p>
                             <p class="card-text">Initial Investment: ${{simulation.initial_investment}}</p>
                             <p class="card-text">Revenue Share Rate: {{simulation.revenue_share_rate}} $/MW</p>
                             <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
                             <p class="card-text">Discout Rate: {{simulation.discount_rate}}%</p>
-                            <form action="/form/" method="POST">
+                            <form action="/dash/" method="POST">
                                 {% csrf_token %}
-                                <!-- <button type="submit" class="btn btn-primary btn-sm" value = "{{locality}}" name="generateButton">Generate Model</button> -->
-                                <button type="submit" class="btn btn-primary btn-sm view-button" value = "locality-{{locality}}" name = "viewButton">View Model</button>
+                                <button type="submit" class="btn btn-primary btn-sm view-button"  value = "{{simulation.id}}" name = "viewButton">View Model</button>
                                 <button type="submit" class="btn btn-sm btn-danger delete-button">Delete Model</button>
                             </form>
                         </div>

@@ -51,6 +51,8 @@ def locality_home(request, locality_name):
     return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
 
 def dash(request):
+    if request.POST.get('viewButton'):
+        print(request.POST.get('viewButton'))
     if request.method == 'POST':
         form = SimulationForm(request.POST)
         if form.is_valid():
