@@ -22,7 +22,8 @@
                             <p class="card-text">Discout Rate: {{simulation.discount_rate}}%</p>
                             <form action="/dash/" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="btn btn-primary btn-sm view-button"  value = "{{simulation.id}}" name = "viewButton">View Model</button>
+                                <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
+                                <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Model</button>
                                 <button type="submit" class="btn btn-sm btn-danger delete-button">Delete Model</button>
                             </form>
                         </div>
