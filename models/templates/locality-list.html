@@ -2,35 +2,37 @@
 
 {% block content %}
 
-{% if localities %}
-    {% for locality in localities %}
-        {% if forloop.first %}
-            <div class="row locality-row">
-        {% endif %}
-        
-        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
-            <div class="card locality-card">
-                <div class="card-body">
-                    <h5 class="card-title">{{ locality.name }}</h5>
-                    {% for sim in simulations %}
-                        {% if sim.name == locality.name %}
-                            <p>Models Created: {{sim.number_of_simulations}}</p>
-                        {% endif %}
-                    {% endfor %}
-                    <!-- <p class="card-text">{{simulations.number_of_simulations}}</p> -->
-                    <form action="/form/" method="POST">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary btn-sm" value = "{{locality}}" name="generateButton">Generate Model</button>
-                        <button type="submit" class="btn btn-primary btn-sm view-button" value = "locality-{{locality}}" name = "viewButton">View Models</button>
-                    </form>
+<div class="locality-list-body">
+    {% if localities %}
+        <h1 class="locality-list-header">Choose Your Locality</h1>
+        {% for locality in localities %}
+            {% if forloop.first %}
+                <div class="row locality-row">
+            {% endif %}
+            
+            <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6">
+                <div class="card locality-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ locality.name }}</h5>
+                        {% for sim in simulations %}
+                            {% if sim.name == locality.name %}
+                                <p>Models Created: {{sim.number_of_simulations}}</p>
+                            {% endif %}
+                        {% endfor %}
+                        <!-- <p class="card-text">{{simulations.number_of_simulations}}</p> -->
+                        <form action="/form/" method="POST">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary btn-sm" value = "{{locality}}" name="generateButton">Generate Model</button>
+                            <button type="submit" class="btn btn-primary btn-sm view-button" value = "locality-{{locality}}" name = "viewButton">View Models</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% if forloop.counter|divisibleby:12 %}</div><div class="row locality-row">{% endif %}
-        {% if forloop.last %}</div>{% endif %}
-    {% endfor %}
-{% else %}
-    <p>No Localities are available.</p>
-{% endif %}
-
+            {% if forloop.counter|divisibleby:12 %}</div><div class="row locality-row">{% endif %}
+            {% if forloop.last %}</div>{% endif %}
+        {% endfor %}
+    {% else %}
+        <p>No Localities are available.</p>
+    {% endif %}
+</div>
 {% endblock content %}
