@@ -1,6 +1,7 @@
 from matplotlib import pylab
 from pylab import *
 from django.shortcuts import render
+from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import CreateView, ListView
 from django.views import generic
@@ -9,6 +10,7 @@ from .forms import SimulationForm
 from django.core import serializers
 import urllib, base64
 import PIL, PIL.Image, io
+from django.db.models import Count
 
 from plotly.offline import plot
 import plotly.graph_objects as go
@@ -43,8 +45,65 @@ def chart(request):
 def index(request):
     return render(request, 'index.html')
 
+def locality_home(request, locality_name):
+    if request.method =='POST':
+        simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
+        simulation.delete()
+    locality = Locality.objects.get(name = locality_name.capitalize())
+    simulations = locality.simulation_set.all()
+    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
+
+def scatter(mt, rs):
+    x1 = [i for i in range(2020, 2051)]
+    y1 = mt
+    y2 = rs
+
+    trace = go.Scatter(
+        x= x1,
+        y = y1,
+        name = "M&T Tax"
+    )
+    trace2 = go.Scatter(
+        x = x1,
+        y = y2,
+        name = "Revenue Share"
+    )
+    layout = dict(
+        xaxis=dict(range=[min(x1), max(x1)]),
+        yaxis = dict(range=[0, max(max(y1), max(y2))+20])
+    )
+
+    fig = go.Figure(data=[trace, trace2], layout=layout)
+    plot_div = plot(fig, output_type='div', include_plotlyjs=False)
+    return plot_div
+
+def delete_locality(request):
+
+    return HttpResponse("Deleted")
+
+
 def dash(request):
+    if(request.POST.get('simulation_id')):
+        simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
+        sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
+        loc = Locality.objects.filter(name = simulation.locality)[0].name
+
+        years = [int(simulation.initial_year)]
+        assessed_20 = [int(simulation.initial_investment)]
+        rs_rate = int(simulation.revenue_share_rate)
+        effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
+        mw = [int(simulation.project_size)]
+        interest_rate = int(simulation.discount_rate) *.01
+        calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
+        calc.save()
+
+        context = {
+            'plot1': scatter(calc.cas_mt, calc.cas_rs)
+        }
+
+        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
     if request.method == 'POST':
+        print("testing")
         form = SimulationForm(request.POST)
         if form.is_valid():
             simulation = form.save(commit = False)
@@ -67,35 +126,12 @@ def dash(request):
             interest_rate = int(simulation.discount_rate) *.01
             calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
             calc.save()
-            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
 
-            def scatter():
-                x1 = [i for i in range(2020, 2051)]
-                y1 = calc.cas_mt
-                y2 = calc.cas_rs
-
-                trace = go.Scatter(
-                    x= x1,
-                    y = y1,
-                    name = "M&T Tax"
-                )
-                trace2 = go.Scatter(
-                    x = x1,
-                    y = y2,
-                    name = "Revenue Share"
-                )
-                layout = dict(
-                    xaxis=dict(range=[min(x1), max(x1)]),
-                    yaxis = dict(range=[0, max(max(y1), max(y2))+20])
-                )
-
-                fig = go.Figure(data=[trace, trace2], layout=layout)
-                plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-                return plot_div
-
-            context ={
-                'plot1': scatter()
+            context = {
+                'plot1': scatter(calc.cas_mt, calc.cas_rs)
             }
+
+            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
             
 
             #n is the number of years from 2020 to 2050
@@ -108,20 +144,44 @@ def request_page(request):
     locality_name = request.POST.get('generateButton')
     return render(request, 'testing.html' , {'county': locality_name})
 
-class IndexView(generic.ListView):
-    template_name = 'locality-list.html'
-    context_object_name = 'all_locality_list'
 
-    def get_queryset(self):
-        return Locality.objects.order_by('name')
+def index_page(request):
+    localities = Locality.objects.order_by('name')
+    simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
+    # sim = serializers.serialize("python", Locality.objects.annotate(number_of_simulations=Count('simulation')))
+    # print(sim[0].number_of_simulations)
+    return render(request, 'locality-list.html', {'localities': localities, 'simulations':simulations})
+
+# class IndexView(generic.ListView):
+#     template_name = 'locality-list.html'
+#     context_object_name = 'all_locality_list'
+
+#     def get_queryset(self):
+#         localities = Locality.objects.order_by('name')
+#         simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
+#         return Locality.objects.order_by('name')
 
 class NewSimulationView(CreateView):
 
     def post(self, request):
-        locality_name = request.POST.get('generateButton')
-        form_class = SimulationForm() 
-        form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
-        return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
+        if(request.POST.get('viewButton') == None):
+            locality_name = request.POST.get('generateButton')
+            form_class = SimulationForm() 
+            form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+            return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
+        else:
+            # locality_name = request.POST.get('viewButton')
+            return HttpResponseRedirect('/' + request.POST.get('viewButton'))
+            # return locality_home(request, locality_name)
+            # locality = Locality.objects.get(name = locality_name.capitalize())
+            # simulations = locality.simulation_set.all()
+            # return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
+
+        # print(request.POST.get('viewButton') == None)
+        # print(request.POST.get('viewButton'))
+        # print(request.POST.get('generateButton'))
+        # locality_name = request.POST.get('generateButton')
+
 
 
 
@@ -135,8 +195,8 @@ def performCalculations(simulation, years, assessed_20, rs_rate, effective_rate,
     tot_rs_sum = sum(tot_rs)
     
 
-    calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
-    return calc
+    calc = Calculations.objects.get_or_create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
+    return calc[0]
 
 
 '''

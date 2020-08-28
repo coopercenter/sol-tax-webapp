@@ -152,6 +152,34 @@ li{
     margin-right:0px;
 }
 .locality-card{
-    width: 16rem;
-    margin: 25px 0 25px 60px;
+    width: 12rem;
+    margin: 25px 0 25px 25px;
 }
+.simulation-card{
+    margin: 20px;
+    width: 18rem;
+}
+.view-button{
+    margin-top: 4%;
+}
+.delete-button{
+    margin-top: 4%;
+}
+
+.locality-home-body{
+    height: 80vh;
+}
+.locality-home-header{
+    text-align: center;
+    padding: 2%;
+}
+
+
+.locality-list-body{
+    height: 80vh;
+}
+.locality-list-header{
+    text-align: center;
+    padding: 2%;
+}
+
