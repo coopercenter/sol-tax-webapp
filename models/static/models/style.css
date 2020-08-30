@@ -11,7 +11,7 @@ h2, h3, h4{
 .side-table th, .side-table td{
     text-align: left; 
     padding: 5px 50px 5px 0;
-    border-bottom: 1px solid black;
+    /* border-bottom: 1px solid black; */
 }
 
 li{
@@ -129,14 +129,18 @@ li{
 }
 .entered-data-title{
     text-align: center;
-    padding: 7% 0 2%;
+    padding: 5% 0 2%;
 }
 .value-header{
     text-align: right;
 }
-.parameter-table .value-rate{
+.table td{
+    padding: .5rem
+}
+.table td.value-rate{
     padding-left: 30px;
 }
+
 .parameter-table .value{
     padding: 5px 0 5px 130px;
     text-align: right;

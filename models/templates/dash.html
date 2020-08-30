@@ -5,147 +5,152 @@
 <div id="solar-tool-prototype" class="section level1">
     <h1 class="data-header">Solar Tool Model for {{locality}}</h1>
     <div class="row">
-        <div id="side-by-side-comparison" class="section level3 col col-xl-6">
-            <h3 class="table-title">Side by side comparison:</h3>
-            <p class="sub-label">Yearly Cashflows from M&amp;T vs. Revenue Share in Surry County, Virginia</p> 
-            <p>(Rounded to the nearest thousand)</p>
-            <table class="side-table">
+        {% load custom_tags %}
+        <div class = "col-xl-6">
+            <h2 class="entered-data-title">Project Parameters</h2>
+            <table class="table table-striped">
                 <thead>
-                    <tr class="header">
-                        <th align="left">Year</th>
-                        <th align="left">MT_Tax</th>
-                        <th align="left" >Revenue_Share</th>
-                        <th>MT_Tax_2020</th>
-                        <th class="last-data">Revenue_Share_2020</th>
+                <tr>
+                    <tr>
+                        <th scope="col">Parameter</th>
+                        <th scope="col">Value</th>
                     </tr>
+                </tr>
                 </thead>
                 <tbody>
-                    
-                    {% load custom_tags %}
-                    {% for i in n %}
-                        {% if forloop.counter|divisibleby:2 %}
-                        <tr class="even">
-                            <td align="left">{{i|add:2020}}</td>
-                            <td align="left">${{calculations.cas_mt|get_index:i}}</td>
-                            <td align="left">${{calculations.cas_rs|get_index:i}}</td>
-                            <td align="left">${{calculations.tot_mt|get_index:i}}</td>
-                            <td align="left">${{calculations.tot_rs|get_index:i}}</td>
-                        </tr>
-                        {% else %}
-                        <tr class="odd">
-                            <td align="left">{{i|add:2020}}</td>
-                            <td align="left">${{calculations.cas_mt|get_index:i}}</td>
-                            <td align="left">${{calculations.cas_rs|get_index:i}}</td>
-                            <td align="left">${{calculations.tot_mt|get_index:i}}</td>
-                            <td align="left">${{calculations.tot_rs|get_index:i}}</td>
-                        </tr>
-                        {% endif %}
+                    {% for i in simulation %}
+                        {% for field,value in i.fields.items %}
+                            {% if field == 'locality' %}
+                                <tr>
+                                    <td>Locality</td>
+                                    <td class="value">{{locality}}</td>
+                                </tr>
+                            {% elif field == 'initial_investment' %}
+                                <tr>
+                                    <td>Initial Investment</td>
+                                    <td class="value">${{value}}</td>
+                                </tr>
+                            {% elif field == 'initial_year' %}
+                            <tr>
+                                <td>Initial Year</td>
+                                <td class="value">{{value}}</td>
+                            </tr>
+                            {% elif field == 'revenue_share_rate' %}
+                                <tr>
+                                    <td>Revenue Share Rate</td>
+                                    <td class="value">{{value}} $/MW</td>
+                                </tr>
+                            {% elif field == 'project_size' %}
+                            <tr>
+                                <td>Project Size</td>
+                                <td class="value">{{value}} MW</td>
+                            </tr>
+                            {% elif field == 'discount_rate' %}
+                            <tr>
+                                <td>Discount Rate</td>
+                                <td class="value">{{value}}%</td>
+                            </tr>
+                            {% else %}
+                                <tr>
+                                    <td>{{field}}</td>
+                                    <td class="value">{{value}}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
+                    <tr>
+                        <td colspan="2">Effective M&T Tax Rate per $100 Assessed Value</td>
+                    </tr>
+                    <tr>
+                        <td class="value-rate">Year 1</td>
+                        <td class="value">0.60</td>
+                    </tr>
+                    <tr>
+                        <td class="value-rate">Year 2</td>
+                        <td class="value">0.50</td>
+                    </tr>
+                    <tr>
+                        <td class="value-rate">Year 3</td>
+                        <td class="value">0.40</td>
+                    </tr>
+                    <tr>
+                        <td class="value-rate">Year 4</td>
+                        <td class="value">0.30</td>
+                    </tr>
+                    <tr>
+                        <td class="value-rate">Year 5 & on</td>
+                        <td class="value">0.20</td>
+                    </tr>
                 </tbody>
             </table>
-        </div>
 
-        <div class="section level3 col col-xl-6 right-col">
+            <div class="back-button">
+                <form action="form">
+                    <button type="submit" class="btn btn-primary back-btn">Update Parameters</button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="col-xl-6">
             <div class="chart">
                 <h3 class="chart-title">Lineplot of cashflows through 2050:</h3>
+                
                 {% load static %}
                 {% load plotly_dash %}
                 {{ graph.plot1 | safe}}
-                <!-- <img src="{% static "models/graph.png" %}" alt="prototype graph" class="prototype-graph"> -->
-                <div class="graph-bottom-text">
-                    <p>Total expected lifetime revenue (Thousands of 2020$, discounted at 6% per year):</p>
-                    <pre><code>## Revenue Share:  {% get_totals calculations.tot_rs %}</code></pre>
-                    <pre><code>## MT Tax:  {% get_totals calculations.tot_mt %}</code></pre>
-                </div>
-            </div>
-            <div class="entered-data">
-                <h2 class="entered-data-title">Parameters</h2>
-                <table class="parameter-table">
-                    <thead>
-                        <tr>
-                            <th>
-                                Project Parameter
-                            </th>
-                            <th class="value-header">
-                                Value
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for i in simulation %}
-                            {% for field,value in i.fields.items %}
-                                {% if field == 'locality' %}
-                                    <tr>
-                                        <td>Locality</td>
-                                        <td class="value">{{locality}}</td>
-                                    </tr>
-                                {% elif field == 'initial_investment' %}
-                                    <tr>
-                                        <td>Initial Investment</td>
-                                        <td class="value">${{value}}</td>
-                                    </tr>
-                                {% elif field == 'initial_year' %}
-                                <tr>
-                                    <td>Initial Year</td>
-                                    <td class="value">{{value}}</td>
-                                </tr>
-                                {% elif field == 'revenue_share_rate' %}
-                                    <tr>
-                                        <td>Revenue Share Rate</td>
-                                        <td class="value">{{value}} $/MW</td>
-                                    </tr>
-                                {% elif field == 'project_size' %}
-                                <tr>
-                                    <td>Project Size</td>
-                                    <td class="value">{{value}} MW</td>
-                                </tr>
-                                {% elif field == 'discount_rate' %}
-                                <tr>
-                                    <td>Discount Rate</td>
-                                    <td class="value">{{value}}%</td>
-                                </tr>
-                                {% else %}
-                                    <tr>
-                                        <td>{{field}}</td>
-                                        <td class="value">{{value}}</td>
-                                    </tr>
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                        <tr>
-                            <td colspan="2">Effective M&T Tax Rate per $100 Assessed Value</td>
-                        </tr>
-                        <tr>
-                            <td class="value-rate">Year 1</td>
-                            <td class="value">0.60</td>
-                        </tr>
-                        <tr>
-                            <td class="value-rate">Year 2</td>
-                            <td class="value">0.50</td>
-                        </tr>
-                        <tr>
-                            <td class="value-rate">Year 3</td>
-                            <td class="value">0.40</td>
-                        </tr>
-                        <tr>
-                            <td class="value-rate">Year 4</td>
-                            <td class="value">0.30</td>
-                        </tr>
-                        <tr>
-                            <td class="value-rate">Year 5 & on</td>
-                            <td class="value">0.20</td>
-                        </tr>
-                    </tbody>
-                </table>
 
-                <div class="back-button">
-                    <form action="form">
-                        <button type="submit" class="btn btn-primary back-btn">Edit Information</button>
-                    </form>
+                <div class="graph-top-text">
+                    <p>Total expected lifetime revenue (Thousands of 2020$, discounted at 6% per year):</p>
+                    <p>Revenue Share:  {% get_totals calculations.tot_rs %}</p>
+                    <p>MT Tax:  {% get_totals calculations.tot_mt %}</p>
                 </div>
+                
             </div>
         </div>
     </div>
+    <div id="side-by-side-comparison" class="section level3">
+        <h3 class="table-title">Annual Cashflows Under the 2 Different Revenue Models</h3>
+        <p>(In thousands, rounded to the nearest thousand)</p>
+        <table class="table table-striped side-table">
+            <thead>
+                <tr class="header">
+                    <th scope="col">Year</th>
+                    <th scope="col">M&T Tax Nominal Dollars</th>
+                    <th scope="col">Revenue Share Nominal Dollars</th>
+                    <th scope="col">M&T Tax in 2020 Dollars Discounted at {{simulation|get_discount_rate}}%</th>
+                    <th class="last-data" scope="col">Revenue Share in 2020 Dollars Discounted at {{simulation|get_discount_rate}} %</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in n %}
+                    {% if forloop.counter|divisibleby:2 %}
+                    <tr class="even">
+                        <td>{{i|add:2020}}</td>
+                        <td>${{calculations.cas_mt|get_index:i}}</td>
+                        <td>${{calculations.cas_rs|get_index:i}}</td>
+                        <td>${{calculations.tot_mt|get_index:i}}</td>
+                        <td>${{calculations.tot_rs|get_index:i}}</td>
+                    </tr>
+                    {% else %}
+                    <tr class="odd">
+                        <td>{{i|add:2020}}</td>
+                        <td>${{calculations.cas_mt|get_index:i}}</td>
+                        <td>${{calculations.cas_rs|get_index:i}}</td>
+                        <td>${{calculations.tot_mt|get_index:i}}</td>
+                        <td>${{calculations.tot_rs|get_index:i}}</td>
+                    </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+
+
+
+
+
+
 </div>
 
 {% endblock content %}

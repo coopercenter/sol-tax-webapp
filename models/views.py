@@ -41,6 +41,8 @@ def chart(request):
 
     return render(request, 'chart.html', context)
 
+def table(request):
+    return render(request, 'table_test.html')
 
 def index(request):
     return render(request, 'index.html')
