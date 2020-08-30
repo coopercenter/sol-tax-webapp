@@ -41,9 +41,6 @@ def chart(request):
 
     return render(request, 'chart.html', context)
 
-def table(request):
-    return render(request, 'table_test.html')
-
 def index(request):
     return render(request, 'index.html')
 
@@ -72,7 +69,8 @@ def scatter(mt, rs):
     )
     layout = dict(
         xaxis=dict(range=[min(x1), max(x1)]),
-        yaxis = dict(range=[0, max(max(y1), max(y2))+20])
+        yaxis = dict(range=[0, max(max(y1), max(y2))+20]),
+        margin={'t' : 20},
     )
 
     fig = go.Figure(data=[trace, trace2], layout=layout)

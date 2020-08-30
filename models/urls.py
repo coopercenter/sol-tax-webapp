@@ -10,6 +10,5 @@ urlpatterns = [
     path('locality-list/', views.index_page, name='locality-list'),
     path('formtext/', views.request_page, name='test'),
     path('chart/', views.chart, name="chart"),
-    path('table/', views.table, name="table"),
     path('locality-<str:locality_name>/', views.locality_home, name='locality_home')
 ]

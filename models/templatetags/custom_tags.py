@@ -18,4 +18,8 @@ def get_totals(l):
     sum = 0
     for item in l:
         sum += item
-    return sum
+    return "{:,}".format(sum*1000)
+
+@register.simple_tag
+def multiply(a, b):
+    return a * b

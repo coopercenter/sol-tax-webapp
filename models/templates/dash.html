@@ -91,34 +91,45 @@
             </div>
         </div>
         
-        <div class="col-xl-6">
+        <div class="col-xl-6 right-col">
+            <div class="result-top-text">
+                <div class="result-title">
+                    <h3>Total expected lifetime revenue</h3>
+                    <p> (Thousands of 2020 $, discounted at 6% per year): </p>
+                </div>
+                <div class="result-text">
+                    <p><strong>Revenue Share:</strong> <span>${% get_totals calculations.tot_rs %}</span></p>
+                    <p><strong>M&T Tax:</strong> ${% get_totals calculations.tot_mt %}</p>
+                </div>
+            </div>
+
             <div class="chart">
                 <h3 class="chart-title">Lineplot of cashflows through 2050:</h3>
                 
                 {% load static %}
                 {% load plotly_dash %}
-                {{ graph.plot1 | safe}}
+                <div class="prototype-graph">{{ graph.plot1 | safe}}</div>
+                
 
-                <div class="graph-top-text">
-                    <p>Total expected lifetime revenue (Thousands of 2020$, discounted at 6% per year):</p>
-                    <p>Revenue Share:  {% get_totals calculations.tot_rs %}</p>
-                    <p>MT Tax:  {% get_totals calculations.tot_mt %}</p>
-                </div>
+
                 
             </div>
         </div>
     </div>
     <div id="side-by-side-comparison" class="section level3">
-        <h3 class="table-title">Annual Cashflows Under the 2 Different Revenue Models</h3>
-        <p>(In thousands, rounded to the nearest thousand)</p>
+        <div class="table-title">
+            <h3>Annual Cashflows Under the 2 Different Revenue Models</h3>
+            <p>(In thousands, rounded to the nearest thousand)</p>
+        </div>
+        
         <table class="table table-striped side-table">
             <thead>
                 <tr class="header">
                     <th scope="col">Year</th>
-                    <th scope="col">M&T Tax Nominal Dollars</th>
-                    <th scope="col">Revenue Share Nominal Dollars</th>
-                    <th scope="col">M&T Tax in 2020 Dollars Discounted at {{simulation|get_discount_rate}}%</th>
-                    <th class="last-data" scope="col">Revenue Share in 2020 Dollars Discounted at {{simulation|get_discount_rate}} %</th>
+                    <th scope="col">M&T Tax Nominal $</th>
+                    <th scope="col">Revenue Share Nominal $</th>
+                    <th scope="col">M&T Tax in 2020 $ Discounted at {{simulation|get_discount_rate}}%</th>
+                    <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {{simulation|get_discount_rate}} %</th>
                 </tr>
             </thead>
             <tbody>
