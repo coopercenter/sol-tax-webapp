@@ -139,7 +139,7 @@ li{
     background-color: rgb(219, 219, 219);
 }
 .table-striped tbody tr:nth-of-type(odd):hover{
-    background-color: rgb(219, 219, 219)
+    background-color: rgb(219, 219, 219);
 }
 .table td{
     padding: .35rem;
@@ -204,4 +204,13 @@ li{
 .result-text{
     padding-top: 3%;
     text-align:left;
+}
+
+.btn-light{
+    background-color: 	#007bff;
+    color: rgb(255, 255, 255);
+}
+
+.dropdown-menu a:hover{
+    background-color: rgb(219, 219, 219);
 }

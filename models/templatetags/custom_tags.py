@@ -20,6 +20,11 @@ def get_totals(l):
         sum += item
     return "{:,}".format(sum*1000)
 
-@register.simple_tag
-def multiply(a, b):
-    return a * b
+@register.inclusion_tag("search_bar.html")
+def all_localities():
+    all_localities = Locality.objects.order_by('name')
+    return {'all_localities': all_localities}
+    # localities = Locality.objects.order_by('name')
+    # return {
+    #     'all_localities': localities
+    # }

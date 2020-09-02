@@ -44,6 +44,10 @@ def chart(request):
 def index(request):
     return render(request, 'index.html')
 
+def localityName(request):
+    print(request.POST.get('locality'))
+    return HttpResponseRedirect('/locality-'+request.POST.get('locality')+'/')
+
 def locality_home(request, locality_name):
     if request.method =='POST':
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
@@ -77,11 +81,6 @@ def scatter(mt, rs):
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     return plot_div
 
-def delete_locality(request):
-
-    return HttpResponse("Deleted")
-
-
 def dash(request):
     if(request.POST.get('simulation_id')):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
@@ -103,7 +102,6 @@ def dash(request):
 
         return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
     if request.method == 'POST':
-        print("testing")
         form = SimulationForm(request.POST)
         if form.is_valid():
             simulation = form.save(commit = False)
@@ -148,18 +146,7 @@ def request_page(request):
 def index_page(request):
     localities = Locality.objects.order_by('name')
     simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
-    # sim = serializers.serialize("python", Locality.objects.annotate(number_of_simulations=Count('simulation')))
-    # print(sim[0].number_of_simulations)
     return render(request, 'locality-list.html', {'localities': localities, 'simulations':simulations})
-
-# class IndexView(generic.ListView):
-#     template_name = 'locality-list.html'
-#     context_object_name = 'all_locality_list'
-
-#     def get_queryset(self):
-#         localities = Locality.objects.order_by('name')
-#         simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
-#         return Locality.objects.order_by('name')
 
 class NewSimulationView(CreateView):
 

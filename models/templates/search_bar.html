@@ -1,0 +1,19 @@
+{% if all_localities %}
+<form method="POST" action="/localityName/">
+    {% csrf_token %}
+    <select class="selectpicker" data-live-search="true" id="inputGroupSelect01" name="locality" onchange="form.submit()">
+        <option selected>Choose Your Locality</option>
+        {% for locality in all_localities %}
+            <option value="{{locality.name}}">{{locality.name}}</option>
+        {% endfor %}
+    </select>
+</form>
+
+
+
+    <!-- <form action="/locality-{{simulation.locality.name}}/" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
+        <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Model</button>
+    </form> -->
+{% endif %}
