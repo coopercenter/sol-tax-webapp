@@ -15,10 +15,10 @@ class Locality(models.Model):
 
 class Simulation(models.Model):
     locality = models.ForeignKey('Locality', on_delete=models.CASCADE)
-    initial_investment = models.IntegerField()
-    initial_year = models.IntegerField()
+    initial_investment = models.IntegerField(default = 100000000)
+    initial_year = models.IntegerField(default = 2021)
     revenue_share_rate = models.IntegerField(default = 1400)
-    project_size = models.IntegerField()
+    project_size = models.IntegerField(default = 100)
     discount_rate = models.IntegerField(default = 6)
     
     def __str__(self):

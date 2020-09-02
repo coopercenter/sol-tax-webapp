@@ -14,6 +14,7 @@ class SimulationForm(forms.ModelForm):
         model = Simulation
         fields = ('locality', 'initial_year', 'initial_investment', 'revenue_share_rate', 'project_size', 'discount_rate')
         labels = {
+            'initial_investment': ugettext_lazy('Initial Investment ($)'),
             'revenue_share_rate': ugettext_lazy('Revenue Share Rate ($/MW)'),
             'project_size': ugettext_lazy('Project Size (MW)'),
             'discount_rate': ugettext_lazy('Discount Rate (%)')
