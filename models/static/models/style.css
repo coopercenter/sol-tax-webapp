@@ -142,7 +142,7 @@ li{
     background-color: rgb(219, 219, 219);
 }
 .table td{
-    padding: .35rem;
+    padding: .35rem 0 .35rem 0.5rem;
 }
 .table td.value-rate{
     padding-left: 30px;
@@ -213,4 +213,8 @@ li{
 
 .dropdown-menu a:hover{
     background-color: rgb(219, 219, 219);
+}
+
+.right-border-cell{
+    border-right: solid 1px black;
 }

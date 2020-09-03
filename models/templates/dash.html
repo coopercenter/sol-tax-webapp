@@ -6,7 +6,7 @@
     <h1 class="data-header">Solar Tool Model for {{locality}}</h1>
     <div class="row">
         {% load custom_tags %}
-        <div class = "col-xl-6">
+        <div class = "col-xl-6 project-parameters">
             <h2 class="entered-data-title">Project Parameters</h2>
             <table class="table table-striped">
                 <thead>
@@ -95,7 +95,7 @@
             <div class="result-top-text">
                 <div class="result-title">
                     <h3>Total expected lifetime revenue</h3>
-                    <p> (Thousands of 2020 $, discounted at 6% per year): </p>
+                    <p> (In 2020 $, discounted at 6% per year): </p>
                 </div>
                 <div class="result-text">
                     <p><strong>Revenue Share:</strong> <span>${% get_totals calculations.tot_rs %}</span></p>
@@ -138,7 +138,7 @@
                     <tr class="even">
                         <td>{{i|add:2020}}</td>
                         <td>${{calculations.cas_mt|get_index:i}}</td>
-                        <td>${{calculations.cas_rs|get_index:i}}</td>
+                        <td class="right-border-cell">${{calculations.cas_rs|get_index:i}}</td>
                         <td>${{calculations.tot_mt|get_index:i}}</td>
                         <td>${{calculations.tot_rs|get_index:i}}</td>
                     </tr>
@@ -146,7 +146,7 @@
                     <tr class="odd">
                         <td>{{i|add:2020}}</td>
                         <td>${{calculations.cas_mt|get_index:i}}</td>
-                        <td>${{calculations.cas_rs|get_index:i}}</td>
+                        <td class="right-border-cell">${{calculations.cas_rs|get_index:i}}</td>
                         <td>${{calculations.tot_mt|get_index:i}}</td>
                         <td>${{calculations.tot_rs|get_index:i}}</td>
                     </tr>
