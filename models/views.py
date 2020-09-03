@@ -46,8 +46,8 @@ def scatter(mt, rs):
         name = "Revenue Share"
     )
     layout = dict(
-        xaxis=dict(range=[min(x1), max(x1)]),
-        yaxis = dict(range=[0, max(max(y1), max(y2))+20]),
+        xaxis=dict(range=[min(x1), max(x1)], title="Year"),
+        yaxis = dict(range=[0, max(max(y1), max(y2))+20], title="Revenue ($ in Thousands)"),
         margin={'t' : 20, 'l':0},
     )
 
