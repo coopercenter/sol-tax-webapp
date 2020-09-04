@@ -167,6 +167,7 @@ li{
     margin: 25px 0 25px 25px;
 }
 .simulation-card{
+    text-align: left;
     margin: 20px;
     width: 18rem;
 }
@@ -178,6 +179,7 @@ li{
 }
 
 .locality-home-body{
+    text-align: center;
     height: 80vh;
 }
 .locality-home-header{
@@ -217,4 +219,9 @@ li{
 
 .right-border-cell{
     border-right: solid 1px black;
+}
+
+.generateButton{
+    margin: 1%;
+    text-align: center;
 }

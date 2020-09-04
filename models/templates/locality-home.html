@@ -34,9 +34,14 @@
                     </div>
                 </div>
             {% endfor %}
+
         {% else %}
                 <h2>Please Fill out the form to create a model</h2>
                 <button class="btn btn-primary btn-lg">Create Model</button>
         {% endif %}
     </div>
+    <form action="/form/" method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Model</button>
+    </form>
 {% endblock %}
