@@ -1,6 +1,6 @@
 from matplotlib import pylab
 from pylab import *
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import CreateView, ListView
@@ -11,6 +11,8 @@ from django.core import serializers
 import urllib, base64
 import PIL, PIL.Image, io
 from django.db.models import Count
+from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
 
 from plotly.offline import plot
 import plotly.graph_objects as go
@@ -18,9 +20,34 @@ import plotly.graph_objects as go
 def index(request):
     return render(request, 'index.html')
 
+def loginView(request):
+    print(request)
+    if request.method == "POST":
+        print(request.POST)
+        form = AuthenticationForm(data=request.POST)
+        # print(form.username_field.values)
+        # form.username = (request.POST.get('locality'))
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            print(form)
+            return HttpResponseRedirect('/locality-' + str(user)+'/')
+        else:
+            form = AuthenticationForm(initial={'username': request.POST.get('locality')})
+    return render(request, 'login.html', {'form': form})
+
+def logoutView(request):
+    logout(request)
+    return HttpResponseRedirect('/')
+
 def localityName(request):
-    print(request.POST.get('locality'))
-    return HttpResponseRedirect('/locality-'+request.POST.get('locality')+'/')
+    print(request.GET)
+    if(request.POST.get('locality')):
+        locality = (request.POST.get('locality'))
+    return HttpResponseRedirect('/locality-'+locality+'/')
+
+def profile(request):
+    return render(request, 'profile.html')
 
 def locality_home(request, locality_name):
     if request.method =='POST':

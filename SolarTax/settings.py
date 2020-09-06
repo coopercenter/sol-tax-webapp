@@ -91,7 +91,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # }
 
 DATABASES = {
-    'default': {
+    'default': { #Local Database
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME':'soltax',
         'USER': 'soltaxuser',
@@ -179,3 +179,8 @@ try:
 except ImportError:
     found = False
 
+#Default Locality Login
+#Username: Locality Name
+#Password: admin1213
+
+LOGIN_REDIRECT_URL = 'localityName'

@@ -21,8 +21,16 @@
         <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
             <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
                 <h4> <a href="technical.html" class="technical-appendix"> Technical Appendix</a></h4>
+
+                {% if user.is_authenticated %}
+                    <h4><a href="locality-{{user.username}}" class="technical-appendix">View Models</a></h4>
+                    <button class="btn btn-danger"><a href="/logout/" class="logout-button">Logout</a></h4>
+                {% else %}
+                    {% all_localities %}
+
+                {% endif %}
             </ul>
-            {% all_localities %}
+            
             
             <!-- <div class="input-group mb-3">
                 <div class="input-group-prepend">
@@ -43,9 +51,6 @@
     </nav>
 
     <div>
-        <!-- {% for locality in all_localities %}
-            <p>locality</p>
-        {% endfor %} -->
         {% block content %}
         {% endblock %}
     </div>
