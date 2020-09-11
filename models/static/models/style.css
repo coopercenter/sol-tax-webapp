@@ -45,6 +45,11 @@ li{
     text-decoration: none;
 }
 
+/* Middle */
+.middle{
+    height: auto;
+}
+
 /* Footer */
 .footer{
     background-color: #232D4B;
@@ -120,7 +125,6 @@ li{
     padding-top: 5%;
 }
 .chart{
-    background-color: red;
     height: 300px;
 }
 .prototype-graph{
@@ -192,7 +196,6 @@ li{
 
 .locality-home-body{
     text-align: center;
-    height: 80vh;
 }
 .locality-home-header{
     text-align: center;
@@ -233,10 +236,14 @@ li{
     border-right: solid 1px black;
 }
 
-.generateButton{
+.generateButton-form{
     margin: 1%;
     text-align: center;
 }
+
+/* .generateButton{
+    
+} */
 
 
 
@@ -279,4 +286,9 @@ li{
     color: #0062cc;
     font-weight: 600;
     text-decoration: none;
+}
+
+.update-form{
+    text-align: left;
+    padding-left: 1.5%;
 }

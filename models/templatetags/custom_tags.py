@@ -8,10 +8,20 @@ from ..models import Locality, Simulation, Calculations
 def get_index(l, i):
     return l[i]
 
-# @register.filter
-# def get_discount_rate(sim):
-#     print(sim)
-#     return sim[0]["fields"]["discount_rate"]
+@register.simple_tag
+def get_discount_rate(sim):
+    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    return locality.discount_rate
+
+@register.simple_tag
+def get_rs_rate(sim):
+    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    return locality.revenue_share_rate
+
+@register.simple_tag
+def get_locality(sim):
+    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    return locality.name
 
 @register.simple_tag
 def get_totals(l):
@@ -24,7 +34,3 @@ def get_totals(l):
 def all_localities():
     all_localities = Locality.objects.order_by('name')
     return {'all_localities': all_localities}
-    # localities = Locality.objects.order_by('name')
-    # return {
-    #     'all_localities': localities
-    # }

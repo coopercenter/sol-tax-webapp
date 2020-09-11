@@ -7,15 +7,14 @@
     <div class="locality-home-body">
         <h1 class="locality-home-header">{{locality.name}}</h1>
 
-
-        <form method="POST" action="/locality-{{locality.name}}/">
+        <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
             {% csrf_token %}
             <label for="discount_rate">Discount Rate %</label>
-            <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}">
-            <input type="submit" value="Update">
-            
+            <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}"><br>
+            <label for="discount_rate">Revenue Share Rate $/MW</label>
+            <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br>
+            <input class="btn btn-primary" type="submit" value="Update">
         </form>
-        
         
         {% if simulations %}
 
@@ -32,6 +31,8 @@
                             <!-- <p class="card-text">Revenue Share Rate: {{simulation.revenue_share_rate}} $/MW</p> -->
                             <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
                             <!-- <p class="card-text">Discout Rate: {{simulation.discount_rate}}%</p> -->
+                            <p>Total Revenue Share: ${% get_totals simulation.calculations.tot_rs %}</p>
+                            <p>Total M&T: ${% get_totals simulation.calculations.tot_mt %}</p>
                             <form action="/dash/" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
@@ -46,16 +47,19 @@
                     </div>
                 </div>
             {% endfor %}
+            </div>
+            <form action="/form/" method="POST" class="generateButton-form">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Model</button>
+            </form>
 
         {% else %}
                 <h2>Please Fill out the form to create a model</h2>
                 <button class="btn btn-primary btn-lg">Create Model</button>
         {% endif %}
     </div>
-    <form action="/form/" method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Model</button>
-    </form>
+
+    
     {% else %}
         <h2>Your are not logged in as {{locality.name}}</h2>
         <h2>Please Login to {{locality.name}}'s Account</h2>

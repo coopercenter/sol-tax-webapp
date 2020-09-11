@@ -3,7 +3,7 @@
 {% block content %}
 
 <div id="solar-tool-prototype" class="section level1">
-    <h1 class="data-header">Solar Tool Model for {{locality.name}}</h1>
+    <h1 class="data-header">Solar Tool Model for {% get_locality simulation %}</h1>
     <div class="row">
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters">
@@ -18,12 +18,21 @@
                 </tr>
                 </thead>
                 <tbody>
+
                     {% for i in simulation %}
                         {% for field,value in i.fields.items %}
                             {% if field == 'locality' %}
                                 <tr>
                                     <td>Locality</td>
-                                    <td class="value">{{locality.name}}</td>
+                                    <td class="value">{% get_locality simulation %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Discount Rate</td>
+                                    <td class="value">{% get_discount_rate simulation %}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Revenue Share Rate</td>
+                                    <td class="value">{% get_rs_rate simulation %} $/MW</td>
                                 </tr>
                             {% elif field == 'initial_investment' %}
                                 <tr>
@@ -85,7 +94,7 @@
             <div class="result-top-text">
                 <div class="result-title">
                     <h3>Total expected lifetime revenue</h3>
-                    <p> (In 2020 $, discounted at {{locality.discount_rate}}% per year): </p>
+                    <p> (In 2020 $, discounted at {% get_discount_rate simulation %}% per year): </p>
                 </div>
                 <div class="result-text">
                     <p><strong>Revenue Share:</strong> <span>${% get_totals calculations.tot_rs %}</span></p>
@@ -115,8 +124,8 @@
                     <th scope="col">Year</th>
                     <th scope="col">M&T Tax Nominal $</th>
                     <th scope="col">Revenue Share Nominal $</th>
-                    <th scope="col">M&T Tax in 2020 $ Discounted at {{locality.discount_rate}}%</th>
-                    <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {{locality.discount_rate}}%</th>
+                    <th scope="col">M&T Tax in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
+                    <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
                 </tr>
             </thead>
             <tbody>
@@ -142,12 +151,6 @@
             </tbody>
         </table>
     </div>
-
-
-
-
-
-
 
 </div>
 

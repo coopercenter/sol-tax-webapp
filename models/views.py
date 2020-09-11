@@ -58,7 +58,11 @@ def locality_home(request, locality_name):
     locality = Locality.objects.get(name = locality_name.capitalize())
     if request.POST.get('discount_rate'):
         locality.discount_rate = request.POST.get('discount_rate')
+        locality.revenue_share_rate = request.POST.get('revenue_share_rate')
         locality.save()
+        for simulation in locality.simulation_set.all():
+            calc = performCalculations(simulation, [simulation.initial_year], [simulation.initial_investment], int(locality.revenue_share_rate), [0.60, 0.50, 0.40, 0.30, 0.20], [simulation.project_size], int(locality.discount_rate)*.01)
+            calc.save()
 
     simulations = locality.simulation_set.all()
     return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
@@ -112,6 +116,7 @@ def dash(request):
         form = SimulationForm(request.POST)
         if form.is_valid():
             simulation = form.save(commit = False)
+            print(Locality.objects.get(id = request.POST['locality']))
             simulation.locality = Locality.objects.get(id = request.POST['locality'])
             simulation.initial_investment = request.POST['initial_investment']
             # simulation.initial_year = request.POST['initial_year']
@@ -180,15 +185,26 @@ def performCalculations(simulation, years, assessed_20, rs_rate, effective_rate,
     tot_rs_sum = sum(tot_rs)
     
 
-    if(simulation.calculations):
+    try:
+        sim = simulation.calculations
         calc = Calculations.objects.get(simulation=simulation)
         calc.cas_mt = cas_mt
         calc.cas_rs = cas_rs
         calc.tot_mt = tot_mt
         calc.tot_rs = tot_rs
-    else:
+    except Calculations.DoesNotExist:
         calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
     return calc
+
+    # if(simulation.calculations):
+    #     calc = Calculations.objects.get(simulation=simulation)
+    #     calc.cas_mt = cas_mt
+    #     calc.cas_rs = cas_rs
+    #     calc.tot_mt = tot_mt
+    #     calc.tot_rs = tot_rs
+    # else:
+    #     calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
+    # return calc
 
 
 '''
