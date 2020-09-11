@@ -23,7 +23,7 @@
                 <h4> <a href="technical.html" class="technical-appendix"> Technical Appendix</a></h4>
 
                 {% if user.is_authenticated %}
-                    <h4><a href="locality-{{user.username}}" class="technical-appendix">View Models</a></h4>
+                    <h4><a href="/locality-{{user.username}}/" class="technical-appendix"><strong>{{user.username}} Profile</strong></a></h4>
                     <button class="btn btn-danger"><a href="/logout/" class="logout-button">Logout</a></h4>
                 {% else %}
                     {% all_localities %}

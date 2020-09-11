@@ -3,7 +3,7 @@
 {% block content %}
 
 <div id="solar-tool-prototype" class="section level1">
-    <h1 class="data-header">Solar Tool Model for {{locality}}</h1>
+    <h1 class="data-header">Solar Tool Model for {{locality.name}}</h1>
     <div class="row">
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters">
@@ -23,7 +23,7 @@
                             {% if field == 'locality' %}
                                 <tr>
                                     <td>Locality</td>
-                                    <td class="value">{{locality}}</td>
+                                    <td class="value">{{locality.name}}</td>
                                 </tr>
                             {% elif field == 'initial_investment' %}
                                 <tr>
@@ -35,20 +35,10 @@
                                 <td>Initial Year</td>
                                 <td class="value">{{value}}</td>
                             </tr>
-                            {% elif field == 'revenue_share_rate' %}
-                                <tr>
-                                    <td>Revenue Share Rate</td>
-                                    <td class="value">{{value}} $/MW</td>
-                                </tr>
                             {% elif field == 'project_size' %}
                             <tr>
                                 <td>Project Size</td>
                                 <td class="value">{{value}} MW</td>
-                            </tr>
-                            {% elif field == 'discount_rate' %}
-                            <tr>
-                                <td>Discount Rate</td>
-                                <td class="value">{{value}}%</td>
                             </tr>
                             {% else %}
                                 <tr>
@@ -95,7 +85,7 @@
             <div class="result-top-text">
                 <div class="result-title">
                     <h3>Total expected lifetime revenue</h3>
-                    <p> (In 2020 $, discounted at 6% per year): </p>
+                    <p> (In 2020 $, discounted at {{locality.discount_rate}}% per year): </p>
                 </div>
                 <div class="result-text">
                     <p><strong>Revenue Share:</strong> <span>${% get_totals calculations.tot_rs %}</span></p>
@@ -104,14 +94,11 @@
             </div>
 
             <div class="chart">
-                <h3 class="chart-title">Lineplot of cashflows through 2050:</h3>
+                <h3 class="chart-title">Lineplot of Nominal Cashflows through 2050</h3>
                 
                 {% load static %}
                 {% load plotly_dash %}
                 <div class="prototype-graph">{{ graph.plot1 | safe}}</div>
-                
-
-
                 
             </div>
         </div>
@@ -128,8 +115,8 @@
                     <th scope="col">Year</th>
                     <th scope="col">M&T Tax Nominal $</th>
                     <th scope="col">Revenue Share Nominal $</th>
-                    <th scope="col">M&T Tax in 2020 $ Discounted at {{simulation|get_discount_rate}}%</th>
-                    <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {{simulation|get_discount_rate}} %</th>
+                    <th scope="col">M&T Tax in 2020 $ Discounted at {{locality.discount_rate}}%</th>
+                    <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {{locality.discount_rate}}%</th>
                 </tr>
             </thead>
             <tbody>

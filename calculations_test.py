@@ -1,196 +1,3 @@
-from matplotlib import pylab
-from pylab import *
-from django.shortcuts import render, redirect
-from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect
-from django.views.generic import CreateView, ListView
-from django.views import generic
-from .models import Locality, Simulation, Calculations
-from .forms import SimulationForm 
-from django.core import serializers
-import urllib, base64
-import PIL, PIL.Image, io
-from django.db.models import Count
-from django.contrib.auth import login, logout
-from django.contrib.auth.forms import AuthenticationForm
-
-from plotly.offline import plot
-import plotly.graph_objects as go
-
-def index(request):
-    return render(request, 'index.html')
-
-def loginView(request):
-    print(request)
-    if request.method == "POST":
-        print(request.POST)
-        form = AuthenticationForm(data=request.POST)
-        # print(form.username_field.values)
-        # form.username = (request.POST.get('locality'))
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            print(form)
-            return HttpResponseRedirect('/locality-' + str(user)+'/')
-        else:
-            form = AuthenticationForm(initial={'username': request.POST.get('locality')})
-    return render(request, 'login.html', {'form': form})
-
-def logoutView(request):
-    logout(request)
-    return HttpResponseRedirect('/')
-
-def localityName(request):
-    print(request.GET)
-    if(request.POST.get('locality')):
-        locality = (request.POST.get('locality'))
-    return HttpResponseRedirect('/locality-'+locality+'/')
-
-def profile(request):
-    return render(request, 'profile.html')
-
-def locality_home(request, locality_name):
-    print(request.POST)
-    if request.POST.get('simulation_id'):
-        simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
-        simulation.delete()
-
-    locality = Locality.objects.get(name = locality_name.capitalize())
-    if request.POST.get('discount_rate'):
-        locality.discount_rate = request.POST.get('discount_rate')
-        locality.save()
-
-    simulations = locality.simulation_set.all()
-    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
-
-def scatter(mt, rs):
-    x1 = [i for i in range(2020, 2051)]
-    y1 = mt
-    y2 = rs
-
-    trace = go.Scatter(
-        x= x1,
-        y = y1,
-        name = "M&T Tax"
-    )
-    trace2 = go.Scatter(
-        x = x1,
-        y = y2,
-        name = "Revenue Share"
-    )
-    layout = dict(
-        xaxis=dict(range=[min(x1), max(x1)], title="Year"),
-        yaxis = dict(range=[0, max(max(y1), max(y2))+20], title="Revenue ($ in Thousands)"),
-        margin={'t' : 20, 'l':0},
-    )
-
-    fig = go.Figure(data=[trace, trace2], layout=layout)
-    plot_div = plot(fig, output_type='div', include_plotlyjs=False)
-    return plot_div
-
-def dash(request):
-    if(request.POST.get('simulation_id')):
-        simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
-        sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-        loc = Locality.objects.filter(name = simulation.locality)[0]
-
-        years = [int(simulation.initial_year)]
-        assessed_20 = [int(simulation.initial_investment)]
-        rs_rate = int(simulation.locality.revenue_share_rate)
-        effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
-        mw = [int(simulation.project_size)]
-        interest_rate = int(simulation.locality.discount_rate) *.01
-        calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
-        calc.save()
-
-        context = {
-            'plot1': scatter(calc.cas_mt, calc.cas_rs)
-        }
-
-        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
-    if request.method == 'POST':
-        form = SimulationForm(request.POST)
-        if form.is_valid():
-            simulation = form.save(commit = False)
-            simulation.locality = Locality.objects.get(id = request.POST['locality'])
-            simulation.initial_investment = request.POST['initial_investment']
-            # simulation.initial_year = request.POST['initial_year']
-            simulation.revenue_share_rate = simulation.locality.revenue_share_rate
-            # simulation.project_size = request.POST['project_size']
-            simulation.discount_rate = simulation.locality.discount_rate
-            simulation.save()
-
-            sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0].name
-
-            years = [int(simulation.initial_year)]
-            assessed_20 = [int(simulation.initial_investment)]
-            rs_rate = int(simulation.locality.revenue_share_rate)
-            effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
-            mw = [int(simulation.project_size)]
-            interest_rate = int(simulation.locality.discount_rate) *.01
-            calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
-            calc.save()
-
-            context = {
-                'plot1': scatter(calc.cas_mt, calc.cas_rs)
-            }
-
-            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
-            
-
-            #n is the number of years from 2020 to 2050
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
-    else:
-        return HttpResponse('Error please select fill out the model generation form')
-# Create your views here.
-
-def request_page(request):
-    locality_name = request.POST.get('generateButton')
-    return render(request, 'testing.html' , {'county': locality_name})
-
-
-def index_page(request):
-    localities = Locality.objects.order_by('name')
-    simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
-    return render(request, 'locality-list.html', {'localities': localities, 'simulations':simulations})
-
-class NewSimulationView(CreateView):
-
-    def post(self, request):
-        if(request.POST.get('viewButton') == None):
-            locality_name = request.POST.get('generateButton')
-            form_class = SimulationForm() 
-            form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
-            return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
-        else:
-            return HttpResponseRedirect('/' + request.POST.get('viewButton'))
-
-
-
-
-
-def performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate):
-    #Run each function & extract table of values
-    cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
-    cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
-    tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
-    tot_mt_sum = sum(tot_mt)
-    tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
-    tot_rs_sum = sum(tot_rs)
-    
-
-    if(simulation.calculations):
-        calc = Calculations.objects.get(simulation=simulation)
-        calc.cas_mt = cas_mt
-        calc.cas_rs = cas_rs
-        calc.tot_mt = tot_mt
-        calc.tot_rs = tot_rs
-    else:
-        calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
-    return calc
-
-
 '''
 Calculations
 '''
@@ -403,3 +210,26 @@ def total_cashflow_rs(years, rate, megawatts, interest_rate):
         total[val] = round(total[val] / 1000)
         
     return total
+
+
+
+
+years = [int(2021)]
+assessed_20 = [int(100000000)]
+rs_rate = int(1400)
+effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
+mw = [int(100)]
+interest_rate = int(10) *.01
+
+cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
+cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
+tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
+tot_mt_sum = sum(tot_mt)
+tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
+tot_rs_sum = sum(tot_rs)
+
+
+print(tot_mt)
+print(tot_mt_sum)
+print(tot_rs)
+print(tot_rs_sum)

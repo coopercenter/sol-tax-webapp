@@ -5,6 +5,8 @@ from django.urls import reverse
 
 class Locality(models.Model):
     name = models.CharField(max_length=200)
+    discount_rate = models.IntegerField(default = 6)
+    revenue_share_rate = models.IntegerField(default = 1400)
     # mt_tax_rate = ArrayField(ArrayField(models.IntegerField()))
 
     class Meta:
@@ -17,9 +19,9 @@ class Simulation(models.Model):
     locality = models.ForeignKey('Locality', on_delete=models.CASCADE)
     initial_investment = models.IntegerField(default = 100000000)
     initial_year = models.IntegerField(default = 2021)
-    revenue_share_rate = models.IntegerField(default = 1400)
+    # revenue_share_rate = models.IntegerField(default = 1400)
     project_size = models.IntegerField(default = 100)
-    discount_rate = models.IntegerField(default = 6)
+    # discount_rate = models.IntegerField(default = 6)
     
     def __str__(self):
         return self.locality.name + str(self.initial_investment)

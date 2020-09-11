@@ -1,42 +1,43 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<!-- <div class="container-fluid login-container">
+    <div class="card"></div>
 
-    <form method="post">
-        {% csrf_token %}
-        {{form.as_p}}
-        <p><input type="submit" value="Log in"></input></p>
-    </form>
-    <!-- {% if form.errors %}
-        <p>Your username and password didn't match. Please try again.</p>
-    {% endif %}
 
-    {% if next %}
-        {% if user.is_authenticated %}
-            <p>Your account doesn't have access to this page. To proceed,
-            please login with an account that has access.</p>
-        {% else %}
-            <p>Please login to see this page.</p>
-        {% endif %}
-    {% endif %}
+    <h1>
+        Login
+    </h1>
+    <div class="login-group">
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Log in" class="btn btn-primary"></input>
+        </form>
+    </div>
+</div> -->
 
-    <form method="POST" action="{% url 'login' %}">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>{{ form.username.label_tag }}</td>
-                <td>{{ form.username }}</td>
-            </tr>
-            <tr>
-                <td>{{ form.password.label_tag }}</td>
-                <td>{{ form.password }}</td>
-            </tr>
-        </table>
-        <input type="submit" value="login" />
-        <input type="hidden" name="next" value="{{ next }}" />
-    </form>
 
-    {# Assumes you setup the password_reset view in your URLconf #}
-    <p><a href="{% url 'password_reset' %}">Lost password?</a></p> -->
+<div class="container login-container">
+    <div class="login-form-1">
+        <h1>Login</h1>
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group login-field">
+                    {{field.errors}}
+                    {{field.label_tag}}   {{field}}
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-lg login-submit" value="Login"/>
+            </div>
+            <!-- <div class="form-group">
+                <a href="#" class="ForgetPwd">Forgot Password?</a>
+            </div> -->
+        </form>
+    </div>
+</div>
+
 
 {% endblock %}

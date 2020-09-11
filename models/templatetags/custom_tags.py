@@ -8,10 +8,10 @@ from ..models import Locality, Simulation, Calculations
 def get_index(l, i):
     return l[i]
 
-@register.filter
-def get_discount_rate(sim):
-    print(sim)
-    return sim[0]["fields"]["discount_rate"]
+# @register.filter
+# def get_discount_rate(sim):
+#     print(sim)
+#     return sim[0]["fields"]["discount_rate"]
 
 @register.simple_tag
 def get_totals(l):
