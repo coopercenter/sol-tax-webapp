@@ -19,6 +19,16 @@ def get_rs_rate(sim):
     return locality.revenue_share_rate
 
 @register.simple_tag
+def get_mt_rate(sim, index):
+    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    return locality.mt_tax_rate[index]
+
+@register.simple_tag
+def get_real_property_rate(sim):
+    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    return locality.real_propery_rate
+
+@register.simple_tag
 def get_locality(sim):
     locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
     return locality.name

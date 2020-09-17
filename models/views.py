@@ -17,25 +17,23 @@ from django.contrib.auth.forms import AuthenticationForm
 from plotly.offline import plot
 import plotly.graph_objects as go
 
+# Landing Page
 def index(request):
     return render(request, 'index.html')
 
+# Login Page
 def loginView(request):
-    print(request)
     if request.method == "POST":
-        print(request.POST)
         form = AuthenticationForm(data=request.POST)
-        # print(form.username_field.values)
-        # form.username = (request.POST.get('locality'))
-        if form.is_valid():
+        if form.is_valid(): # Form submitted
             user = form.get_user()
-            login(request, user)
-            print(form)
-            return HttpResponseRedirect('/locality-' + str(user)+'/')
-        else:
+            login(request, user) # Check Login Information
+            return HttpResponseRedirect('/locality-' + str(user)+'/') #redirect to locality's home page
+        else: # Displays Login Form
             form = AuthenticationForm(initial={'username': request.POST.get('locality')})
     return render(request, 'login.html', {'form': form})
 
+# Logout, redirects to landing page
 def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/')
@@ -67,6 +65,8 @@ def locality_home(request, locality_name):
     simulations = locality.simulation_set.all()
     return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
 
+
+# Creates Scatter Plot using plotly
 def scatter(mt, rs):
     x1 = [i for i in range(2020, 2051)]
     y1 = mt
@@ -98,13 +98,24 @@ def dash(request):
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
         loc = Locality.objects.filter(name = simulation.locality)[0]
 
-        years = [int(simulation.initial_year)]
-        assessed_20 = [int(simulation.initial_investment)]
-        rs_rate = int(simulation.locality.revenue_share_rate)
-        effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
-        mw = [int(simulation.project_size)]
-        interest_rate = int(simulation.locality.discount_rate) *.01
-        calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
+        # years = [int(simulation.initial_year)]
+        # assessed_20 = [int(simulation.initial_investment)]
+        # rs_rate = int(simulation.locality.revenue_share_rate)
+        # mw = [int(simulation.project_size)]
+        # interest_rate = int(simulation.locality.discount_rate) *.01
+
+        # effective_rate = simulation.locality.mt_tax_rate
+        # if (simulation.project_size < 25):
+        #     effective_rate = simulation.locality.mt_tax_rate
+        # else:
+        #     effective_rate = [simulation.locality.real_propery_rate]
+
+
+        
+        #calc = performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
+        # print(getSimulationValues(simulation))
+        values = getSimulationValues(simulation)
+        calc = performCalculations(simulation, values[0], values[1], values[2], values[3], values[4], values[5])
         calc.save()
 
         context = {
@@ -113,28 +124,74 @@ def dash(request):
 
         return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
     if request.method == 'POST':
+        print("post")
         form = SimulationForm(request.POST)
         if form.is_valid():
+            print("form")
             simulation = form.save(commit = False)
             print(Locality.objects.get(id = request.POST['locality']))
             simulation.locality = Locality.objects.get(id = request.POST['locality'])
             simulation.initial_investment = request.POST['initial_investment']
-            # simulation.initial_year = request.POST['initial_year']
-            simulation.revenue_share_rate = simulation.locality.revenue_share_rate
-            # simulation.project_size = request.POST['project_size']
-            simulation.discount_rate = simulation.locality.discount_rate
+            simulation.initial_year = request.POST['initial_year']
+            #simulation.revenue_share_rate = simulation.locality.revenue_share_rate
+            simulation.project_size = request.POST['project_size']
+            #simulation.discount_rate = simulation.locality.discount_rate
             simulation.save()
 
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
             loc = Locality.objects.filter(name = simulation.locality)[0].name
 
-            years = [int(simulation.initial_year)]
-            assessed_20 = [int(simulation.initial_investment)]
-            rs_rate = int(simulation.locality.revenue_share_rate)
-            effective_rate = [0.60, 0.50, 0.40, 0.30, 0.20]
-            mw = [int(simulation.project_size)]
-            interest_rate = int(simulation.locality.discount_rate) *.01
-            calc = performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate)
+            # years = [int(simulation.initial_year)]
+            # assessed_20 = [int(simulation.initial_investment)]
+            # rs_rate = int(simulation.locality.revenue_share_rate)
+            # mw = [int(simulation.project_size)]
+            # interest_rate = int(simulation.locality.discount_rate) *.01
+
+            # if (simulation.project_size < 25):
+            #     effective_rate = [simulation.locality.mt_tax_rate]
+            # else:
+            #     effective_rate = [simulation.locality.real_propery_rate]
+            
+            # calc = performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
+            # calc.save()
+
+            values = getSimulationValues(simulation)
+            calc = performCalculations(simulation, values[0], values[1], values[2], values[3], values[4], values[5])
+            calc.save()
+
+            context = {
+                'plot1': scatter(calc.cas_mt, calc.cas_rs)
+            }
+
+            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
+            
+
+            #n is the number of years from 2020 to 2050
+            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
+        
+        else:
+            simulation = Simulation.objects.get(locality = request.POST['locality'], initial_investment= request.POST['initial_investment'], initial_year=request.POST['initial_year'], project_size=request.POST['project_size'])
+
+            sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
+            loc = Locality.objects.filter(name = simulation.locality)[0].name
+
+            # years = [int(simulation.initial_year)]
+            # assessed_20 = [int(simulation.initial_investment)]
+            # rs_rate = int(simulation.locality.revenue_share_rate)
+            # mw = [int(simulation.project_size)]
+            # interest_rate = int(simulation.locality.discount_rate) *.01
+
+
+            # if (simulation.project_size < 25):
+            #     effective_rate = [simulation.locality.mt_tax_rate]
+            # else:
+            #     effective_rate = [simulation.locality.real_propery_rate]
+            
+            # calc = performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
+            # calc.save()
+
+            values = getSimulationValues(simulation)
+            calc = performCalculations(simulation, values[0], values[1], values[2], values[3], values[4], values[5])
             calc.save()
 
             context = {
@@ -171,13 +228,21 @@ class NewSimulationView(CreateView):
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
+def getSimulationValues(simulation):
+    years = [int(simulation.initial_year)]
+    assessed_20 = [int(simulation.initial_investment)]
+    rs_rate = int(simulation.locality.revenue_share_rate)
+    mw = [int(simulation.project_size)]
+    interest_rate = int(simulation.locality.discount_rate) *.01
 
+    effective_rate = simulation.locality.mt_tax_rate
+    return years, assessed_20, rs_rate, mw, interest_rate, effective_rate
 
-
-
-def performCalculations(simulation, years, assessed_20, rs_rate, effective_rate, mw, interest_rate):
+def performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate):
     #Run each function & extract table of values
+    print(years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
     cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
+    print(cas_mt)
     cas_rs = total_cashflow_rs(years, rs_rate, mw, interest_rate)
     tot_mt = total_adj_rev_mt(years, assessed_20, effective_rate, interest_rate)
     tot_mt_sum = sum(tot_mt)
@@ -195,16 +260,6 @@ def performCalculations(simulation, years, assessed_20, rs_rate, effective_rate,
     except Calculations.DoesNotExist:
         calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
     return calc
-
-    # if(simulation.calculations):
-    #     calc = Calculations.objects.get(simulation=simulation)
-    #     calc.cas_mt = cas_mt
-    #     calc.cas_rs = cas_rs
-    #     calc.tot_mt = tot_mt
-    #     calc.tot_rs = tot_rs
-    # else:
-    #     calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
-    # return calc
 
 
 '''
@@ -234,8 +289,8 @@ def lifetime_adj_rev_mt(year, assessed_20, effective_rate_list, interest_rate):
     for y in range(0, year - 2019): # fill list with zeros for before project existed
         rev_year_y.append(0)
     for n in range(0, 5):  # tax revenue from first 5 years
-        revenue = (assessed_20 * .2 * effective_rate_list[n]) / 100
-        year_adj_revenue = revenue / ((1 + interest_rate) ** n)
+        revenue = (assessed_20 * .2 * effective_rate_list[n]) / 100 # (Project value * Taxable percentage * M&T tax rate) / 100 = M&T revenue Divide by 100 as M&T is calculated per 100 valuation.
+        year_adj_revenue = revenue / ((1 + interest_rate) ** n) 
         rev_year_y.append(year_adj_revenue)
     for n in range(5, 10):  # tax revenue from second 5 years
         revenue = (assessed_20 * .3 * effective_rate_list[n]) / 100

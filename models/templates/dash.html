@@ -34,6 +34,10 @@
                                     <td>Revenue Share Rate</td>
                                     <td class="value">{% get_rs_rate simulation %} $/MW</td>
                                 </tr>
+                                <tr>
+                                    <td>Real Property Rate per $100 of Assessed Value</td>
+                                    <td class="value">${% get_real_property_rate simulation %}</td>
+                                </tr>
                             {% elif field == 'initial_investment' %}
                                 <tr>
                                     <td>Initial Investment</td>
@@ -62,23 +66,23 @@
                     </tr>
                     <tr>
                         <td class="value-rate">Year 1</td>
-                        <td class="value">0.60</td>
+                        <td class="value">${% get_mt_rate simulation 0 %}</td>
                     </tr>
                     <tr>
                         <td class="value-rate">Year 2</td>
-                        <td class="value">0.50</td>
+                        <td class="value">${% get_mt_rate simulation 1 %}</td>
                     </tr>
                     <tr>
                         <td class="value-rate">Year 3</td>
-                        <td class="value">0.40</td>
+                        <td class="value">${% get_mt_rate simulation 2 %}</td>
                     </tr>
                     <tr>
                         <td class="value-rate">Year 4</td>
-                        <td class="value">0.30</td>
+                        <td class="value">${% get_mt_rate simulation 3 %}</td>
                     </tr>
                     <tr>
                         <td class="value-rate">Year 5 & on</td>
-                        <td class="value">0.20</td>
+                        <td class="value">${% get_mt_rate simulation 4 %}</td>
                     </tr>
                 </tbody>
             </table>
