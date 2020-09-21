@@ -260,7 +260,7 @@ def getSimulationValues(simulation):
             offset = years-2020
             effective_rate.append(scc_depreciation[i] * property_rate)
         else:
-            effective_rate.append(mt_rate)
+            effective_rate = mt_rate
 
     return years, assessed_20, rs_rate, mw, interest_rate, effective_rate
 
