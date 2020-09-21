@@ -137,18 +137,18 @@
                     {% if forloop.counter|divisibleby:2 %}
                     <tr class="even">
                         <td>{{i|add:2020}}</td>
-                        <td>${{calculations.cas_mt|get_index:i}}</td>
-                        <td class="right-border-cell">${{calculations.cas_rs|get_index:i}}</td>
-                        <td>${{calculations.tot_mt|get_index:i}}</td>
-                        <td>${{calculations.tot_rs|get_index:i}}</td>
+                        <td>${{calculations.cas_mt|get_revenue_index:i}}</td>
+                        <td class="right-border-cell">${{calculations.cas_rs|get_revenue_index:i}}</td>
+                        <td>${{calculations.tot_mt|get_revenue_index:i}}</td>
+                        <td>${{calculations.tot_rs|get_revenue_index:i}}</td>
                     </tr>
                     {% else %}
                     <tr class="odd">
                         <td>{{i|add:2020}}</td>
-                        <td>${{calculations.cas_mt|get_index:i}}</td>
-                        <td class="right-border-cell">${{calculations.cas_rs|get_index:i}}</td>
-                        <td>${{calculations.tot_mt|get_index:i}}</td>
-                        <td>${{calculations.tot_rs|get_index:i}}</td>
+                        <td>${{calculations.cas_mt|get_revenue_index:i}}</td>
+                        <td class="right-border-cell">${{calculations.cas_rs|get_revenue_index:i}}</td>
+                        <td>${{calculations.tot_mt|get_revenue_index:i}}</td>
+                        <td>${{calculations.tot_rs|get_revenue_index:i}}</td>
                     </tr>
                     {% endif %}
                 {% endfor %}
