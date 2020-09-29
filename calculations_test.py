@@ -601,7 +601,7 @@ FUNCTIONS TO GET TOTAL TAX AVAILABLE TO LOCALITIES FROM MT TAX
 def net_total_revenue_from_project(gross_revenue_project, increase_in_local_contribution):
     net_total_revenue = []
     for i in range(len(gross_revenue_project)):
-        net_total_revenue.append(gross_revenue_project[i] - increase_in_local_contribution)
+        net_total_revenue.append(round(gross_revenue_project[i] - increase_in_local_contribution[i],))
     return net_total_revenue
 
 def increase_in_local_contribution(pv_required_education_contribution, baseline_required_education_contribution):
@@ -613,20 +613,20 @@ def increase_in_local_contribution(pv_required_education_contribution, baseline_
 def pv_required_education_contribution(locality_education_budget, budget_escalator, pv_composite_index):
     pv_education_contribution = []
     for i in range(len(pv_composite_index)):
-        pv_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * pv_composite_index)
+        pv_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * pv_composite_index[i])
     return pv_education_contribution
 
 def baseline_required_education_contribution(locality_education_budget, budget_escalator, baseline_composite_index):
     baseline_education_contribution = []
     for i in range(len(baseline_composite_index)):
-        baseline_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * baseline_composite_index)
+        baseline_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * baseline_composite_index[i])
     return baseline_education_contribution
 
 '''
 COMPOSITE INDEX FUNCTIONS
 '''
 
-def pv_composite_index(adm_composite_index, per_capita_composite_index):
+def composite_index(adm_composite_index, per_capita_composite_index):
     final_pv_composite_index = []
     for i in range(len(adm_composite_index)):
         local_composite_index = ((2/3) * adm_composite_index[i]) + ((1/3) * per_capita_composite_index[i])
@@ -634,21 +634,52 @@ def pv_composite_index(adm_composite_index, per_capita_composite_index):
         final_pv_composite_index.append(value)
     return final_pv_composite_index
 
-def adm_composite_index(true_values, gross_income, retail_sales):
+def adm_composite_index(true_values_adm, gross_income_adm, retail_sales_adm):
     final_adm_composite_index = []
-    for i in range(len(true_values)):
-        adm_value = .5 * true_values[i] + .4 * gross_income[i] + .1 * retail_sales[i]
-        final_adm_composite_index.append(round(adm_value,5))
+    for i in range(len(true_values_adm)):
+        adm_value = .5 * true_values_adm[i] + .4 * gross_income_adm[i] + .1 * retail_sales_adm[i]
+        final_adm_composite_index.append(adm_value)
     return final_adm_composite_index
+
+def per_capita_composite_index(true_values_per_capita, gross_income_per_capita, retail_sales_per_capita):
+    final_per_capita_composite_index = []
+    for i in range(len(true_values_per_capita)):
+        per_capita_value = .5 * true_values_per_capita[i] + .4 * gross_income_per_capita[i] + .1 * retail_sales_per_capita[i]
+        final_per_capita_composite_index.append(per_capita_value)
+    return final_per_capita_composite_index
 
 '''
 TRUE VALUE CALCULATIONS
 '''
-def get_true_values(local_true_values, divisional_adm, statewide_total_true_values, total_state_adm):
+def get_true_values_adm(local_true_values, divisional_adm, statewide_total_true_values, total_state_adm):
     final_true_values = []
     for i in range(len(local_true_values)):
         numerator = local_true_values[i]/divisional_adm
         denominator = statewide_total_true_values[i]/total_state_adm
+        final_true_values.append(numerator/denominator)
+    return final_true_values
+
+def get_true_values_per_capita(local_true_values, local_pop, statewide_total_true_values, state_pop):
+    final_true_values = []
+    for i in range(len(local_true_values)):
+        numerator = local_true_values[i]/local_pop
+        denominator = statewide_total_true_values[i]/state_pop
+        final_true_values.append(numerator/denominator)
+    return final_true_values
+
+def get_baseline_true_values_adm(baseline_true_values, divisional_adm, baseline_state_true_values, total_state_adm):
+    final_true_values = []
+    for i in range(len(baseline_true_values)):
+        numerator = baseline_true_values[i]/divisional_adm
+        denominator = baseline_state_true_values[i]/total_state_adm
+        final_true_values.append(numerator/denominator)
+    return final_true_values
+
+def get_baseline_true_values_per_capita(baseline_true_values, local_pop, baseline_state_true_values, state_pop):
+    final_true_values = []
+    for i in range(len(baseline_true_values)):
+        numerator = baseline_true_values[i]/local_pop
+        denominator = baseline_state_true_values[i]/state_pop
         final_true_values.append(numerator/denominator)
     return final_true_values
 
@@ -671,7 +702,7 @@ def increase_in_taxable_property(increase_in_land_value, solar_facility_valuatio
 '''
 GROSS INCOME CALCULATIONS
 '''
-def get_gross_income(adj_gross_income, divisional_adm, statewide_gross_income, total_state_adm):
+def get_gross_income_adm(adj_gross_income, divisional_adm, statewide_gross_income, total_state_adm):
     final_gross_income = []
     for i in range(31):
         numerator = adj_gross_income/divisional_adm
@@ -679,10 +710,18 @@ def get_gross_income(adj_gross_income, divisional_adm, statewide_gross_income, t
         final_gross_income.append(numerator/denominator)
     return final_gross_income
 
+def get_gross_income_per_capita(adj_gross_income, local_pop, statewide_gross_income, state_pop):
+    final_gross_income = []
+    for i in range(31):
+        numerator = adj_gross_income/local_pop
+        denominator = statewide_gross_income/state_pop
+        final_gross_income.append(numerator/denominator)
+    return final_gross_income
+
 '''
 RETAIL SALES CALCULATIONS
 '''
-def get_retail_sales(local_taxable_retail_sales, divisional_adm, state_taxable_retail_sales, total_state_adm):
+def get_retail_sales_adm(local_taxable_retail_sales, divisional_adm, state_taxable_retail_sales, total_state_adm):
     final_retail_sales = []
     for i in range(31):
         numerator = local_taxable_retail_sales/divisional_adm
@@ -690,29 +729,70 @@ def get_retail_sales(local_taxable_retail_sales, divisional_adm, state_taxable_r
         final_retail_sales.append(numerator/denominator)
     return final_retail_sales
 
+def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_taxable_retail_sales, state_pop):
+    final_retail_sales = []
+    for i in range(31):
+        numerator = local_taxable_retail_sales/local_pop
+        denominator = state_taxable_retail_sales/state_pop
+        final_retail_sales.append(numerator/denominator)
+    return final_retail_sales
 
 
 taxable_property = increase_in_taxable_property(increase_in_land_value, solar_valuation_list)
 # print(taxable_property)
-local_true = local_true_values(1082405094, taxable_property)
-state_true = state_total_true_values(1170092111099, taxable_property)
+local_baseline = [1082405094 for i in range(31)]
+local_true = local_true_values(local_baseline[0], taxable_property)
+state_baseline = [1170092111099 for i in range(31)]
+state_true = state_total_true_values(state_baseline[0], taxable_property)
 local_adm = 2092.8
 local_gi = 235448294
 local_retail_sales = 125684762.78
+local_pop = 16261
 
 state_gi = 269067675605
 state_adm = 1239781
 state_retail_sales = 100207273998.18
+state_pop = 8382993
 # print(local_true)
 
-test_true_values = get_true_values(local_true, local_adm, state_true, state_adm)
+test_true_values = get_true_values_adm(local_true, local_adm, state_true, state_adm)
 # print(test_true_values)
 
-test_gross_income = get_gross_income(local_gi, local_adm, state_gi, state_adm)
+test_gross_income = get_gross_income_adm(local_gi, local_adm, state_gi, state_adm)
 # print(test_gross_income)
 
-test_retail_sales = get_retail_sales(local_retail_sales, local_adm, state_retail_sales, state_adm)
+test_retail_sales = get_retail_sales_adm(local_retail_sales, local_adm, state_retail_sales, state_adm)
 # print(test_retail_sales)
 
 test_adm = adm_composite_index(test_true_values, test_gross_income, test_retail_sales)
-print(test_adm)
+# print(test_adm)
+
+true_values_pop = get_true_values_per_capita(local_true, local_pop, state_true, state_pop)
+gross_income_pop = get_gross_income_per_capita(local_gi, local_pop, state_gi, state_pop)
+retail_sales_pop = get_retail_sales_per_capita(local_retail_sales, local_pop, state_retail_sales, state_pop)
+
+test_local = per_capita_composite_index(true_values_pop, gross_income_pop, retail_sales_pop)
+
+pv_comp_index = composite_index(test_adm, test_local)
+# print(pv_comp_index)
+
+baseline_adm_true_values = get_baseline_true_values_adm(local_baseline, local_adm, state_baseline, state_adm)
+baseline_per_capita_true_values = get_baseline_true_values_per_capita(local_baseline, local_pop, state_baseline, state_pop)
+
+baseline_adm_comp = adm_composite_index(baseline_adm_true_values, test_gross_income, test_retail_sales)
+baseline_local_comp = per_capita_composite_index(baseline_per_capita_true_values, gross_income_pop, retail_sales_pop)
+baseline_comp_index = composite_index(baseline_adm_comp, baseline_local_comp)
+# print(baseline_comp_index)
+
+required_local_matching = 3754671
+education_budget = required_local_matching / baseline_comp_index[0]
+#print(education_budget, 0.01, baseline_comp_index[0])
+baseline_education_contribution = baseline_required_education_contribution(education_budget, 0.01, baseline_comp_index)
+pv_education_contribution = pv_required_education_contribution(education_budget, 0.01, pv_comp_index)
+#print(baseline_education_contribution)
+
+local_contribution_increase = increase_in_local_contribution(pv_education_contribution, baseline_education_contribution)
+# print(local_contribution_increase)
+
+#print(total_mt_revenue)
+net_revenue  = net_total_revenue_from_project(total_mt_revenue, local_contribution_increase)
