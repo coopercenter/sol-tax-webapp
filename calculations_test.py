@@ -220,14 +220,6 @@
 '''
 Calculations
 '''
-def effective_rate_ext (effective_rate_list):
-    '''
-    Takes in schedule of effective rates for county + year of initial build
-    Extends list with final effective rate to be available for calculations out to 2050
-    '''
-    last_rate = effective_rate_list[-1]
-    while len(effective_rate_list) <= 32:
-        effective_rate_list.append(last_rate)
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 # M&T functions
 # """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -439,21 +431,29 @@ def effective_rate_ext (effective_rate_list):
         
 #     return total
 
+def effective_rate_ext (effective_rate_list):
+    '''
+    Takes in schedule of effective rates for county + year of initial build
+    Extends list with final effective rate to be available for calculations out to 2050
+    '''
+    last_rate = effective_rate_list[-1]
+    while len(effective_rate_list) <= 32:
+        effective_rate_list.append(last_rate)
+
 stepdown = [.8, .8, .8, .8, .8, .7, .7, .7, .7, .7, .6]
 effective_rate_ext(stepdown)
 year = 2020
-investment = 210000000
+investment = 140000000
 depreciation_schedule = [.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10]
-assessment_ratio = .998
+assessment_ratio = .988
 size_mw = 100
-real_estate_rate = 0.47
-mt_tax_rate = 0.47
+real_estate_rate = 0.48
+mt_tax_rate = 0.48
 
 #Land Values
 total_acerage = 2354
 inside_acerage = 910
 outside_acerage = total_acerage - inside_acerage
-print(outside_acerage)
 baseline_value = 1277.16
 inside_fence_value = 10000
 outside_fence_value = baseline_value
@@ -586,9 +586,7 @@ project_real_estate_rate = real_estate_rate
 
 increase_gross_revenue = increased_county_gross_revenue_from_project(solar_valuation_list, project_mt_tax_rate, increase_in_land_value, project_real_estate_rate)
 current_land_revenue = current_land_revenue(current_land_value, project_real_estate_rate)
-
 total_mt_revenue = total_gross_revenue_mt(current_land_revenue, increase_gross_revenue)
-# print(total_mt_revenue)
 #print(increased_county_gross_revenue_from_project(solar_valuation_list, applied_mt_tax_rate, increase_in_land_value, applied_real_estate_rate))
 
 
@@ -740,14 +738,14 @@ def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_tax
 
 taxable_property = increase_in_taxable_property(increase_in_land_value, solar_valuation_list)
 # print(taxable_property)
-local_baseline = [1082405094 for i in range(31)]
+local_baseline = [3666857551.232 for i in range(31)]
 local_true = local_true_values(local_baseline[0], taxable_property)
 state_baseline = [1170092111099 for i in range(31)]
 state_true = state_total_true_values(state_baseline[0], taxable_property)
-local_adm = 2092.8
-local_gi = 235448294
-local_retail_sales = 125684762.78
-local_pop = 16261
+local_adm = 5040.01
+local_gi = 593650086
+local_retail_sales = 304313163
+local_pop = 35766
 
 state_gi = 269067675605
 state_adm = 1239781
@@ -782,9 +780,9 @@ baseline_per_capita_true_values = get_baseline_true_values_per_capita(local_base
 baseline_adm_comp = adm_composite_index(baseline_adm_true_values, test_gross_income, test_retail_sales)
 baseline_local_comp = per_capita_composite_index(baseline_per_capita_true_values, gross_income_pop, retail_sales_pop)
 baseline_comp_index = composite_index(baseline_adm_comp, baseline_local_comp)
-# print(baseline_comp_index)
+print(baseline_comp_index)
 
-required_local_matching = 3754671
+required_local_matching = 11772924
 education_budget = required_local_matching / baseline_comp_index[0]
 #print(education_budget, 0.01, baseline_comp_index[0])
 baseline_education_contribution = baseline_required_education_contribution(education_budget, 0.01, baseline_comp_index)
@@ -792,7 +790,8 @@ pv_education_contribution = pv_required_education_contribution(education_budget,
 #print(baseline_education_contribution)
 
 local_contribution_increase = increase_in_local_contribution(pv_education_contribution, baseline_education_contribution)
-# print(local_contribution_increase)
+#print(local_contribution_increase)
 
-#print(total_mt_revenue)
+
 net_revenue  = net_total_revenue_from_project(total_mt_revenue, local_contribution_increase)
+#print(net_revenue)

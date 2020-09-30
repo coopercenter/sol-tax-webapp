@@ -11,6 +11,7 @@ urlpatterns = [
     path('formtext/', views.request_page, name='test'),
     # path('chart/', views.chart, name="chart"),
     path('locality-<str:locality_name>/', views.locality_home, name='locality_home'),
+    path('locality-<str:locality_name>/<int:simulation_id>/', views.dash, name='simulation_dash'),
     path('profile/', views.profile, name="profile"),
     path('localityName/', views.localityName, name='localityName'),
     path('login/', views.loginView, name = 'login'),

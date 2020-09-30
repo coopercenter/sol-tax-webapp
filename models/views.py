@@ -93,30 +93,26 @@ def scatter(mt, rs):
     plot_div = plot(fig, output_type='div', include_plotlyjs=False)
     return plot_div
 
-def dash(request):
+def dash(request, locality_name, simulation_id):
     if(request.POST.get('simulation_id')):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
         loc = Locality.objects.filter(name = simulation.locality)[0]
-
-        # years = [int(simulation.initial_year)]
-        # assessed_20 = [int(simulation.initial_investment)]
-        # rs_rate = int(simulation.locality.revenue_share_rate)
-        # mw = [int(simulation.project_size)]
-        # interest_rate = int(simulation.locality.discount_rate) *.01
-
-        # effective_rate = simulation.locality.mt_tax_rate
-        # if (simulation.project_size < 25):
-        #     effective_rate = simulation.locality.mt_tax_rate
-        # else:
-        #     effective_rate = [simulation.locality.real_propery_rate]
-
-
-        
-        #calc = performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
-        # print(getSimulationValues(simulation))
         values = getSimulationValues(simulation)
-        calc = performCalculations(simulation, values[0], values[1], values[2], values[3], values[4], values[5])
+        print(values)
+        initial_year = values[0]
+        initial_investment = values[1]
+        revenue_share_rate = values[2]
+        project_size = values[3]
+        discount_rate = values[4]
+        effective_rate = values[5]
+        project_land = values[6]
+        inside_fence_land = values[7]
+        baseline_land_value = values[8]
+        inside_fence_land_value = values[9]
+
+        #calc = performCalculations(loc, simulation, initial_year, initial_investment, revenue_share_rate, project_size, discount_rate, effective_rate, project_land, inside_fence_land, baseline_land_value, inside_fence_land_value)
+        calc = performCalculations(loc, simulation)
         calc.save()
 
         context = {
@@ -130,79 +126,56 @@ def dash(request):
         if form.is_valid():
             print("form")
             simulation = form.save(commit = False)
-            print(Locality.objects.get(id = request.POST['locality']))
-            simulation.locality = Locality.objects.get(id = request.POST['locality'])
-            simulation.initial_investment = request.POST['initial_investment']
-            simulation.initial_year = request.POST['initial_year']
-            #simulation.revenue_share_rate = simulation.locality.revenue_share_rate
-            simulation.project_size = request.POST['project_size']
-            #simulation.discount_rate = simulation.locality.discount_rate
             simulation.save()
-
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0].name
-
-            # years = [int(simulation.initial_year)]
-            # assessed_20 = [int(simulation.initial_investment)]
-            # rs_rate = int(simulation.locality.revenue_share_rate)
-            # mw = [int(simulation.project_size)]
-            # interest_rate = int(simulation.locality.discount_rate) *.01
-
-            # if (simulation.project_size < 25):
-            #     effective_rate = [simulation.locality.mt_tax_rate]
-            # else:
-            #     effective_rate = [simulation.locality.real_propery_rate]
-            
-            # calc = performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
-            # calc.save()
-
+            loc = Locality.objects.filter(name = simulation.locality)[0]
             values = getSimulationValues(simulation)
-            calc = performCalculations(simulation, values[0], values[1], values[2], values[3], values[4], values[5])
+            print(simulation.id)
+            initial_year = values[0]
+            initial_investment = values[1]
+            revenue_share_rate = values[2]
+            project_size = values[3]
+            discount_rate = values[4]
+            effective_rate = values[5]
+            project_land = values[6]
+            inside_fence_land = values[7]
+            baseline_land_value = values[8]
+            inside_fence_land_value = values[9]
+        
+            calc = performCalculations(loc, simulation)
             calc.save()
 
             context = {
                 'plot1': scatter(calc.cas_mt, calc.cas_rs)
             }
-
-            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
-            
-
-            #n is the number of years from 2020 to 2050
+            # print(sim)
             return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
         
         else:
-            simulation = Simulation.objects.get(locality = request.POST['locality'], initial_investment= request.POST['initial_investment'], initial_year=request.POST['initial_year'], project_size=request.POST['project_size'])
-
+            simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0].name
-
-            # years = [int(simulation.initial_year)]
-            # assessed_20 = [int(simulation.initial_investment)]
-            # rs_rate = int(simulation.locality.revenue_share_rate)
-            # mw = [int(simulation.project_size)]
-            # interest_rate = int(simulation.locality.discount_rate) *.01
-
-
-            # if (simulation.project_size < 25):
-            #     effective_rate = [simulation.locality.mt_tax_rate]
-            # else:
-            #     effective_rate = [simulation.locality.real_propery_rate]
-            
-            # calc = performCalculations(simulation, years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
-            # calc.save()
-
+            loc = Locality.objects.filter(name = simulation.locality)[0]
             values = getSimulationValues(simulation)
-            calc = performCalculations(simulation, values[0], values[1], values[2], values[3], values[4], values[5])
+            print(values)
+            initial_year = values[0]
+            initial_investment = values[1]
+            revenue_share_rate = values[2]
+            project_size = values[3]
+            discount_rate = values[4]
+            effective_rate = values[5]
+            project_land = values[6]
+            inside_fence_land = values[7]
+            baseline_land_value = values[8]
+            inside_fence_land_value = values[9]
+            
+            #calc = performCalculations(loc, simulation, initial_year, initial_investment, revenue_share_rate, project_size, discount_rate, effective_rate, project_land, inside_fence_land, baseline_land_value, inside_fence_land_value)
+            calc = performCalculations(loc, simulation)
             calc.save()
 
             context = {
                 'plot1': scatter(calc.cas_mt, calc.cas_rs)
             }
 
-            # calculations = serializers.serialize("python", Calculations.objects.filter(id = calc.id))
-            
-
-            #n is the number of years from 2020 to 2050
             return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
     else:
         return HttpResponse('Error please select fill out the model generation form')
@@ -238,7 +211,10 @@ def getSimulationValues(simulation):
     property_rate = simulation.locality.real_propery_rate
     mt_rate = simulation.locality.mt_tax_rate
     scc_depreciation = [.9, .9, .9, .9, .9, .87, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10]
-    
+    project_land = int(simulation.total_acerage)
+    inside_fence_land = int(simulation.inside_fence_acerage)
+    baseline_land_value = int(simulation.baseline_land_value)
+    inside_fence_land_value = int(simulation.inside_fence_land_value)
     
     # total_acerage = 2354
     # inside_acerage = 910
@@ -262,9 +238,9 @@ def getSimulationValues(simulation):
         else:
             effective_rate = mt_rate
 
-    return years, assessed_20, rs_rate, mw, interest_rate, effective_rate
+    return years, assessed_20, rs_rate, mw, interest_rate, effective_rate, project_land, inside_fence_land, baseline_land_value, inside_fence_land_value
 
-def performCalculations(simulation, initial_year, investment, rs_rate, mw, interest_rate, effective_rate):
+def performCalculations(locality, simulation):
     #Run each function & extract table of values
     # print(years, assessed_20, rs_rate, mw, interest_rate, effective_rate)
     # cas_mt = total_cashflow_mt(years, assessed_20, effective_rate)
@@ -284,6 +260,34 @@ def performCalculations(simulation, initial_year, investment, rs_rate, mw, inter
     state_adm = 1239781.3
     state_population = 8382993
 
+    '''
+    Locality Variables
+    '''
+    discount_rate = locality.discount_rate
+    revenue_share_rate = locality.revenue_share_rate
+    mt_tax_rate = locality.mt_tax_rate
+    real_propery_rate = locality.real_propery_rate
+    assesment_ratio = locality.assesment_ratio
+    local_baseline_true_value = locality.baseline_true_value
+    local_adj_gross_income = locality.adj_gross_income
+    local_taxable_retail_sales = locality.taxable_retail_sales
+    local_population = locality.population
+    local_adm = locality.adm
+    required_local_matching = locality.required_local_matching
+    budget_escalator = locality.budget_escalator
+
+
+    '''
+    Simulation Variables
+    '''
+
+    local_investment = simulation.initial_investment
+    initial_year = simulation.initial_year
+    project_size = simulation.project_size
+    total_project_acerage = simulation.total_acerage
+    inside_fence_acerage =simulation.inside_fence_acerage
+    baseline_land_value = simulation.baseline_land_value
+    inside_fence_land_value = simulation.inside_fence_land_value
 
     # #Revenue Share Works
     cas_rs = total_cashflow_rs(rs_rate, mw, initial_year)

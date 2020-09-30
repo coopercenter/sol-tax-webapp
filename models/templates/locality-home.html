@@ -33,7 +33,7 @@
                             <!-- <p class="card-text">Discout Rate: {{simulation.discount_rate}}%</p> -->
                             <p>Total Revenue Share: ${% get_totals simulation.calculations.tot_rs %}</p>
                             <p>Total M&T: ${% get_totals simulation.calculations.tot_mt %}</p>
-                            <form action="/dash/" method="POST">
+                            <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
                                 <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Model</button>
