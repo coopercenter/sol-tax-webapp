@@ -13,6 +13,14 @@ class Locality(models.Model):
     revenue_share_rate = models.IntegerField(default = 1400)
     mt_tax_rate = ArrayField(models.FloatField(), size = 31, default=list)
     real_propery_rate = models.FloatField(default=0)
+    assesment_ratio = models.FloatField(default=100)
+    baseline_true_value = models.IntegerField(default = 0)
+    adj_gross_income = models.IntegerField(default = 0)
+    taxable_retail_sales = models.IntegerField(default = 0)
+    population = models.IntegerField(default = 0)
+    adm = models.FloatField(default=0)
+    required_local_matching = models.IntegerField(default = 0)
+    budget_escalator = models.FloatField(default = 0)
 
     class Meta:
         verbose_name_plural = "Localities"
@@ -26,9 +34,12 @@ class Simulation(models.Model):
     locality = models.ForeignKey('Locality', on_delete=models.CASCADE)
     initial_investment = models.IntegerField(default = 100000000)
     initial_year = models.IntegerField(default = 2021)
-    # revenue_share_rate = models.IntegerField(default = 1400)
     project_size = models.IntegerField(default = 100)
-    # discount_rate = models.IntegerField(default = 6)
+    total_acerage = models.IntegerField(default = 2000)
+    inside_fence_acerage = models.IntegerField(default = 1000)
+    baseline_land_value = models.IntegerField(default = 1000)
+    inside_fence_land_value = models.IntegerField(default = 10000)
+
     
     def __str__(self):
         return self.locality.name + str(self.initial_investment)

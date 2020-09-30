@@ -274,7 +274,16 @@ def performCalculations(simulation, initial_year, investment, rs_rate, mw, inter
     # tot_mt_sum = sum(tot_mt)
     # tot_rs = total_adj_rev_rs(years, rs_rate, mw, interest_rate)
     # tot_rs_sum = sum(tot_rs)
-    
+
+    '''
+    State Variables
+    '''
+    state_true_value = [1170092111098.94 for i in range(31)]
+    state_adj_gross_income = 269067675604.708
+    state_taxable_retail_sales = 100207273998.18
+    state_adm = 1239781.3
+    state_population = 8382993
+
 
     # #Revenue Share Works
     cas_rs = total_cashflow_rs(rs_rate, mw, initial_year)
