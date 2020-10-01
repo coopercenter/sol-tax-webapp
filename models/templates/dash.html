@@ -32,7 +32,7 @@
                                 </tr>
                                 <tr>
                                     <td>Revenue Share Rate</td>
-                                    <td class="value">{% get_rs_rate simulation %} $/MW</td>
+                                    <td class="value"><span class="comma_value">{% get_rs_rate simulation %}</span> $/MW</td>
                                 </tr>
                                 <tr>
                                     <td>Real Property Rate per $100 of Assessed Value</td>
@@ -41,7 +41,7 @@
                             {% elif field == 'initial_investment' %}
                                 <tr>
                                     <td>Initial Investment</td>
-                                    <td class="value">${{value}}</td>
+                                    <td class="value">$<span class="comma_value">{{value}}</span></td>
                                 </tr>
                             {% elif field == 'initial_year' %}
                             <tr>
@@ -53,15 +53,30 @@
                                 <td>Project Size</td>
                                 <td class="value">{{value}} MW</td>
                             </tr>
-                            {% else %}
-                                <tr>
-                                    <td>{{field}}</td>
-                                    <td class="value">{{value}}</td>
-                                </tr>
+                            {% elif field == 'total_acreage' %}
+                            <tr>
+                                <td>Total Land Acreage</td>
+                                <td class="value"><span class="comma_value">{{value}}</span> acres</td>
+                            </tr>
+                            {% elif field == 'inside_fence_acreage' %}
+                            <tr>
+                                <td>Inside Fence Acreage</td>
+                                <td class="value"><span class="comma_value">{{value}}</span> acres</td>
+                            </tr>
+                            {% elif field == 'baseline_land_value' %}
+                            <tr>
+                                <td>Base Land Value</td>
+                                <td class="value"><span class="comma_value">{{value}}</span> $/acre</td>
+                            </tr>
+                            {% elif field == 'inside_fence_land_value' %}
+                            <tr>
+                                <td>Inside the Fence Land Value</td>
+                                <td class="value"><span class="comma_value">{{value}}</span> $/acre</td>
+                            </tr>
                             {% endif %}
                         {% endfor %}
                     {% endfor %}
-                    <tr>
+                    <!-- <tr>
                         <td colspan="2">Effective M&T Tax Rate per $100 Assessed Value</td>
                     </tr>
                     <tr>
@@ -83,7 +98,7 @@
                     <tr>
                         <td class="value-rate">Year 5 & on</td>
                         <td class="value">${% get_mt_rate simulation%}</td>
-                    </tr>
+                    </tr> -->
                 </tbody>
             </table>
 
@@ -101,8 +116,8 @@
                     <p> (In 2020 $, discounted at {% get_discount_rate simulation %}% per year): </p>
                 </div>
                 <div class="result-text">
-                    <p><strong>Revenue Share:</strong> <span>${% get_totals calculations.tot_rs %}</span></p>
-                    <p><strong>M&T Tax:</strong> ${% get_totals calculations.tot_mt %}</p>
+                    <p><strong>Revenue Share:</strong> $<span class="comma_value">{% get_totals calculations.tot_rs %}</span></p>
+                    <p><strong>M&T Tax:</strong> $<span class="comma_value">{% get_totals calculations.tot_mt %}</span></p>
                 </div>
             </div>
 

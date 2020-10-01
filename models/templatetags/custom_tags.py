@@ -42,7 +42,7 @@ def get_totals(l):
     sum = 0
     for item in l:
         sum += item
-    return "{:,.2f}".format(sum*1000)
+    return round(sum*1000, -2)
 
 @register.inclusion_tag("search_bar.html")
 def all_localities():

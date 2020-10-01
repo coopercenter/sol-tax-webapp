@@ -35,8 +35,8 @@ class Simulation(models.Model):
     initial_investment = models.IntegerField(default = 100000000)
     initial_year = models.IntegerField(default = 2021)
     project_size = models.IntegerField(default = 100)
-    total_acerage = models.IntegerField(default = 2000)
-    inside_fence_acerage = models.IntegerField(default = 1000)
+    total_acreage = models.IntegerField(default = 2000)
+    inside_fence_acreage = models.IntegerField(default = 1000)
     baseline_land_value = models.IntegerField(default = 1000)
     inside_fence_land_value = models.IntegerField(default = 10000)
 

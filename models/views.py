@@ -243,14 +243,14 @@ class NewSimulationView(CreateView):
 #     property_rate = simulation.locality.real_propery_rate
 #     mt_rate = simulation.locality.mt_tax_rate
 #     scc_depreciation = [.9, .9, .9, .9, .9, .87, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10]
-#     project_land = int(simulation.total_acerage)
-#     inside_fence_land = int(simulation.inside_fence_acerage)
+#     project_land = int(simulation.total_acreage)
+#     inside_fence_land = int(simulation.inside_fence_acreage)
 #     baseline_land_value = int(simulation.baseline_land_value)
 #     inside_fence_land_value = int(simulation.inside_fence_land_value)
     
-#     # total_acerage = 2354
-#     # inside_acerage = 910
-#     # outside_acerage = total_acerage - inside_acerage
+#     # total_acreage = 2354
+#     # inside_acreage = 910
+#     # outside_acreage = total_acreage - inside_acreage
 #     # baseline_value = 1277.16
 #     # inside_fence_value = 10000
 #     # outside_fence_value = 1277
@@ -318,9 +318,9 @@ def performCalculations(locality, simulation):
     local_investment = simulation.initial_investment
     initial_year = simulation.initial_year
     project_size = simulation.project_size
-    total_project_acerage = simulation.total_acerage
-    inside_fence_acerage =simulation.inside_fence_acerage
-    outside_fence_acerage = total_project_acerage - inside_fence_acerage
+    total_project_acreage = simulation.total_acreage
+    inside_fence_acreage =simulation.inside_fence_acreage
+    outside_fence_acreage = total_project_acreage - inside_fence_acreage
     baseline_land_value = simulation.baseline_land_value
     inside_fence_land_value = simulation.inside_fence_land_value
 
@@ -355,12 +355,12 @@ def performCalculations(locality, simulation):
     # tot_mt_sum = int(sum(tot_mt))
     # print(tot_rs_sum, tot_mt_sum)
 
-    current_value_of_land = current_land_value(total_project_acerage, baseline_land_value, initial_year)
+    current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year)
     current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)
 
     solar_project_valuation = solar_facility_valuation(initial_year, local_investment, mt_stepdown, scc_depreciation, assesment_ratio)
 
-    new_value_land = new_land_value(total_project_acerage, inside_fence_acerage, outside_fence_acerage, inside_fence_land_value, baseline_land_value, initial_year)
+    new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, baseline_land_value, initial_year)
     land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assesment_ratio)
     increase_in_gross_revenue = increased_county_gross_revenue_from_project(solar_project_valuation, effective_rate, land_value_increase, real_property_rate)
 
@@ -453,9 +453,9 @@ def effective_rate_ext (effective_rate_list):
 # mt_tax_rate = 0.48
 
 # #Land Values
-# total_acerage = 2354
-# inside_acerage = 910
-# outside_acerage = total_acerage - inside_acerage
+# total_acreage = 2354
+# inside_acreage = 910
+# outside_acreage = total_acreage - inside_acreage
 # baseline_value = 1277.16
 # inside_fence_value = 10000
 # outside_fence_value = baseline_value
@@ -511,19 +511,19 @@ def solar_facility_valuation(year, investment, mt_exemption, depreciation_schedu
 # Calculations for increase in Land Value
 ##############################################################
 
-def current_land_value(total_acerage, baseline_value, starting_year):
+def current_land_value(total_acreage, baseline_value, starting_year):
     baseline = []
     offset = starting_year - 2020
     for i in range(0, offset):
         baseline.append(0)
     for i in range(0, 2050-starting_year+1):
         if(i % 5 == 0):
-            baseline.append(round(baseline_value * total_acerage * ((1.012)**(i+1))))
+            baseline.append(round(baseline_value * total_acreage * ((1.012)**(i+1))))
         else:
             baseline.append(baseline[i + offset - 1])
     return baseline
 
-def new_land_value(total_acerage, inside_acerage, outside_acerage, inside_fence_value, outside_fence_value, starting_year):
+def new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_value, outside_fence_value, starting_year):
     total = []
     offset = starting_year - 2020
 
@@ -532,8 +532,8 @@ def new_land_value(total_acerage, inside_acerage, outside_acerage, inside_fence_
 
     for i in range(0, 2050-starting_year+1):
         if( i % 6 == 0):
-            inside = inside_fence_value * inside_acerage * ((1.012)**(i+1))
-            outside = outside_fence_value * outside_acerage * ((1.012)**(i+1))
+            inside = inside_fence_value * inside_acreage * ((1.012)**(i+1))
+            outside = outside_fence_value * outside_acreage * ((1.012)**(i+1))
             total.append(round(inside + outside))
         else:
             total.append(total[i + offset-1])
@@ -581,8 +581,8 @@ def total_gross_revenue_mt(current_revenue, gross_revenue_increase):
 # solar_valuation_list = solar_facility_valuation(year, investment, mt_exemption, depreciation_schedule, assessment_ratio)
 # project_mt_tax_rate = get_mt_tax_rate(size_mw, mt_tax_rate, real_estate_rate)
 
-# current_land_value = current_land_value(total_acerage, baseline_value, year)
-# new_land_value = new_land_value(total_acerage, inside_acerage, outside_acerage, inside_fence_value, outside_fence_value, year)
+# current_land_value = current_land_value(total_acreage, baseline_value, year)
+# new_land_value = new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_value, outside_fence_value, year)
 # increase_in_land_value = increase_in_land_value(current_land_value, new_land_value, assessment_ratio)
 # project_real_estate_rate = real_estate_rate
 
@@ -865,10 +865,10 @@ def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_tax
 
 
 
-# def land_value(baseline_value, inside_fence_value, outside_fence_value_, fmv_increase, yrs, total_acerage, inside_acerage, outside_acerage):
+# def land_value(baseline_value, inside_fence_value, outside_fence_value_, fmv_increase, yrs, total_acreage, inside_acreage, outside_acreage):
 #     baseline=[]
 #     for i in range(31):
-#         baseline.append(baseline_value * total_acerage)
+#         baseline.append(baseline_value * total_acreage)
 #     return baseline
 
 
@@ -926,7 +926,7 @@ def total_adj_rev(cas, discount_rate):
         tot_rs.append(cas[i] / ((1 + discount_rate)**(i + 1))) # Present value formula
     return tot_rs
 
-# def land_value(total_acerage, inside_acerage, outside_acerage, baseline_value, inside_fence_value, outside_fence_value, fmv_increase, yrs_between, starting_year):
+# def land_value(total_acreage, inside_acreage, outside_acreage, baseline_value, inside_fence_value, outside_fence_value, fmv_increase, yrs_between, starting_year):
 #     baseline=[]
 #     inside = []
 #     outside = []
@@ -941,12 +941,12 @@ def total_adj_rev(cas, discount_rate):
 
 #     for i in range(0, 2050-starting_year+1):
 #         if( i % 5 == 0):
-#             baseline.append(int(baseline_value * total_acerage * ((1.012)**(i+1))))
+#             baseline.append(int(baseline_value * total_acreage * ((1.012)**(i+1))))
 #         else:
 #             baseline.append(baseline[i + offset-1])
 #         if( i % 6 == 0):
-#             inside.append(int(inside_fence_value * inside_acerage * ((1.012)**(i+1))))
-#             outside.append(int(outside_fence_value * outside_acerage * ((1.012)**(i+1))))
+#             inside.append(int(inside_fence_value * inside_acreage * ((1.012)**(i+1))))
+#             outside.append(int(outside_fence_value * outside_acreage * ((1.012)**(i+1))))
 #         else:
 #             inside.append(inside[i + offset-1])
 #             outside.append(outside[i + offset-1])
@@ -964,9 +964,9 @@ def total_adj_rev(cas, discount_rate):
 #         cas_mt_land.append(cas_mt[i] + land_value_by_year)
 #     return cas_mt_land
 
-# total_acerage = 2354
-# inside_acerage = 910
-# outside_acerage = total_acerage - inside_acerage
+# total_acreage = 2354
+# inside_acreage = 910
+# outside_acreage = total_acreage - inside_acreage
 # baseline_value = 1277.16
 # inside_fence_value = 10000
 # outside_fence_value = 1277
@@ -990,7 +990,7 @@ def total_adj_rev(cas, discount_rate):
 # else:
 #     effective_rate = mt_rate
 
-# land_values = land_value(total_acerage, inside_acerage, outside_acerage, baseline_value, inside_fence_value, outside_fence_value, fmv_increase, yrs_between, 2020)
+# land_values = land_value(total_acreage, inside_acreage, outside_acreage, baseline_value, inside_fence_value, outside_fence_value, fmv_increase, yrs_between, 2020)
 # land_difference = land_values[0]
 # land_baseline = land_values[1]
 
