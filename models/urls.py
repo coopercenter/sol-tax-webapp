@@ -6,7 +6,7 @@ from . import views
 urlpatterns = [
     path('', views.index, name='index'),
     path('form/', NewSimulationView.as_view(), name='form'),
-    path('dash/', views.dash, name='dash'),
+    path('dash/', views.form_dash, name='dash'),
     path('locality-list/', views.index_page, name='locality-list'),
     path('formtext/', views.request_page, name='test'),
     # path('chart/', views.chart, name="chart"),
