@@ -23,16 +23,14 @@
                         <div class="row locality-row">
                 {% endif %}
                 
-                <div class="col-md-3 col-sm-6">
+                <div class="col-lg-3 col-md-6">
                     <div class="card simulation-card">
                         <div class="card-body">
                             <p class="card-text">Initial Year: {{simulation.initial_year}}</p>
-                            <p class="card-text">Initial Investment: ${{simulation.initial_investment}}</p>
-                            <!-- <p class="card-text">Revenue Share Rate: {{simulation.revenue_share_rate}} $/MW</p> -->
+                            <p class="card-text">Initial Investment: $<span class="comma_value">{{simulation.initial_investment}}</span></p>
                             <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
-                            <!-- <p class="card-text">Discout Rate: {{simulation.discount_rate}}%</p> -->
-                            <p>Total Revenue Share: ${% get_totals simulation.calculations.tot_rs %}</p>
-                            <p>Total M&T: ${% get_totals simulation.calculations.tot_mt %}</p>
+                            <p>Total Revenue Share: $<span class="comma_value">{% get_totals simulation.calculations.tot_rs %}</span></p>
+                            <p>Total M&T: $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span></p>
                             <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="simulation_id" value ="{{simulation.id}}">

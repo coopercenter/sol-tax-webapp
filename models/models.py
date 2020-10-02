@@ -56,10 +56,10 @@ class Simulation(models.Model):
 
 class Calculations(models.Model):
     simulation = models.OneToOneField(Simulation, on_delete=models.CASCADE)
-    cas_mt = ArrayField(models.IntegerField(null = True, blank= True),  blank=True)
-    cas_rs = ArrayField(models.IntegerField(null = True, blank= True),  blank=True)
-    tot_mt = ArrayField(models.IntegerField(null = True, blank= True),  blank=True)
-    tot_rs = ArrayField(models.IntegerField(null = True, blank= True),  blank=True)
+    cas_mt = ArrayField(models.FloatField(null = True, blank= True),  blank=True)
+    cas_rs = ArrayField(models.FloatField(null = True, blank= True),  blank=True)
+    tot_mt = ArrayField(models.FloatField(null = True, blank= True),  blank=True)
+    tot_rs = ArrayField(models.FloatField(null = True, blank= True),  blank=True)
 
     def __str__(self):
         return self.simulation.__str__() + "Calculations"
