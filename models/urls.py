@@ -1,5 +1,6 @@
 from django.urls import path
 from .views import NewSimulationView
+from django.contrib.auth import views as auth_views
 # from models.dash_apps.finished_apps import *
 from . import views
 
@@ -16,4 +17,5 @@ urlpatterns = [
     path('localityName/', views.localityName, name='localityName'),
     path('login/', views.loginView, name = 'login'),
     path('logout/', views.logoutView, name = 'logout'),
+    path('password_change', auth_views.PasswordResetView.as_view(), name="password_change"),
 ]

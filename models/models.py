@@ -49,7 +49,7 @@ class Simulation(models.Model):
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["locality", "initial_investment", "initial_year", "project_size"], name="unique_locality_simulation")
+            models.UniqueConstraint(fields=["locality", "initial_investment", "initial_year", "project_size", "total_acreage", "inside_fence_acreage", "baseline_land_value", "inside_fence_land_value"], name="unique_locality_simulation")
         ]
 
     

@@ -45,6 +45,14 @@ def get_totals(l):
         sum += item
     return round(sum*1000, -3)
 
+@register.simple_tag
+def get_table_totals(l):
+    sum = 0
+    # print(l)
+    for item in l:
+        sum += item
+    return ("{:.1f}".format(round(sum, 0)))
+
 @register.inclusion_tag("search_bar.html")
 def all_localities():
     all_localities = Locality.objects.order_by('name')

@@ -7,13 +7,9 @@
     <div class="locality-home-body">
         <h1 class="locality-home-header">{{locality.name}}</h1>
 
-        <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
+        <form action="/form/" method="POST" class="generateButton-form">
             {% csrf_token %}
-            <label for="discount_rate">Discount Rate %</label>
-            <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}"><br>
-            <label for="discount_rate">Revenue Share Rate $/MW</label>
-            <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br>
-            <input class="btn btn-primary" type="submit" value="Update">
+            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Project Analysis</button>
         </form>
         
         {% if simulations %}
@@ -26,6 +22,9 @@
                 <div class="col-lg-3 col-md-6">
                     <div class="card simulation-card">
                         <div class="card-body">
+                            <!--
+                                TABLE
+                            -->
                             <p class="card-text">Initial Year: {{simulation.initial_year}}</p>
                             <p class="card-text">Initial Investment: $<span class="comma_value">{{simulation.initial_investment}}</span></p>
                             <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
@@ -34,22 +33,31 @@
                             <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
-                                <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Model</button>
+                                <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Analysis</button>
                             </form>
                             <form action="/locality-{{simulation.locality.name}}/" method="POST">
                                 {% csrf_token %}
                                 <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
-                                <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Model</button>
+                                <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Analysis</button>
                             </form>
                         </div>
                     </div>
                 </div>
             {% endfor %}
             </div>
-            <form action="/form/" method="POST" class="generateButton-form">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Model</button>
-            </form>
+
+                   
+        <!--
+            Display as Table and have update button on bottom
+        -->
+        <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
+            {% csrf_token %}
+            <label for="discount_rate">Discount Rate %</label>
+            <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}"><br>
+            <label for="discount_rate">Revenue Share Rate $/MW</label>
+            <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br>
+            <input class="btn btn-primary" type="submit" value="Update">
+        </form>
 
         {% else %}
                 <h2>Please Fill out the form to create a model</h2>

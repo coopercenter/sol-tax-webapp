@@ -97,7 +97,8 @@ def scatter(mt, rs):
 def form_dash(request):
     if request.method == 'POST':
         form = SimulationForm(request.POST)
-        print(form.errors)
+        # print(form)
+        print(form.has_error('NON_FIELD_ERRORS'))
         if form.is_valid():
             print("valid")
             simulation = form.save(commit = False)
@@ -107,7 +108,8 @@ def form_dash(request):
             print(simulation.id)
             return HttpResponseRedirect("/locality-" + loc.name + '/' + str(simulation.id) + '/')
         else:
-            print("idk")
+            return HttpResponse("Error this analysis has already been created, go back to the Locality page to view the analysis with these parameters")
+            
     else:
         return HttpResponse('Error please select fill out the model generation form')
 
@@ -142,6 +144,7 @@ def dash(request, locality_name, simulation_id):
         form = SimulationForm(request.POST)
         if form.is_valid():
             print("form")
+            print("valus")
             simulation = form.save(commit = False)
             simulation.save()
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
@@ -330,7 +333,7 @@ def performCalculations(locality, simulation):
     real_property_tax_revenue = [real_property_rate * land_value_increase[i]/100 for i in range(len(land_value_increase))]
 
     real_property_increase_in_revenue = net_total_revenue_from_project(real_property_tax_revenue, real_property_increase_in_local_contribution)
-
+    print(real_property_increase_in_revenue)
     revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year)
     revenue_share_total = [current_revenue_from_land[i] + revenue_share_income[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]
     
