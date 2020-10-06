@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!-- <div class="container-fluid login-container">
+    <div class="card"></div>
+
+
+    <h1>
+        Login
+    </h1>
+    <div class="login-group">
+        <form method="post" class="login-form">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Log in" class="btn btn-primary"></input>
+        </form>
+    </div>
+</div> -->
+
+
+<div class="container login-container">
+    <div class="login-form-1">
+        <h1>Login</h1>
+        <form method="POST" class="login-form">
+            {% csrf_token %}
+            {% for field in form %}
+                <div class="form-group login-field">
+                    {{field.errors}}
+                    {{field.label_tag}}   {{field}}
+                </div>
+            {% endfor %}
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary btn-lg login-submit" value="Login"/>
+            </div>
+            <!-- <div class="form-group">
+                <a href="#" class="ForgetPwd">Forgot Password?</a>
+            </div> -->
+        </form>
+    </div>
+</div>
+
+
+{% endblock %}

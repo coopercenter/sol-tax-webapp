@@ -6,12 +6,18 @@ body{
 h2, h3, h4{
     font-size: 28px;
 }
+.logout-button{
+    color: whitesmoke;
+    font-size: 18px;
+}
+.logout-button:hover{
+    text-decoration: none;
+    color: rgb(197, 193, 193);;
+}
 
 /* Table for model */
 .side-table th, .side-table td{
     text-align: left; 
-    /* padding: 5px 50px 5px 0; */
-    /* border-bottom: 1px solid black; */
 }
 
 li{
@@ -37,6 +43,11 @@ li{
 .technical-appendix:hover{
     color: rgb(131, 125, 125);
     text-decoration: none;
+}
+
+/* Middle */
+.middle{
+    height: auto;
 }
 
 /* Footer */
@@ -65,6 +76,7 @@ li{
     background-image: none;
     background-color:rgb(166, 198, 226);
 }
+
 
 /* Form */
 .form-group{
@@ -102,6 +114,7 @@ li{
 /* Graph */
 .right-col{
     padding-left: 6%;
+    height: 700px;
 }
 .graph-bottom-text{
     text-align: center;
@@ -110,6 +123,9 @@ li{
     /* position: relative;
     left: 100px; */
     padding-top: 5%;
+}
+.chart{
+    height: 300px;
 }
 .prototype-graph{
     height: 200px;
@@ -180,7 +196,6 @@ li{
 
 .locality-home-body{
     text-align: center;
-    height: 80vh;
 }
 .locality-home-header{
     text-align: center;
@@ -221,7 +236,59 @@ li{
     border-right: solid 1px black;
 }
 
-.generateButton{
+.generateButton-form{
     margin: 1%;
     text-align: center;
+}
+
+/* .generateButton{
+    
+} */
+
+
+
+.login-container{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.login-field{
+    text-align: right;
+    position: relative;
+    right: 40px;
+}
+.login-form-1{
+    padding: 5% 28%;
+    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    text-align:center;
+}
+.login-form-1 h1{
+    text-align: center;
+    color: #333;
+}
+.login-container form{
+    padding: 10%;
+}
+
+.btnSubmit
+{
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.login-form-1 .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #0062cc;
+}
+.login-form-1 .ForgetPwd{
+    color: #0062cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.update-form{
+    text-align: left;
+    padding-left: 1.5%;
 }

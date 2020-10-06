@@ -12,18 +12,22 @@ from django.utils.translation import ugettext_lazy
 class SimulationForm(forms.ModelForm):
     class Meta:
         model = Simulation
-        fields = ('locality', 'initial_year', 'initial_investment', 'revenue_share_rate', 'project_size', 'discount_rate')
+        fields = ('locality', 'initial_year', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value',)
         labels = {
             'initial_investment': ugettext_lazy('Initial Investment ($)'),
-            'revenue_share_rate': ugettext_lazy('Revenue Share Rate ($/MW)'),
             'project_size': ugettext_lazy('Project Size (MW)'),
-            'discount_rate': ugettext_lazy('Discount Rate (%)')
+            'total_acreage': ugettext_lazy('Total Project acreage (Acres)'),
+            'inside_fence_acreage': ugettext_lazy('Solar Project Inside the Fence (Acres)'),
+            'baseline_land_value': ugettext_lazy('Baseline Value of Land ($)'),
+            'inside_fence_land_value': ugettext_lazy('Inside the Fence Value of Land ($)')
         }
         widgets = {
             'locality': forms.HiddenInput(),
             'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
-            'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
             'project_size': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
-            'discount_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'total_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':100, 'max':10000}),
+            'inside_fence_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':100, 'max':10000}),
+            'baseline_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
+            'inside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
         }
