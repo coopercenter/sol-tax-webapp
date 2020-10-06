@@ -261,11 +261,11 @@ def performCalculations(locality, simulation):
     inside_fence_land_value = simulation.inside_fence_land_value
 
 
-    if(project_size < 20):
+    if(project_size < 25):
         effective_tax_rate = [mt_tax_rate for i in range(31)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
-    elif(project_size >= 20 and project_size < 150):
+    elif(project_size >= 25 and project_size < 150):
         effective_tax_rate = [real_property_rate for i in range(31)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation
@@ -404,7 +404,7 @@ def get_mt_exemption(size_mw, mt_exemption):
     Get the M&T tax rate for the project. If above 20 MW use the real estate rate for the project, otherwise use the mt_tax_rate
 '''
 def get_mt_tax_rate(size_mw, mt_tax_rate, real_estate_rate):
-    if size_mw > 20:
+    if size_mw > 25:
         return real_estate_rate
     else:
         return mt_tax_rate
