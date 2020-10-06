@@ -167,6 +167,13 @@
                     </tr>
                     {% endif %}
                 {% endfor %}
+                <tr>
+                    <td>Totals</td>
+                    <td>$<span class="comma_value">{% get_table_totals calculations.cas_mt %}</span></td>
+                    <td class="right-border-cell">$<span class="comma_value"> {% get_table_totals calculations.cas_rs %}</span></td>
+                    <td>$<span class="comma_value">{% get_table_totals calculations.tot_mt %}</span></td>
+                    <td>$<span class="comma_value">{% get_table_totals calculations.tot_rs %}</span></td>
+                </tr>
             </tbody>
         </table>
     </div>
