@@ -4,7 +4,7 @@
     <select class="selectpicker" data-live-search="true" id="inputGroupSelect01" name="locality" onchange="form.submit()">
         <option selected>Choose Your Locality</option>
         {% for locality in all_localities %}
-            <option value="{{locality.name}}">{{locality.name}}</option>
+            <option value="{{locality.name}}" class="locality_name">{{locality.name}}</option>
         {% endfor %}
     </select>
 </form>

@@ -23,7 +23,7 @@
                 <h4> <a href="technical.html" class="technical-appendix"> Technical Appendix</a></h4>
 
                 {% if user.is_authenticated %}
-                    <h4><a href="/locality-{{user.username}}/" class="technical-appendix"><strong>{{user.username}} Profile</strong></a></h4>
+                    <h4><a href="/locality-{{user.username}}/" class="technical-appendix"><strong class="locality_name">{{user.username}} Profile</strong></a></h4>
                     <button class="btn btn-danger"><a href="/logout/" class="logout-button">Logout</a></h4>
                 {% else %}
                     {% all_localities %}
@@ -58,7 +58,7 @@
     <div class="footer">
         <p class="subtitle footer-text">A tool to assist Virginia localities</p>
         <p class="author footer-text">Created by Arthur Small, Ethan Novak, and Thomas Callen <a href="https://ceps.coopercenter.org/">Weldon Cooper Center for Public Service, University of Virginia</a></p>
-        <p class="date footer-text">Draft version of 2020-08-13</p>
+        <p class="date footer-text">Draft version of 2020-10-11</p>
     </div>
 
 
