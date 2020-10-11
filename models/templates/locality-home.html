@@ -114,16 +114,19 @@
 
         {% else %}
                 <h2>Please Fill out the form to create a model</h2>
-                <form action="/form/" method="POST" class="generateButton-form">
+                <!-- <form action="/form/" method="POST" class="generateButton-form">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Model</button>
-                </form>
+                </form> -->
         {% endif %}
     </div>
 
     
     {% else %}
-        <h2>Your are not logged in as {{locality.name}}</h2>
-        <h2>Please Login to {{locality.name}}'s Account</h2>
+        <div class="locality-error-message">
+            <h2>Your are not logged in as <span class="locality_name">{{locality.name}}</span></h2>
+            <br>
+            <h2>Please Login to <span class="locality_name">{{locality.name}}</span>'s Account</h2>
+        </div>
     {% endif %}
 {% endblock %}

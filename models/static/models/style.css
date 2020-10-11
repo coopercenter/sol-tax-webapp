@@ -316,3 +316,8 @@ li{
 .result-table{
     width: 93%;
 }
+
+.locality-error-message{
+    text-align: center;
+    padding: 30px;
+}
