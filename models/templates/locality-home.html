@@ -5,7 +5,7 @@
 
     {% if user.username == locality.name %}
     <div class="locality-home-body">
-        <h1 class="locality-home-header">{{locality.name}}</h1>
+        <h1 class="locality-home-header locality_name">{{locality.name}}</h1>
 
         <form action="/form/" method="POST" class="generateButton-form">
             {% csrf_token %}
@@ -19,27 +19,79 @@
                         <div class="row locality-row">
                 {% endif %}
                 
-                <div class="col-lg-3 col-md-6">
+                <div class="col-lg-4 col-md-6">
                     <div class="card simulation-card">
                         <div class="card-body">
                             <!--
                                 TABLE
                             -->
-                            <p class="card-text">Initial Year: {{simulation.initial_year}}</p>
+                            <table class="card-table table-striped">
+                                <tr class="card-table-row">
+                                    <td>
+                                        Initial Year
+                                    </td>
+                                    <td class="card-table-value">
+                                        {{simulation.initial_year}}
+                                    </td>
+                                </tr>
+                                <tr class="card-table-row odd">
+                                    <td>
+                                        Initial Investment
+                                    </td>
+                                    <td class="card-table-value">
+                                        $<span class="comma_value">{{simulation.initial_investment}}</span>
+                                    </td>
+                                </tr>
+                                <tr class="card-table-row">
+                                    <td>
+                                        Project Size
+                                    </td>
+                                    <td class="card-table-value">
+                                        {{simulation.project_size}} MW
+                                    </td>
+                                </tr>
+                                <tr class="card-table-row odd">
+                                    <td>
+                                        Revenue Share Revenue
+                                    </td>
+                                    <td class="card-table-value">
+                                        $<span class="comma_value">{% get_totals simulation.calculations.tot_rs %}</span>
+                                    </td>
+                                </tr>
+                                <tr class="card-table-row">
+                                    <td>
+                                        M&T Revenue
+                                    </td>
+                                    <td class="card-table-value">
+                                        $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span>
+                                    </td>
+                                </tr>
+                                <tr class="card-table-row">
+                                    <td>
+                                        Difference
+                                    </td>
+                                    <td class="card-table-value">
+                                        $<span class="comma_value">{% subtract simulation.calculations.tot_rs simulation.calculations.tot_mt %}</span>
+                                    </td>
+                                </tr>
+                            </table>
+                            <!-- <p class="card-text">Initial Year: {{simulation.initial_year}}</p>
                             <p class="card-text">Initial Investment: $<span class="comma_value">{{simulation.initial_investment}}</span></p>
                             <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
                             <p>Total Revenue Share: $<span class="comma_value">{% get_totals simulation.calculations.tot_rs %}</span></p>
-                            <p>Total M&T: $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span></p>
-                            <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
-                                <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Analysis</button>
-                            </form>
-                            <form action="/locality-{{simulation.locality.name}}/" method="POST">
-                                {% csrf_token %}
-                                <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
-                                <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Analysis</button>
-                            </form>
+                            <p>Total M&T: $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span></p> -->
+                            <div class="analysis-buttons">
+                                <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
+                                    <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Analysis</button>
+                                </form>
+                                <form action="/locality-{{simulation.locality.name}}/" method="POST">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
+                                    <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Analysis</button>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -52,6 +104,7 @@
         -->
         <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
             {% csrf_token %}
+
             <label for="discount_rate">Discount Rate %</label>
             <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}"><br>
             <label for="discount_rate">Revenue Share Rate $/MW</label>

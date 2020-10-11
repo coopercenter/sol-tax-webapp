@@ -67,12 +67,12 @@ def profile(request):
     return render(request, 'profile.html')
 
 def locality_home(request, locality_name):
-    print(request.POST)
+    print(locality_name.title())
     if request.POST.get('simulation_id'):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         simulation.delete()
 
-    locality = Locality.objects.get(name = locality_name.capitalize())
+    locality = Locality.objects.get(name = locality_name.title())
     simulations = locality.simulation_set.all()
 
     if request.POST.get('discount_rate'):
@@ -243,7 +243,7 @@ def performCalculations(locality, simulation):
     local_adm = locality.adm
     required_local_matching = locality.required_local_matching
     budget_escalator = locality.budget_escalator/100
-    local_depreciation = [.5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .5, .25]
+    local_depreciation = locality.local_depreciation
     effective_rate_ext(local_depreciation)
 
 

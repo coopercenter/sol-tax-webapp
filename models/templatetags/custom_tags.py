@@ -8,9 +8,15 @@ from ..models import Locality, Simulation, Calculations
 def get_index(l, i):
     return l[i]
 
+@register.simple_tag
+def subtract(a, b):
+    a_total = sum(a)
+    b_total = sum(b)
+    return round((a_total-b_total)*1000, -3)
+
 @register.filter
 def get_revenue_index(l, i):
-    return ("{:.1f}".format(l[i]))
+    return ("{:.0f}".format(round(l[i]*1000, -3)))
 
 @register.simple_tag
 def get_discount_rate(sim):
@@ -51,7 +57,7 @@ def get_table_totals(l):
     # print(l)
     for item in l:
         sum += item
-    return ("{:.1f}".format(round(sum, 0)))
+    return ("{:.1f}".format(round(sum*1000, -3)))
 
 @register.inclusion_tag("search_bar.html")
 def all_localities():

@@ -133,14 +133,6 @@ li{
 }
 
 /* Data Entered */
-.parameter-table{
-    position: relative;
-    left: 100px;
-}
-.parameter-table th, .parameter-table td{
-    padding: 5px 0;
-    border-bottom: 1px solid black;
-}
 .entered-data-header{
     font-weight: 500;
 }
@@ -164,12 +156,6 @@ li{
     padding-left: 30px;
 }
 
-.parameter-table .value{
-    padding: 5px 0 5px 130px;
-    text-align: right;
-}
-
-
 
 /* Technical Page */
 .technical-text{
@@ -184,8 +170,10 @@ li{
 }
 .simulation-card{
     text-align: left;
-    margin: 20px;
-    width: 18rem;
+    margin: 20px 50px;
+    width: 25rem;
+    height: 25rem;
+    font-size: 18px;
 }
 .view-button{
     margin-top: 4%;
@@ -291,4 +279,40 @@ li{
 .update-form{
     text-align: left;
     padding-left: 1.5%;
+}
+
+.card-body{
+    text-align: center;
+}
+.card-table{
+    width: 100%;
+    position: relative;
+    padding: 5px;
+    /* border: 1px solid; */
+}
+/* .card-table tbody tr:nth-of-type(odd){
+    background-color: rgb(240, 240, 240);
+} */
+.card-table-row{
+    /* border-bottom: 1px solid; */
+    text-align: left;
+    padding-bottom: 35px;
+}
+.card-table-value{
+    text-align: right;
+}
+
+.analysis-buttons .delete-button{
+    position: relative;
+    right: 10px;
+}
+.rs-revenue-title{
+    color: #ef553b;
+}
+.mt-revenue-title{
+    color: #636efa;
+}
+
+.result-table{
+    width: 93%;
 }

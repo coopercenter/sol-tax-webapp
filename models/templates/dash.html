@@ -3,7 +3,7 @@
 {% block content %}
 
 <div id="solar-tool-prototype" class="section level1">
-    <h1 class="data-header">Solar Tool Model for {% get_locality simulation %}</h1>
+    <h1 class="data-header">Local Solar Revenue and Tax Analysis</h1>
     <div class="row">
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters">
@@ -24,7 +24,7 @@
                             {% if field == 'locality' %}
                                 <tr>
                                     <td>Locality</td>
-                                    <td class="value">{% get_locality simulation %}</td>
+                                    <td class="value locality_name">{% get_locality simulation %}</td>
                                 </tr>
                                 <tr>
                                     <td>Discount Rate</td>
@@ -116,8 +116,35 @@
                     <p> (In 2020 $, discounted at {% get_discount_rate simulation %}% per year): </p>
                 </div>
                 <div class="result-text">
-                    <p><strong>Revenue Share:</strong> $<span class="comma_value">{% get_totals calculations.tot_rs %}</span></p>
+                    <table class = "table table-striped result-table">
+                        <tr class="rs-revenue-row">
+                            <td>
+                                <strong class="rs-revenue-title">Revenue Share</strong>
+                            </td>
+                            <td>
+                                $<span class="comma_value">{% get_totals calculations.tot_rs %}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong class="mt-revenue-title">M&T Tax</strong>
+                            </td>
+                            <td>
+                                $<span class="comma_value">{% get_totals calculations.tot_mt %}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>Increase from Revenue Share</strong>
+                            </td>
+                            <td>
+                                $<span class="comma_value"> {% subtract calculations.tot_rs calculations.tot_mt %}</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <!-- <p><strong>Revenue Share:</strong> $<span class="comma_value">{% get_totals calculations.tot_rs %}</span></p>
                     <p><strong>M&T Tax:</strong> $<span class="comma_value">{% get_totals calculations.tot_mt %}</span></p>
+                    <p><strong>Increase from Revenue Share: </strong>$<span class="comma_value"> {% subtract calculations.tot_rs calculations.tot_mt %}</span></p> -->
                 </div>
             </div>
 
@@ -134,7 +161,7 @@
     <div id="side-by-side-comparison" class="section level3">
         <div class="table-title">
             <h3>Annual Cashflows Under the 2 Different Revenue Models</h3>
-            <p>(In thousands, rounded to the nearest thousand)</p>
+            <p>(Rounded to the nearest thousand)</p>
         </div>
         
         <table class="table table-striped side-table">
@@ -152,18 +179,18 @@
                     {% if forloop.counter|divisibleby:2 %}
                     <tr class="even">
                         <td>{{i|add:2020}}</td>
-                        <td>${{calculations.cas_mt|get_revenue_index:i}}</td>
-                        <td class="right-border-cell">${{calculations.cas_rs|get_revenue_index:i}}</td>
-                        <td>${{calculations.tot_mt|get_revenue_index:i}}</td>
-                        <td>${{calculations.tot_rs|get_revenue_index:i}}</td>
+                        <td>$<span class="comma_value">{{calculations.cas_mt|get_revenue_index:i}}</span></td>
+                        <td class="right-border-cell">$<span class="comma_value">{{calculations.cas_rs|get_revenue_index:i}}</span></td>
+                        <td>$<span class="comma_value">{{calculations.tot_mt|get_revenue_index:i}}</span></td>
+                        <td>$<span class="comma_value">{{calculations.tot_rs|get_revenue_index:i}}</span></td>
                     </tr>
                     {% else %}
                     <tr class="odd">
                         <td>{{i|add:2020}}</td>
-                        <td>${{calculations.cas_mt|get_revenue_index:i}}</td>
-                        <td class="right-border-cell">${{calculations.cas_rs|get_revenue_index:i}}</td>
-                        <td>${{calculations.tot_mt|get_revenue_index:i}}</td>
-                        <td>${{calculations.tot_rs|get_revenue_index:i}}</td>
+                        <td>$<span class="comma_value">{{calculations.cas_mt|get_revenue_index:i}}</span></td>
+                        <td class="right-border-cell">$<span class="comma_value">{{calculations.cas_rs|get_revenue_index:i}}</span></td>
+                        <td>$<span class="comma_value">{{calculations.tot_mt|get_revenue_index:i}}</span></td>
+                        <td>$<span class="comma_value">{{calculations.tot_rs|get_revenue_index:i}}</span></td>
                     </tr>
                     {% endif %}
                 {% endfor %}
