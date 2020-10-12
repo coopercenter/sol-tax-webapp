@@ -21,6 +21,7 @@ class Locality(models.Model):
     adm = models.FloatField(default=0)
     required_local_matching = models.IntegerField(default = 0)
     budget_escalator = models.FloatField(default = 0)
+    years_between_assesment = models.IntegerField(default = 5)
     local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
 
     class Meta:
