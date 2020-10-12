@@ -243,6 +243,7 @@ def performCalculations(locality, simulation):
     local_adm = locality.adm
     required_local_matching = locality.required_local_matching
     budget_escalator = locality.budget_escalator/100
+    years_between_assesment = locality.years_between_assesment
     local_depreciation = locality.local_depreciation
     effective_rate_ext(local_depreciation)
 
@@ -328,10 +329,19 @@ def performCalculations(locality, simulation):
     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
 
     net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
-    adj_net_revenue = [net_revenue[i]/1000 for i in range(len(net_revenue))]
+    
+    # adj_net_revenue = [net_revenue[i]/1000 for i in range(len(net_revenue))]
+    offset = initial_year - 2020
+    adj_net_revenue = [0 for i in range(offset)]
+    for i in range(2050 - initial_year + 1):
+        if i % years_between_assesment == 0:
+            adj_net_revenue.append(net_revenue[i + offset]/1000)
+        else:
+            adj_net_revenue.append(adj_net_revenue[i + offset -1])
 
     cas_mt = adj_net_revenue
     tot_mt = total_adj_rev(cas_mt, discount_rate)
+
 
     '''
     Revenue Share Calculations
@@ -356,7 +366,14 @@ def performCalculations(locality, simulation):
     revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year)
     revenue_share_total = [current_revenue_from_land[i] + revenue_share_income[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]
     
-    cas_rs = [revenue_share_total[i]/1000 for i in range(31)]
+    # cas_rs = [revenue_share_total[i]/1000 for i in range(31)]
+    offset = initial_year - 2020
+    cas_rs = [0 for i in range(offset)]
+    for i in range(2050 - initial_year + 1):
+        if i % years_between_assesment == 0:
+            cas_rs.append(revenue_share_total[i + offset]/1000)
+        else:
+            cas_rs.append(cas_rs[i + offset -1])
 
     tot_rs = total_adj_rev(cas_rs, discount_rate)
 
