@@ -326,13 +326,14 @@ def performCalculations(locality, simulation):
     outside_fence_acreage = total_project_acreage - inside_fence_acreage
     baseline_land_value = simulation.baseline_land_value
     inside_fence_land_value = simulation.inside_fence_land_value
+    dominion_or_apco = simulation.dominion_or_apco
 
 
-    if(project_size < 25):
+    if(project_size < 25 and not dominion_or_apco):
         effective_tax_rate = [mt_tax_rate for i in range(31)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
-    elif(project_size >= 25 and project_size < 150):
+    elif((project_size >= 25 or dominion_or_apco) and project_size < 150):
         effective_tax_rate = [real_property_rate for i in range(31)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation

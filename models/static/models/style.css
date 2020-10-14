@@ -369,3 +369,12 @@ li{
 .locality-info-table td{
     padding: .75% 0;
 }
+
+.mt-flowchart{
+    height: 400px;
+    display: block;
+    margin: auto;
+}
+#the-revenue-share-model{
+    padding-top: 10px;
+}

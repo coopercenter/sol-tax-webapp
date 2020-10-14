@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{% load static %}
 <div class="container-fluid">
     <div class="model-description">
         <p>With passage of HB 1434, Virginia now offers localities two options to generate revenues from
@@ -63,8 +64,19 @@
                         passed
                         by the Virginia General Assembly and signed into law in 2020.</li>
                     <li>The depreciation schedule applied to capital investments, which may vary by locality.</li>
-                    <li>The local M&amp;T tax rate, which may vary by locality.</li>
+                    <li>Size of the solar project in MW</li>
+                    <li>The local M&amp;T tax rate and real estate rate, which may vary by locality.</li>
                 </ul>
+                <p>
+                    The tax rate, depreciation schedule, and expemption rate applied to the M&T tax model for a project can vary
+                    based on the size of the solar project and who is operating the project. There are three scenarios that need to be
+                    considered. First, if projects are under 25 MW and they are not owned by Dominion or APCO, the M&T tax rate is
+                    used along with the locality's depreciation schedule and the M&T stepdown exemption rate. If projects are between 25 MW
+                    and 150 MW or any project ownded by Dominion or APCO, the real estate tax rate is applied to the project along with the SCC
+                    depreciation schedule and the M&T stepdown exemption rate. Finally, all projects over 150 MW will use the real estate tax
+                    rate and the SCC depreciation schedule, however there is no tax exemption applied on these project. A breakdown of these
+                    projects and their implications can be viewed in the image below.
+                </p>
                 <p>In addition to these direct factors, the use of the M&amp;T tax may cause an additional indirect
                     effect
                     on local revenues, through its influence on state funding for education. Under Virginia law, the
@@ -82,6 +94,7 @@
                     issue briefly: a new solar project may increase a locality’s CI, triggering a decrease in
                     education
                     funding from the state.</p>
+                    <img src="{% static "models/Flowchart.png" %}" alt="M&T Flowchart" class="mt-flowchart">
             </div>
             <div id="the-revenue-share-model" class="section level3">
                 <h3>The Revenue Share Model</h3>
@@ -96,7 +109,7 @@
                     locality to assess a yearly flat rate through ordinance of up to $1400/MW on solar projects
                     built
                     within
-                    the jursidiction. Adopting this option grants an 100% tax exemption for solar projects in
+                    the jurisdiction. Adopting this option grants an 100% tax exemption for solar projects in
                     exchange
                     for
                     the revenue share.</p>
@@ -104,18 +117,29 @@
         </div>
         <div id="procedures-for-computing-cash-flows-under-the-two-models" class="section level1">
             <h1>Procedures for computing cash flows under the two models</h1>
-            <p>The tool will prompt the user for four pieces of information:</p>
+            <p>The tool will prompt the user for seven pieces of information:</p>
             <ul>
-                <li>which Virginia locality they are interested in investigating,</li>
-                <li>the rate at which the revenue share will be set (max. $1400/MW), and two schedules: one schedule
-                    of
-                    expected solar investments greater than 5MW in the locality, and the other schedule of expected
-                    solar
-                    investments greater than 20MW (each schedule should specify the expected added MW and the
-                    expected
-                    total
-                    assessed value of all new projects for each year).</li>
+
+                <li>The initial year the solar project will operate in</li>
+                <li>The inital investment into the solar project</li>
+                <li>The size of the project in megawatts</li>
+                <li>The total acerage of the project</li>
+                <li>The total acerage of the project that is "inside the fence"</li>
+                <li>The value of the land, both baseline value, and the value of land "inside the fence".</li>
+                <li>Whether the project is operated by Dominion or APCO</li>
             </ul>
+            <p>In addition to these variables for each analysis, each user is tied to a locality with locality specific 
+                parameters including,
+            </p>
+            <ul>
+                <li>The revenue share rate (max. $1400/MW)</li>
+                <li>M&T Tax Rate</li>
+                <li>Real Estate Tax Rate</li>
+                <li>Assessment Ratio</li>
+                <li>The locality's depreciation schedule</li>
+                <li>The discount rate to be applied to all projects</li>
+            </ul>
+            <p>These variable can be changed by a user to make their analyses more accurate</p>
             <p>Based on these data, the tool will calculate the expected tax revenue for a locality for each of the
                 two
                 tax
@@ -149,6 +173,30 @@
                     number of
                     qualifying megawatts built in year <span class="math inline">\(t\)</span>.</p>
             </div>
+        </div>
+        <div class="section level3" id="composite-index">
+            <h2>Composite Index</h2>
+            <p>Both the M&T tax and Revenue Share models will increase a locality's Composite Index value. 
+                As stated previously the Composite Index is used to determine how much money a locality must
+                contribute to its education funding. 
+            </p>
+            <p>For the M&T tax, the increase in the Composite Index comes from the increase in taxable land value
+                as a result of the new projet and the value of the the equipment for the project. However, for the revenue
+                share model, the increase for the Composite Index is only due to the increase in taxable land value.
+            </p>
+            <p>
+                Important values are needed for the Composite Index calculations. These values will be assigned to 
+                a locality's profile and a user can change them across the locality's profile. The values that are needed
+                for the Composite Index calculations are,
+            </p>
+            <ul>
+                <li>Locality Baseline True Vale</li>
+                <li>Adjusted Gross Income</li>
+                <li>Taxable Retail Sales</li>
+                <li>Population</li>
+                <li>Average Daily Student Membership (ADM)</li>
+                <li>Required Local Matching</li>
+            </ul>
         </div>
         <div id="converting-future-cash-flows-to-net-present-value" class="section level1">
             <h1>Converting future cash flows to Net Present Value</h1>
@@ -191,6 +239,10 @@
                     level
                     is
                     higher for earlier dates)</li>
+                <li>
+                    A localitiy's education budget will increase by 1 percent every year. Every other value used for the 
+                    composite index calculations will remain constant over time.
+                </li>
             </ul>
         </div>
         <div id="uncertainties-and-risks" class="section level1">
