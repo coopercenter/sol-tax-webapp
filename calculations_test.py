@@ -795,3 +795,29 @@ local_contribution_increase = increase_in_local_contribution(pv_education_contri
 
 net_revenue  = net_total_revenue_from_project(total_mt_revenue, local_contribution_increase)
 #print(net_revenue)
+
+test_dep_schedule = [.5, .5, .5, .5, .25, .25, .25, .25, .1]
+
+def depreciation_summary(depreciation_schedule):
+    ans = []
+    current = []
+    for i in range(0, len(depreciation_schedule)):
+        if i == 0:
+            current.append(0)
+        elif depreciation_schedule[i] == depreciation_schedule[i-1]:
+            current.append(i)
+        else:
+            # current.append(i-1)
+            ans.append(current)
+            current = [i]
+    ans.append(current)
+
+    written_ans = []
+    for r in ans:
+        if len(r) == 1:
+            written_ans.append(str(r[0]+1))
+        else:
+            written_ans.append(str(r[0] + 1) + "-" + str(r[-1] + 1))
+    print(written_ans)
+
+depreciation_summary(test_dep_schedule)

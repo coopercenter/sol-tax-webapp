@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import NewSimulationView
+from .views import NewSimulationView, UpdateLocalityParameterView
 from django.contrib.auth import views as auth_views
 # from models.dash_apps.finished_apps import *
 from . import views
@@ -13,6 +13,7 @@ urlpatterns = [
     # path('chart/', views.chart, name="chart"),
     path('locality-<str:locality_name>/', views.locality_home, name='locality_home'),
     path('locality-<str:locality_name>/<int:simulation_id>/', views.dash, name='simulation_dash'),
+    path('locality-<str:locality_name>/update-locality-parameters/', UpdateLocalityParameterView.as_view(), name='update_locality'),
     path('profile/', views.profile, name="profile"),
     path('localityName/', views.localityName, name='localityName'),
     path('login/', views.loginView, name = 'login'),

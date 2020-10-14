@@ -155,6 +155,9 @@ li{
 .table td.value-rate{
     padding-left: 30px;
 }
+.side-by-side-comparison{
+    padding: 7% 0;
+}
 
 
 /* Technical Page */
@@ -164,15 +167,16 @@ li{
 .locality-row{
     margin-right:0px;
 }
-.locality-card{
+
+/* .locality-card{
     width: 12rem;
     margin: 25px 0 25px 25px;
-}
+} */
 .simulation-card{
     text-align: left;
-    margin: 20px 50px;
-    width: 25rem;
-    height: 25rem;
+    margin: 20px auto;
+    width: 24rem;
+    height: 22rem;
     font-size: 18px;
 }
 .view-button{
@@ -187,7 +191,7 @@ li{
 }
 .locality-home-header{
     text-align: center;
-    padding: 2%;
+    padding: 1%;
 }
 
 
@@ -225,7 +229,7 @@ li{
 }
 
 .generateButton-form{
-    margin: 1%;
+    margin: 0 1% 2%;
     text-align: center;
 }
 
@@ -277,8 +281,8 @@ li{
 }
 
 .update-form{
-    text-align: left;
-    padding-left: 1.5%;
+    text-align: center;
+    padding: 0.5% 0 1.5%;
 }
 
 .card-body{
@@ -288,6 +292,9 @@ li{
     width: 100%;
     position: relative;
     padding: 5px;
+    text-align: center;
+    /* background-color: red; */
+    height: 200px;
     /* border: 1px solid; */
 }
 /* .card-table tbody tr:nth-of-type(odd){
@@ -302,10 +309,10 @@ li{
     text-align: right;
 }
 
-.analysis-buttons .delete-button{
+/* .analysis-buttons .delete-button{
     position: relative;
     right: 10px;
-}
+} */
 .rs-revenue-title{
     color: #ef553b;
 }
@@ -320,4 +327,54 @@ li{
 .locality-error-message{
     text-align: center;
     padding: 30px;
+}
+
+.locality-summary{
+    /* border: 1px solid gray; */
+    /* position: relative;
+    left: 28vw; */
+}
+
+
+
+.locality-summary-table{
+    border: 1px solid rgb(184, 183, 183);
+    border-radius: 5%;
+    text-align: left;
+    border-spacing: 10px;
+    margin: auto;
+}
+
+.locality-summary-table td{
+    padding: 5px 15px;
+}
+
+.locality-summary-table h4{
+    font-size: 24px;
+}
+.locality-info{
+    padding-bottom: 2%;
+}
+.locality-info-table{
+    margin: auto;
+}
+.locality-info-table{
+    text-align: left;
+    padding: 5px 5px;
+    font-size: 18px;
+}
+.locality-info-table .value{
+    text-align: right;
+}
+.locality-info-table td{
+    padding: .75% 0;
+}
+
+.mt-flowchart{
+    height: 400px;
+    display: block;
+    margin: auto;
+}
+#the-revenue-share-model{
+    padding-top: 10px;
 }

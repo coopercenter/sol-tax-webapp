@@ -3,15 +3,16 @@
 {% block content %}
 <div class="container-fluid">
     <h1 class="selected-locality">
-        Generate SolTax Model for <span class="locality_name">{{ county }}</span>
+        <!-- Update Locality Parameters -->
+        Update Locality Parameters<span class="locality_name">{{ county }}</span>
     </h1>
     
     <div class="form-group">
-        <form action = "/dash/" method="POST">
+        <form action = "/locality-{{county}}/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <br>
-            <button class="btn btn-primary btn-lg"> Generate Model </button>
+            <button class="btn btn-primary btn-lg"> Update Locality Parameters</button>
         </form>
     </div>
     <br><br>

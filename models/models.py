@@ -13,7 +13,7 @@ class Locality(models.Model):
     revenue_share_rate = models.IntegerField(default = 1400)
     real_property_rate = models.FloatField(default=0)
     mt_tax_rate = models.FloatField(default = 0)
-    assesment_ratio = models.FloatField(default=100)
+    assessment_ratio = models.FloatField(default=100)
     baseline_true_value = models.BigIntegerField(default = 0)
     adj_gross_income = models.BigIntegerField(default = 0)
     taxable_retail_sales = models.BigIntegerField(default = 0)
@@ -21,7 +21,7 @@ class Locality(models.Model):
     adm = models.FloatField(default=0)
     required_local_matching = models.IntegerField(default = 0)
     budget_escalator = models.FloatField(default = 0)
-    years_between_assesment = models.IntegerField(default = 5)
+    years_between_assessment = models.IntegerField(default = 5)
     local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
 
     class Meta:
@@ -41,6 +41,7 @@ class Simulation(models.Model):
     inside_fence_acreage = models.IntegerField(default = 1000)
     baseline_land_value = models.IntegerField(default = 1000)
     inside_fence_land_value = models.IntegerField(default = 10000)
+    dominion_or_apco = models.BooleanField(default = True)
 
     
     def __str__(self):
@@ -51,7 +52,7 @@ class Simulation(models.Model):
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["locality", "initial_investment", "initial_year", "project_size", "total_acreage", "inside_fence_acreage", "baseline_land_value", "inside_fence_land_value"], name="unique_locality_simulation")
+            models.UniqueConstraint(fields=["locality", "initial_investment", "initial_year", "project_size", "total_acreage", "inside_fence_acreage", "baseline_land_value", "inside_fence_land_value", "dominion_or_apco"], name="unique_locality_simulation")
         ]
 
     

@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import CreateView, ListView
 from django.views import generic
 from .models import Locality, Simulation, Calculations
-from .forms import SimulationForm 
+from .forms import SimulationForm, LocalityUpdateForm
 from django.core import serializers
 import urllib, base64
 import PIL, PIL.Image, io
@@ -73,18 +73,37 @@ def locality_home(request, locality_name):
         simulation.delete()
 
     locality = Locality.objects.get(name = locality_name.title())
+    #locality = serializers.serialize("python", Locality.objects.filter(name = locality_name.title()))
     simulations = locality.simulation_set.all()
 
     if request.POST.get('discount_rate'):
-        locality.discount_rate = request.POST.get('discount_rate')
-        locality.revenue_share_rate = request.POST.get('revenue_share_rate')
+        locality.discount_rate = int(request.POST.get('discount_rate'))
+        locality.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
+        locality.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
+        locality.real_property_rate = float(request.POST.get('real_property_rate'))
+        locality.assessment_ratio = float(request.POST.get('assessment_ratio'))
+        locality.baseline_true_value = int(request.POST.get('baseline_true_value'))
+        locality.adj_gross_income = int(request.POST.get('adj_gross_income'))
+        locality.taxable_retail_sales = int(request.POST.get('taxable_retail_sales'))
+        locality.population = int(request.POST.get('population'))
+        locality.adm = float(request.POST.get('adm'))
+        locality.required_local_matching = int(request.POST.get('required_local_matching'))
+        locality.budget_escalator = float(request.POST.get('budget_escalator'))
+        locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
         locality.save()
 
+    total_mt = 0
+    total_rs = 0
     for simulation in simulations:
         calc = performCalculations(locality, simulation)
         calc.save()
+        total_mt += sum(calc.tot_mt)*1000
+        total_rs += sum(calc.tot_rs)*1000
+    total_mt = round(total_mt, -3)
+    total_rs = round(total_rs, -3)
+    difference = total_rs - total_mt
 
-    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
+    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference})
 
 
 # Creates Scatter Plot using plotly
@@ -197,6 +216,24 @@ def request_page(request):
     locality_name = request.POST.get('generateButton')
     return render(request, 'testing.html' , {'county': locality_name})
 
+# def update_locality_parameters(request, locality_name):
+#     if request.method == 'POST':
+#         form = LocalityUpdateForm(request.POST)
+#         # print(form)
+#         print(form.has_error('NON_FIELD_ERRORS'))
+#         if form.is_valid():
+#             print("valid")
+#             locality = form.save(commit = False)
+#             locality.save()
+#             # sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
+#             # loc = Locality.objects.filter(name = simulation.locality)[0]
+#             # print(simulation.id)
+#             return HttpResponseRedirect("/locality-" + locality.name + "/")
+#         else:
+#             return HttpResponse("Error in updating locality parameters, please try again")
+        
+#     else:
+#         return HttpResponse('Error please select fill out the model generation form')
 
 def index_page(request):
     localities = Locality.objects.order_by('name')
@@ -210,9 +247,38 @@ class NewSimulationView(CreateView):
             locality_name = request.POST.get('generateButton')
             form_class = SimulationForm() 
             form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+
             return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))
+
+class UpdateLocalityParameterView(CreateView):
+    
+    def post(self, request, locality_name):
+        if(request.POST.get('viewButton') == None):
+            loc_name = locality_name
+            form_class = LocalityUpdateForm()
+            locality = Locality.objects.get(name = locality_name) 
+            # form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+            print(locality)
+            # form_class.fields['locality'].initial = locality.id
+            form_class.fields['revenue_share_rate'].initial = locality.revenue_share_rate
+            form_class.fields['discount_rate'].initial = locality.discount_rate
+            form_class.fields['mt_tax_rate'].initial = locality.mt_tax_rate
+            form_class.fields['real_property_rate'].initial = locality.real_property_rate
+            form_class.fields['assessment_ratio'].initial = locality.assessment_ratio
+            form_class.fields['baseline_true_value'].initial = locality.baseline_true_value
+            form_class.fields['adj_gross_income'].initial = locality.adj_gross_income
+            form_class.fields['taxable_retail_sales'].initial = locality.taxable_retail_sales
+            form_class.fields['population'].initial = locality.population
+            form_class.fields['adm'].initial = locality.adm
+            form_class.fields['required_local_matching'].initial = locality.required_local_matching
+            form_class.fields['budget_escalator'].initial = locality.budget_escalator
+            form_class.fields['years_between_assessment'].initial = locality.years_between_assessment
+            return render(request, 'update_form.html', {'form' : form_class, 'county': loc_name})
+        else:
+            return HttpResponse("ERROR")
+            #return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
 def performCalculations(locality, simulation):
 
@@ -235,7 +301,7 @@ def performCalculations(locality, simulation):
     revenue_share_rate = int(locality.revenue_share_rate)
     mt_tax_rate = locality.mt_tax_rate
     real_property_rate = locality.real_property_rate
-    assesment_ratio = locality.assesment_ratio/100
+    assessment_ratio = locality.assessment_ratio/100
     local_baseline_true_value = locality.baseline_true_value
     local_adj_gross_income = locality.adj_gross_income
     local_taxable_retail_sales = locality.taxable_retail_sales
@@ -243,7 +309,7 @@ def performCalculations(locality, simulation):
     local_adm = locality.adm
     required_local_matching = locality.required_local_matching
     budget_escalator = locality.budget_escalator/100
-    years_between_assesment = locality.years_between_assesment
+    years_between_assessment = locality.years_between_assessment
     local_depreciation = locality.local_depreciation
     effective_rate_ext(local_depreciation)
 
@@ -260,13 +326,14 @@ def performCalculations(locality, simulation):
     outside_fence_acreage = total_project_acreage - inside_fence_acreage
     baseline_land_value = simulation.baseline_land_value
     inside_fence_land_value = simulation.inside_fence_land_value
+    dominion_or_apco = simulation.dominion_or_apco
 
 
-    if(project_size < 25):
+    if(project_size < 25 and not dominion_or_apco):
         effective_tax_rate = [mt_tax_rate for i in range(31)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
-    elif(project_size >= 25 and project_size < 150):
+    elif((project_size >= 25 or dominion_or_apco) and project_size < 150):
         effective_tax_rate = [real_property_rate for i in range(31)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation
@@ -282,10 +349,10 @@ def performCalculations(locality, simulation):
     current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year)
     current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)  
 
-    solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assesment_ratio)
+    solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio)
 
     new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, baseline_land_value, initial_year)
-    land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assesment_ratio)
+    land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assessment_ratio)
     increase_in_gross_revenue = increased_county_gross_revenue_from_project(solar_project_valuation, effective_tax_rate, land_value_increase, real_property_rate)
 
     mt_and_property_income = total_gross_revenue_mt(current_revenue_from_land, increase_in_gross_revenue)
@@ -334,7 +401,7 @@ def performCalculations(locality, simulation):
     offset = initial_year - 2020
     adj_net_revenue = [0 for i in range(offset)]
     for i in range(2050 - initial_year + 1):
-        if i % years_between_assesment == 0:
+        if i % years_between_assessment == 0:
             adj_net_revenue.append(net_revenue[i + offset]/1000)
         else:
             adj_net_revenue.append(adj_net_revenue[i + offset -1])
@@ -370,7 +437,7 @@ def performCalculations(locality, simulation):
     offset = initial_year - 2020
     cas_rs = [0 for i in range(offset)]
     for i in range(2050 - initial_year + 1):
-        if i % years_between_assesment == 0:
+        if i % years_between_assessment == 0:
             cas_rs.append(revenue_share_total[i + offset]/1000)
         else:
             cas_rs.append(cas_rs[i + offset -1])
@@ -681,3 +748,5 @@ def total_adj_rev(cas, discount_rate):
     for i in range(len(cas)):
         tot_rs.append(cas[i] / ((1 + discount_rate)**(i + 1))) # Present value formula
     return tot_rs
+        
+
