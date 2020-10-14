@@ -35,8 +35,13 @@
                                     <td class="value"><span class="dollar_value">{% get_rs_rate simulation %}</span> /MW</td>
                                 </tr>
                                 <tr>
-                                    <td>Real Property Rate per $100 of Assessed Value</td>
-                                    <td class="value dollar_value">{% get_real_property_rate simulation %}</td>
+                                    <td class="{% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">Real Property Rate per $100 of Assessed Value</td>
+                                    <td class="value {% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_real_property_rate simulation %}</td>
+                                </tr>
+                                <!-- {{simulation.0.fields.project_size}} -->
+                                <tr>
+                                    <td class="{% if simulation.0.fields.project_size < 25 and not simulation.0.fields.dominion_or_apco %} color {% endif %}">M&T Tax Rate per $100 of Assessed Value</td>
+                                    <td class="value {% if simulation.0.fields.project_size < 25 and not simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_mt_rate simulation %}</td>
                                 </tr>
                             {% elif field == 'initial_investment' %}
                                 <tr>

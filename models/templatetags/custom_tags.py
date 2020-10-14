@@ -36,7 +36,12 @@ def get_mt_rate(sim):
 @register.simple_tag
 def get_real_property_rate(sim):
     locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    print(locality.real_property_rate)
     return locality.real_property_rate
+
+@register.simple_tag
+def get_project_size(sim):
+    return sim.project_size
 
 @register.simple_tag
 def get_locality(sim):
