@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.views.generic import CreateView, ListView
 from django.views import generic
 from .models import Locality, Simulation, Calculations
-from .forms import SimulationForm 
+from .forms import SimulationForm, LocalityUpdateForm
 from django.core import serializers
 import urllib, base64
 import PIL, PIL.Image, io
@@ -77,8 +77,19 @@ def locality_home(request, locality_name):
     simulations = locality.simulation_set.all()
 
     if request.POST.get('discount_rate'):
-        locality.discount_rate = request.POST.get('discount_rate')
-        locality.revenue_share_rate = request.POST.get('revenue_share_rate')
+        locality.discount_rate = int(request.POST.get('discount_rate'))
+        locality.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
+        locality.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
+        locality.real_property_rate = float(request.POST.get('real_property_rate'))
+        locality.assessment_ratio = float(request.POST.get('assessment_ratio'))
+        locality.baseline_true_value = int(request.POST.get('baseline_true_value'))
+        locality.adj_gross_income = int(request.POST.get('adj_gross_income'))
+        locality.taxable_retail_sales = int(request.POST.get('taxable_retail_sales'))
+        locality.population = int(request.POST.get('population'))
+        locality.adm = float(request.POST.get('adm'))
+        locality.required_local_matching = int(request.POST.get('required_local_matching'))
+        locality.budget_escalator = float(request.POST.get('budget_escalator'))
+        locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
         locality.save()
 
     total_mt = 0
@@ -205,6 +216,24 @@ def request_page(request):
     locality_name = request.POST.get('generateButton')
     return render(request, 'testing.html' , {'county': locality_name})
 
+# def update_locality_parameters(request, locality_name):
+#     if request.method == 'POST':
+#         form = LocalityUpdateForm(request.POST)
+#         # print(form)
+#         print(form.has_error('NON_FIELD_ERRORS'))
+#         if form.is_valid():
+#             print("valid")
+#             locality = form.save(commit = False)
+#             locality.save()
+#             # sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
+#             # loc = Locality.objects.filter(name = simulation.locality)[0]
+#             # print(simulation.id)
+#             return HttpResponseRedirect("/locality-" + locality.name + "/")
+#         else:
+#             return HttpResponse("Error in updating locality parameters, please try again")
+        
+#     else:
+#         return HttpResponse('Error please select fill out the model generation form')
 
 def index_page(request):
     localities = Locality.objects.order_by('name')
@@ -218,9 +247,38 @@ class NewSimulationView(CreateView):
             locality_name = request.POST.get('generateButton')
             form_class = SimulationForm() 
             form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+
             return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))
+
+class UpdateLocalityParameterView(CreateView):
+    
+    def post(self, request, locality_name):
+        if(request.POST.get('viewButton') == None):
+            loc_name = locality_name
+            form_class = LocalityUpdateForm()
+            locality = Locality.objects.get(name = locality_name) 
+            # form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+            print(locality)
+            # form_class.fields['locality'].initial = locality.id
+            form_class.fields['revenue_share_rate'].initial = locality.revenue_share_rate
+            form_class.fields['discount_rate'].initial = locality.discount_rate
+            form_class.fields['mt_tax_rate'].initial = locality.mt_tax_rate
+            form_class.fields['real_property_rate'].initial = locality.real_property_rate
+            form_class.fields['assessment_ratio'].initial = locality.assessment_ratio
+            form_class.fields['baseline_true_value'].initial = locality.baseline_true_value
+            form_class.fields['adj_gross_income'].initial = locality.adj_gross_income
+            form_class.fields['taxable_retail_sales'].initial = locality.taxable_retail_sales
+            form_class.fields['population'].initial = locality.population
+            form_class.fields['adm'].initial = locality.adm
+            form_class.fields['required_local_matching'].initial = locality.required_local_matching
+            form_class.fields['budget_escalator'].initial = locality.budget_escalator
+            form_class.fields['years_between_assessment'].initial = locality.years_between_assessment
+            return render(request, 'update_form.html', {'form' : form_class, 'county': loc_name})
+        else:
+            return HttpResponse("ERROR")
+            #return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
 def performCalculations(locality, simulation):
 

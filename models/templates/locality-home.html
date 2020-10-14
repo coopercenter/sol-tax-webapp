@@ -138,7 +138,7 @@
                         <td>
                             <strong>Parameter</strong>
                         </td>
-                        <td>
+                        <td class="value">
                             <strong>Value</strong>
                         </td>
                     </tr>
@@ -147,7 +147,7 @@
                     <td>
                         Revenue Share Rate
                     </td>
-                    <td class="dollar_value">
+                    <td class="dollar_value value">
                         {{locality.revenue_share_rate}} /MW
                     </td>
                 </tr>
@@ -155,7 +155,7 @@
                     <td>
                         Discount Rate
                     </td>
-                    <td>
+                    <td class="value">
                         {{locality.discount_rate}}%
                     </td>
                 </tr>
@@ -163,23 +163,24 @@
                     <td>
                         M&T Tax Rate
                     </td>
-                    <td>
-                        {{locality.mt_tax_rate}}
+                    <td class="value">
+                        ${{locality.mt_tax_rate}} / $100 Assessed Value
                     </td>
                 </tr>
                 <tr>
                     <td>
                         Real Property Rate
                     </td>
-                    <td>
-                        {{locality.real_property_rate}}
+                    <td class="value">
+                        ${{locality.real_property_rate}} / $100 Assessed Value
+                        <!-- <span class="dollar_value">{{locality.real_property_rate}}</span>/$100 Assessed Value -->
                     </td>
                 </tr>
                 <tr>
                     <td>
                         Assessment Ratio
                     </td>
-                    <td>
+                    <td class="value">
                         {{locality.assessment_ratio}}%
                     </td>
                 </tr>
@@ -202,7 +203,7 @@
                     <td>
                         Local True Value
                     </td>
-                    <td class="dollar_value">
+                    <td class="dollar_value value">
                         {{locality.baseline_true_value}}
                     </td>
                 </tr>
@@ -210,7 +211,7 @@
                     <td>
                         Adjusted Gross Income
                     </td>
-                    <td class="dollar_value">
+                    <td class="dollar_value value">
                         {{locality.adj_gross_income}}
                     </td>
                 </tr>
@@ -218,7 +219,7 @@
                     <td>
                         Taxable Retail Sales
                     </td>
-                    <td class="dollar_value">
+                    <td class="dollar_value value">
                         {{locality.taxable_retail_sales}}
                     </td>
                 </tr>
@@ -226,7 +227,7 @@
                     <td>
                         Population
                     </td>
-                    <td class="comma_value">
+                    <td class="comma_value value">
                         {{locality.population}}
                     </td>
                 </tr>
@@ -234,7 +235,7 @@
                     <td>
                         Average Daily Student Membership (ADM)
                     </td>
-                    <td class="comma_value">
+                    <td class="comma_value value">
                         {{locality.adm}}
                     </td>
                 </tr>
@@ -242,7 +243,7 @@
                     <td>
                         Required Local Matching
                     </td>
-                    <td class="dollar_value">
+                    <td class="dollar_value value">
                         {{locality.required_local_matching}}
                     </td>
                 </tr>
@@ -250,7 +251,7 @@
                     <td>
                         Education Budget Escalator
                     </td>
-                    <td>
+                    <td class="value">
                         {{locality.budget_escalator}}%
                     </td>
                 </tr>
@@ -258,22 +259,22 @@
                     <td>
                         Years Between Assessment
                     </td>
-                    <td>
+                    <td class="value">
                         {{locality.years_between_assessment}}
                     </td>
                 </tr>
             </table>
         </div>
         
-        <!-- <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
+        <form method="POST" action="update-locality-parameters/" class="update-form">
             {% csrf_token %}
 
-            <label for="discount_rate">Discount Rate %</label>
+            <!-- <label for="discount_rate">Discount Rate %</label>
             <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}"><br>
             <label for="discount_rate">Revenue Share Rate $/MW</label>
-            <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br>
-            <input class="btn btn-primary" type="submit" value="Update">
-        </form> -->
+            <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br> -->
+            <input class="btn btn-primary btn-lg" type="submit" value="Update Locality Parameters">
+        </form>
 
         {% else %}
                 <h2>Please Click to Generate a new Analysis</h2>

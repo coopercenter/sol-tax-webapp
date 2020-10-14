@@ -31,3 +31,38 @@ class SimulationForm(forms.ModelForm):
             'baseline_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'inside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
         }
+
+class LocalityUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Locality
+        fields = ('revenue_share_rate', 'discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment')
+        labels = {
+            'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
+            'discount_rate': ugettext_lazy("Discount Rate (%)"), 
+            'mt_tax_rate': ugettext_lazy("M&T Tax Rate ($/ $100 Assessed Value"), 
+            'real_property_rate': ugettext_lazy("Real Property Rate ($/ $100 Assessed Value"), 
+            'assessment_ratio': ugettext_lazy("Assessment Ratio (%)"), 
+            'baseline_true_value': ugettext_lazy("Baseline True Value ($)"), 
+            'adj_gross_income': ugettext_lazy("Adjusted Gross Income ($)"), 
+            'taxable_retail_sales': ugettext_lazy("Taxable Retail Sales ($)"), 
+            'population': ugettext_lazy("Population"), 
+            'adm': ugettext_lazy("Average Daily Student Membership (ADM)"), 
+            'required_local_matching': ugettext_lazy("Required Local Matching ($)"), 
+            'budget_escalator': ugettext_lazy("Budget Escalator ($)"), 
+            'years_between_assessment': ugettext_lazy("Years Between Assessment"),
+        }
+        widgets = {
+            'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
+            'discount_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'mt_tax_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'real_property_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'assessment_ratio': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'baseline_true_value': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'adj_gross_income': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'taxable_retail_sales': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'population': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'adm': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'required_local_matching': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
+            'budget_escalator': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'years_between_assessment': forms.NumberInput(attrs={'class': 'form-control', 'min':1, 'max':30}),
+        }

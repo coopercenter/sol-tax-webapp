@@ -281,8 +281,8 @@ li{
 }
 
 .update-form{
-    text-align: left;
-    padding-left: 1.5%;
+    text-align: center;
+    padding: 0.5% 0 1.5%;
 }
 
 .card-body{
@@ -357,4 +357,15 @@ li{
 }
 .locality-info-table{
     margin: auto;
+}
+.locality-info-table{
+    text-align: left;
+    padding: 5px 5px;
+    font-size: 18px;
+}
+.locality-info-table .value{
+    text-align: right;
+}
+.locality-info-table td{
+    padding: .75% 0;
 }
