@@ -73,6 +73,7 @@ def locality_home(request, locality_name):
         simulation.delete()
 
     locality = Locality.objects.get(name = locality_name.title())
+    #locality = serializers.serialize("python", Locality.objects.filter(name = locality_name.title()))
     simulations = locality.simulation_set.all()
 
     if request.POST.get('discount_rate'):
@@ -80,11 +81,18 @@ def locality_home(request, locality_name):
         locality.revenue_share_rate = request.POST.get('revenue_share_rate')
         locality.save()
 
+    total_mt = 0
+    total_rs = 0
     for simulation in simulations:
         calc = performCalculations(locality, simulation)
         calc.save()
+        total_mt += sum(calc.tot_mt)*1000
+        total_rs += sum(calc.tot_rs)*1000
+    total_mt = round(total_mt, -3)
+    total_rs = round(total_rs, -3)
+    difference = total_rs - total_mt
 
-    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations})
+    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference})
 
 
 # Creates Scatter Plot using plotly
@@ -235,7 +243,7 @@ def performCalculations(locality, simulation):
     revenue_share_rate = int(locality.revenue_share_rate)
     mt_tax_rate = locality.mt_tax_rate
     real_property_rate = locality.real_property_rate
-    assesment_ratio = locality.assesment_ratio/100
+    assessment_ratio = locality.assessment_ratio/100
     local_baseline_true_value = locality.baseline_true_value
     local_adj_gross_income = locality.adj_gross_income
     local_taxable_retail_sales = locality.taxable_retail_sales
@@ -243,7 +251,7 @@ def performCalculations(locality, simulation):
     local_adm = locality.adm
     required_local_matching = locality.required_local_matching
     budget_escalator = locality.budget_escalator/100
-    years_between_assesment = locality.years_between_assesment
+    years_between_assessment = locality.years_between_assessment
     local_depreciation = locality.local_depreciation
     effective_rate_ext(local_depreciation)
 
@@ -282,10 +290,10 @@ def performCalculations(locality, simulation):
     current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year)
     current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)  
 
-    solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assesment_ratio)
+    solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio)
 
     new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, baseline_land_value, initial_year)
-    land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assesment_ratio)
+    land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assessment_ratio)
     increase_in_gross_revenue = increased_county_gross_revenue_from_project(solar_project_valuation, effective_tax_rate, land_value_increase, real_property_rate)
 
     mt_and_property_income = total_gross_revenue_mt(current_revenue_from_land, increase_in_gross_revenue)
@@ -334,7 +342,7 @@ def performCalculations(locality, simulation):
     offset = initial_year - 2020
     adj_net_revenue = [0 for i in range(offset)]
     for i in range(2050 - initial_year + 1):
-        if i % years_between_assesment == 0:
+        if i % years_between_assessment == 0:
             adj_net_revenue.append(net_revenue[i + offset]/1000)
         else:
             adj_net_revenue.append(adj_net_revenue[i + offset -1])
@@ -370,7 +378,7 @@ def performCalculations(locality, simulation):
     offset = initial_year - 2020
     cas_rs = [0 for i in range(offset)]
     for i in range(2050 - initial_year + 1):
-        if i % years_between_assesment == 0:
+        if i % years_between_assessment == 0:
             cas_rs.append(revenue_share_total[i + offset]/1000)
         else:
             cas_rs.append(cas_rs[i + offset -1])
@@ -681,3 +689,5 @@ def total_adj_rev(cas, discount_rate):
     for i in range(len(cas)):
         tot_rs.append(cas[i] / ((1 + discount_rate)**(i + 1))) # Present value formula
     return tot_rs
+        
+

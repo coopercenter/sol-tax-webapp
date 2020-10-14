@@ -13,22 +13,50 @@
         </form>
         
         {% if simulations %}
-
+            <div class="locality-summary">
+                <table class="locality-summary-table">
+                    <tr>
+                        <td>
+                            <h4>Total Revenue Share Revenue</h4>
+                        </td>
+                        <td>
+                            <h4><span class="dollar_value">{{total_rs_revenue}}</span></h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Total M&T Revenue</h4>
+                        </td>
+                        <td>
+                            <h4><span class="dollar_value">{{total_mt_revenue}}</span></h4>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h4>Increase in Revenue from Revenue Share</h4>
+                        </td>
+                        <td>
+                            <h4><span class="dollar_value difference">{{difference}}</span></h4>
+                        </td>
+                    </tr>
+                
+                </table>
+                <!-- <h2>Total Revenue Share Income from all Analyses: </h2>
+                <h2>Total M&T Income from all Analyses: </h2>
+                <h2>Increase in income from Revenue Share: </h2> -->
+            </div>
             {% for simulation in simulations %}
                 {% if forloop.first %}
                         <div class="row locality-row">
                 {% endif %}
                 
-                <div class="col-lg-4 col-md-6">
-                    <div class="card simulation-card">
+                <div class="col-xl-4 col-md-6 col-sm-12">
+                    <div class="card simulation-card text-center">
                         <div class="card-body">
-                            <!--
-                                TABLE
-                            -->
                             <table class="card-table table-striped">
                                 <tr class="card-table-row">
                                     <td>
-                                        Initial Year
+                                        <strong>Initial Year</strong>
                                     </td>
                                     <td class="card-table-value">
                                         {{simulation.initial_year}}
@@ -36,42 +64,42 @@
                                 </tr>
                                 <tr class="card-table-row odd">
                                     <td>
-                                        Initial Investment
+                                        <strong>Initial Investment</strong>
                                     </td>
                                     <td class="card-table-value">
-                                        $<span class="comma_value">{{simulation.initial_investment}}</span>
+                                        <span class="dollar_value">{{simulation.initial_investment}}</span>
                                     </td>
                                 </tr>
                                 <tr class="card-table-row">
                                     <td>
-                                        Project Size
+                                        <strong>Project Size</strong>
                                     </td>
                                     <td class="card-table-value">
                                         {{simulation.project_size}} MW
                                     </td>
                                 </tr>
-                                <tr class="card-table-row odd">
+                                <tr class="odd card-table-row">
                                     <td>
-                                        Revenue Share Revenue
+                                        <strong>Revenue Share Revenue</strong>
                                     </td>
                                     <td class="card-table-value">
-                                        $<span class="comma_value">{% get_totals simulation.calculations.tot_rs %}</span>
+                                        <span class="dollar_value">{% get_totals simulation.calculations.tot_rs %}</span>
                                     </td>
                                 </tr>
                                 <tr class="card-table-row">
                                     <td>
-                                        M&T Revenue
+                                        <strong>M&T Revenue</strong>
                                     </td>
                                     <td class="card-table-value">
-                                        $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span>
+                                        <span class="dollar_value">{% get_totals simulation.calculations.tot_mt %}</span>
                                     </td>
                                 </tr>
-                                <tr class="card-table-row">
+                                <tr class="odd card-table-row">
                                     <td>
-                                        Difference
+                                        <strong>Difference</strong>
                                     </td>
                                     <td class="card-table-value">
-                                        $<span class="comma_value">{% subtract simulation.calculations.tot_rs simulation.calculations.tot_mt %}</span>
+                                        <span class="dollar_value difference">{% subtract simulation.calculations.tot_rs simulation.calculations.tot_mt %}</span>
                                     </td>
                                 </tr>
                             </table>
@@ -84,12 +112,12 @@
                                 <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
-                                    <button type="submit" class="btn btn-primary btn-sm view-button" name = "viewButton">View Analysis</button>
+                                    <button type="submit" class="btn btn-primary btn-md view-button" name = "viewButton">View Analysis</button>
                                 </form>
                                 <form action="/locality-{{simulation.locality.name}}/" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
-                                    <button type="submit" class="btn btn-sm btn-danger delete-button" name = "deleteButton">Delete Analysis</button>
+                                    <button type="submit" class="btn btn-md btn-danger delete-button" name = "deleteButton">Delete Analysis</button>
                                 </form>
                             </div>
                         </div>
@@ -102,7 +130,142 @@
         <!--
             Display as Table and have update button on bottom
         -->
-        <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
+        <div class="locality-info">
+            <h2> Locality Parameters for Calculations</h2>
+            <table class="table-striped locality-info-table">
+                <thead>
+                    <tr>
+                        <td>
+                            <strong>Parameter</strong>
+                        </td>
+                        <td>
+                            <strong>Value</strong>
+                        </td>
+                    </tr>
+                </thead>
+                <tr>
+                    <td>
+                        Revenue Share Rate
+                    </td>
+                    <td class="dollar_value">
+                        {{locality.revenue_share_rate}} /MW
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Discount Rate
+                    </td>
+                    <td>
+                        {{locality.discount_rate}}%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        M&T Tax Rate
+                    </td>
+                    <td>
+                        {{locality.mt_tax_rate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Real Property Rate
+                    </td>
+                    <td>
+                        {{locality.real_property_rate}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Assessment Ratio
+                    </td>
+                    <td>
+                        {{locality.assessment_ratio}}%
+                    </td>
+                </tr>
+                <!-- <tr>
+                    <td>
+                        Depreciation Schedule
+                    </td>
+                    <td>
+                        {{locality.local_depreciation}}
+                    </td>
+                </tr> -->
+                <tr>
+                    <td>
+                        <strong>Composite Index Parameters</strong>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Local True Value
+                    </td>
+                    <td class="dollar_value">
+                        {{locality.baseline_true_value}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Adjusted Gross Income
+                    </td>
+                    <td class="dollar_value">
+                        {{locality.adj_gross_income}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Taxable Retail Sales
+                    </td>
+                    <td class="dollar_value">
+                        {{locality.taxable_retail_sales}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Population
+                    </td>
+                    <td class="comma_value">
+                        {{locality.population}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Average Daily Student Membership (ADM)
+                    </td>
+                    <td class="comma_value">
+                        {{locality.adm}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Required Local Matching
+                    </td>
+                    <td class="dollar_value">
+                        {{locality.required_local_matching}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Education Budget Escalator
+                    </td>
+                    <td>
+                        {{locality.budget_escalator}}%
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Years Between Assessment
+                    </td>
+                    <td>
+                        {{locality.years_between_assessment}}
+                    </td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- <form method="POST" action="/locality-{{locality.name}}/" class="update-form">
             {% csrf_token %}
 
             <label for="discount_rate">Discount Rate %</label>
@@ -110,7 +273,7 @@
             <label for="discount_rate">Revenue Share Rate $/MW</label>
             <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br>
             <input class="btn btn-primary" type="submit" value="Update">
-        </form>
+        </form> -->
 
         {% else %}
                 <h2>Please Click to Generate a new Analysis</h2>
