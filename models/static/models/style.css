@@ -52,12 +52,12 @@ li{
 
 /* Footer */
 .footer{
-    background-color: #232D4B;
+    background-color: rgb(214, 214, 214);
     padding: 5px 0;
     line-height: 1;
 }
 .footer-text{
-    color: rgb(173, 171, 171);
+    /* color: rgb(173, 171, 171); */
     text-align: center;
 }
 
@@ -381,4 +381,17 @@ li{
 
 .color{
     background-color: #0da33267;
+}
+
+.logos{
+    text-align: center;
+    padding: 15px 0;
+}
+.eti-logo{
+    padding: 0 25px;
+    width: 450px;
+}
+.dmme-logo{
+    padding-left: 25px;
+    width: 200px;
 }
