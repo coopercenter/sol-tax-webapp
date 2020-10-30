@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <form action="">
+        {% for item in local_depreciation %}
+            Year {{forloop.counter}}
+            <input type=text value="{{item}}">
+            <br>
+        {% endfor %} 
+    </form>
+    <!-- {% for item in local_depreciation %}
+        <p>{{forloop.counter}}   <span class="percentage">{{item}}</span>%</p>
+    {% endfor %}
+    <p>{{local_depreciation}}</p>
+    <p>{{scc_depreciation}}</p>
+    <div class="row">
+        <div class="col-xl-6">
+            <h2>Local Depreciation Schedule</h2>
+            <table>
+                <th>
+                    <tr>
+                        <td>
+                            Year
+                        </td>
+                        <td>
+                            Rate
+                        </td>
+                    </tr>
+                </th>
+                <tbody>
+                    <tr>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            90%
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-xl-6">
+            <h2>SCC Depreciation Schedule</h2>
+            <table>
+                <th>
+                    <tr>
+                        <td>
+                            Year
+                        </td>
+                        <td>
+                            Rate
+                        </td>
+                    </tr>
+                </th>
+                <tbody>
+                    <tr>
+                        <td>
+                            1
+                        </td>
+                        <td>
+                            90%
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div> -->
+{% endblock %}

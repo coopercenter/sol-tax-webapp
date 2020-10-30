@@ -12,25 +12,30 @@ from django.utils.translation import ugettext_lazy
 class SimulationForm(forms.ModelForm):
     class Meta:
         model = Simulation
-        fields = ('locality', 'initial_year', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'dominion_or_apco')
+        fields = ('locality', 'initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
             'initial_investment': ugettext_lazy('Initial Investment ($)'),
+            'initial_year': ugettext_lazy('Initial Year'),
+            'project_length': ugettext_lazy('Project Length (Years)'),
             'project_size': ugettext_lazy('Project Size (MW)'),
             'total_acreage': ugettext_lazy('Total Project acreage (Acres)'),
             'inside_fence_acreage': ugettext_lazy('Solar Project Inside the Fence (Acres)'),
             'baseline_land_value': ugettext_lazy('Baseline Value of Land ($)'),
             'inside_fence_land_value': ugettext_lazy('Inside the Fence Value of Land ($)'),
+            'outside_fence_land_value': ugettext_lazy('Outside the Fence Value of Land ($)'),
             'dominion_or_apco': ugettext_lazy('Is the project operated by either Dominion or APCO?'),
         }
         widgets = {
             'locality': forms.HiddenInput(),
             'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
+            'project_length': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'project_size': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'total_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':100, 'max':10000}),
             'inside_fence_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':100, 'max':10000}),
             'baseline_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'inside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
+            'outside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'dominion_or_apco': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
         }
 
@@ -68,3 +73,11 @@ class LocalityUpdateForm(forms.ModelForm):
             'budget_escalator': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'years_between_assessment': forms.NumberInput(attrs={'class': 'form-control', 'min':1, 'max':30}),
         }
+
+# class LocalityDepreciationUpdateForm(forms.ModelForm):
+#     class Meta:
+#         model = Locality
+#         fields = {'locality_depreciation', 'scc_depreciation'}
+#         labels = {
+
+#         }

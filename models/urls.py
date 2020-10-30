@@ -14,9 +14,11 @@ urlpatterns = [
     path('locality-<str:locality_name>/', views.locality_home, name='locality_home'),
     path('locality-<str:locality_name>/<int:simulation_id>/', views.dash, name='simulation_dash'),
     path('locality-<str:locality_name>/update-locality-parameters/', UpdateLocalityParameterView.as_view(), name='update_locality'),
+    path('locality-<str:locality_name>/update-depreciation-schedules/', views.depreciationUpdate, name='update_depreciation'),
     path('profile/', views.profile, name="profile"),
     path('localityName/', views.localityName, name='localityName'),
     path('login/', views.loginView, name = 'login'),
     path('logout/', views.logoutView, name = 'logout'),
     path('password/', views.change_password, name="change_password"),
+    path('pdf-<str:locality_name>/', views.testPDF, name="pdf"),
 ]
