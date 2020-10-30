@@ -87,6 +87,7 @@ def profile(request):
 
 def locality_home(request, locality_name):
     print(locality_name.title())
+    print(request.POST.get('local-1'))
     if request.POST.get('simulation_id'):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         simulation.delete()
@@ -109,6 +110,22 @@ def locality_home(request, locality_name):
         locality.required_local_matching = int(request.POST.get('required_local_matching'))
         locality.budget_escalator = float(request.POST.get('budget_escalator'))
         locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
+        locality.save()
+    if request.POST.get('local-1'):
+        local = []
+        for item in request.POST:
+            if item[:5] == "local":
+                local.append(float(request.POST.get(item))/100)
+        print(local)
+        locality.local_depreciation = local
+        locality.save()
+
+    if request.POST.get('scc-1'):
+        scc = []
+        for item in request.POST:
+            if item[:3] == "scc":
+                scc.append(float(request.POST.get(item))/100)
+        locality.scc_depreciation = scc
         locality.save()
 
     total_mt = 0
@@ -305,9 +322,10 @@ def depreciationUpdate(request, locality_name):
     locality = Locality.objects.get(name = locality_name)
     scc = locality.scc_depreciation
     depreciation_ext(scc)
+    scc=scc[:30]
     local = locality.local_depreciation
     depreciation_ext(local)
-    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc})
+    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': locality_name})
 
 def performCalculations(locality, simulation):
 

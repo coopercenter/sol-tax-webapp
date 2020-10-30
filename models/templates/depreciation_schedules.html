@@ -1,13 +1,80 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <form action="">
-        {% for item in local_depreciation %}
-            Year {{forloop.counter}}
-            <input type=text value="{{item}}">
-            <br>
-        {% endfor %} 
-    </form>
+    {% load custom_tags %}
+    <div class="row depreciation-row">
+        <div class="col-xl-6 depreciation-forms">
+            <div>  
+                <h2>Local Depreciation Schedule</h2> 
+                <form action="/locality-{{locality}}/" class="local-depreciation-form" method="POST" name="testing">
+                    {% csrf_token %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <td class="depreciation-form-year">
+                                    Year
+                                </td>
+                                <td class="depreciation-form-rate">
+                                    Depreciation Rate (%)
+                                </td>
+                            </tr>
+                        </thead>
+                    
+                        {% for item in local_depreciation %}
+                            <tr>
+                                <td>
+                                    {{forloop.counter}}
+                                </td>
+                                <td>
+                                    <input type=text value="{% change_to_percentage item %}" name="local-{{forloop.counter}}">
+                                </td>
+                            </tr>
+                        {% endfor %} 
+                    </table>
+                        <!-- Year {{forloop.counter}}
+                        
+                        <br> -->
+                    
+                    <button type="submit" class="btn btn-lg btn-primary local-rate-submit" value=""> Change Local Schedule </button>
+                </form>
+            </div>
+        </div>
+        <div class="col-xl-6 depreciation-forms">
+            <h2>SCC Depreciation Schedule</h2> 
+            <form action="/locality-{{locality}}/" class="local-depreciation-form" method="POST">
+                {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            <td class="depreciation-form-year">
+                                Year
+                            </td>
+                            <td class="depreciation-form-rate">
+                                Depreciation Rate (%)
+                            </td>
+                        </tr>
+                    </thead>
+                
+                    {% for item in scc_depreciation %}
+                        <tr>
+                            <td>
+                                {{forloop.counter}}
+                            </td>
+                            <td>
+                                <input type=text value="{% change_to_percentage item %}" name="scc-{{forloop.counter}}">
+                            </td>
+                        </tr>
+                    {% endfor %} 
+                </table>
+                    <!-- Year {{forloop.counter}}
+                    
+                    <br> -->
+                
+                <input type="submit" value="Change SCC Schedule" class="btn btn-lg btn-primary local-rate-submit">
+            </form>
+        </div>
+    </div>
+    
     <!-- {% for item in local_depreciation %}
         <p>{{forloop.counter}}   <span class="percentage">{{item}}</span>%</p>
     {% endfor %}
