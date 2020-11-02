@@ -1,6 +1,7 @@
 var add_commas = document.querySelectorAll(".comma_value")
 var dollar_sign = document.querySelectorAll(".dollar_value")
 var differnce_values = document.querySelectorAll(".difference")
+var percentages = document.querySelectorAll(".percentage")
 
 console.log(dollar_sign)
 for(var i = 0; i < differnce_values.length; i++){
@@ -18,6 +19,10 @@ var formatter = new Intl.NumberFormat('en-US', {
     maximumSignificantDigits: 6,
 });
 
+console.log(percentages)
+for(var i = 0; i < percentages.length; i++){
+    percentages[i].innerText = parseFloat(percentages[i].innerText) * 100
+}
 // console.log(formatter.format("-123456"))
 
 for(var i = 0; i < dollar_sign.length; i++){

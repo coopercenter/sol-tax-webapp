@@ -78,6 +78,11 @@
                                 <td>Inside the Fence Land Value</td>
                                 <td class="value"><span class="dollar_value">{{value}}</span> /acre</td>
                             </tr>
+                            {% elif field == 'outside_fence_land_value' %}
+                            <tr>
+                                <td>Outside the Fence Land Value</td>
+                                <td class="value"><span class="dollar_value">{{value}}</span> /acre</td>
+                            </tr>
                             {% endif %}
                         {% endfor %}
                     {% endfor %}
@@ -183,7 +188,7 @@
                 {% for i in n %}
                     {% if forloop.counter|divisibleby:2 %}
                     <tr class="even">
-                        <td>{{i|add:2020}}</td>
+                        <td>{{i|add:simulation.0.fields.initial_year}}</td>
                         <td><span class="dollar_value">{{calculations.cas_mt|get_revenue_index:i}}</span></td>
                         <td class="right-border-cell"><span class="dollar_value">{{calculations.cas_rs|get_revenue_index:i}}</span></td>
                         <td><span class="dollar_value">{{calculations.tot_mt|get_revenue_index:i}}</span></td>
@@ -191,7 +196,7 @@
                     </tr>
                     {% else %}
                     <tr class="odd">
-                        <td>{{i|add:2020}}</td>
+                        <td>{{i|add:simulation.0.fields.initial_year}}</td>
                         <td><span class="dollar_value">{{calculations.cas_mt|get_revenue_index:i}}</span></td>
                         <td class="right-border-cell"><span class="dollar_value">{{calculations.cas_rs|get_revenue_index:i}}</span></td>
                         <td><span class="dollar_value">{{calculations.tot_mt|get_revenue_index:i}}</span></td>

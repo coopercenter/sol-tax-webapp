@@ -2,7 +2,7 @@ from matplotlib import pylab
 from pylab import *
 from django.shortcuts import render, redirect
 from django.urls import reverse
-from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.views.generic import CreateView, ListView
 from django.views import generic
 from .models import Locality, Simulation, Calculations
@@ -16,6 +16,9 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
+
+from reportlab.pdfgen import canvas
+from reportlab.rl_config import defaultPageSize
 
 from plotly.offline import plot
 import plotly.graph_objects as go
@@ -40,6 +43,22 @@ def loginView(request):
 def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/')
+
+def testPDF(request, locality_name):
+    height = defaultPageSize[1]
+    width = defaultPageSize[0]
+    buffer = io.BytesIO()
+
+    p = canvas.Canvas(buffer)
+    p.setFont("Times-Roman", 20)
+    #p.drawCenteredString(width/2, height, locality_name)
+    p.drawString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
+
+    p.showPage()
+    p.save()
+
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
 
 def change_password(request):
     if request.method == 'POST':
@@ -68,6 +87,7 @@ def profile(request):
 
 def locality_home(request, locality_name):
     print(locality_name.title())
+    print(request.POST.get('local-1'))
     if request.POST.get('simulation_id'):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         simulation.delete()
@@ -91,6 +111,22 @@ def locality_home(request, locality_name):
         locality.budget_escalator = float(request.POST.get('budget_escalator'))
         locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
         locality.save()
+    if request.POST.get('local-1'):
+        local = []
+        for item in request.POST:
+            if item[:5] == "local":
+                local.append(float(request.POST.get(item))/100)
+        print(local)
+        locality.local_depreciation = local
+        locality.save()
+
+    if request.POST.get('scc-1'):
+        scc = []
+        for item in request.POST:
+            if item[:3] == "scc":
+                scc.append(float(request.POST.get(item))/100)
+        locality.scc_depreciation = scc
+        locality.save()
 
     total_mt = 0
     total_rs = 0
@@ -107,8 +143,10 @@ def locality_home(request, locality_name):
 
 
 # Creates Scatter Plot using plotly
-def scatter(mt, rs):
-    x1 = [i for i in range(2020, 2051)]
+def scatter(mt, rs, simulation):
+    starting_year = simulation.initial_year
+    project_length = simulation.project_length
+    x1 = [i + starting_year for i in range(project_length)]
     y1 = mt
     y2 = rs
 
@@ -161,10 +199,10 @@ def dash(request, locality_name, simulation_id):
         calc.save()
 
         context = {
-            'plot1': scatter(calc.cas_mt, calc.cas_rs)
+            'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
         }
 
-        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
+        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
     if(request.POST.get('simulation_id')):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
@@ -174,10 +212,10 @@ def dash(request, locality_name, simulation_id):
         calc.save()
 
         context = {
-            'plot1': scatter(calc.cas_mt, calc.cas_rs)
+            'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
         }
 
-        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
+        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
     if request.method == 'POST':
         form = SimulationForm(request.POST)
         if form.is_valid():
@@ -192,9 +230,9 @@ def dash(request, locality_name, simulation_id):
             calc.save()
 
             context = {
-                'plot1': scatter(calc.cas_mt, calc.cas_rs)
+                'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
             }
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
+            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
         
         else:
             simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
@@ -204,10 +242,10 @@ def dash(request, locality_name, simulation_id):
             calc.save()
 
             context = {
-                'plot1': scatter(calc.cas_mt, calc.cas_rs)
+                'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
             }
 
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(31), "graph":context})
+            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
     else:
         return HttpResponse('Error please select fill out the model generation form')
 # Create your views here.
@@ -280,20 +318,33 @@ class UpdateLocalityParameterView(CreateView):
             return HttpResponse("ERROR")
             #return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
+def depreciationUpdate(request, locality_name):
+    locality = Locality.objects.get(name = locality_name)
+    scc = locality.scc_depreciation
+    depreciation_ext(scc)
+    scc=scc[:30]
+    local = locality.local_depreciation
+    depreciation_ext(local)
+    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': locality_name})
+
 def performCalculations(locality, simulation):
 
     '''
-    State Variables
+    Simulation Variables
     '''
-    state_true_value = [1170092111098.94 for i in range(31)]
-    state_adj_gross_income = 269067675604.708
-    state_taxable_retail_sales = 100207273998.18
-    state_adm = 1239781.3
-    state_population = 8382993
-    scc_depreciation = [.9, .9, .9, .9, .8973, .8729, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10]
-    mt_stepdown = [.8, .8, .8, .8, .8, .7, .7, .7, .7, .7, .6]
-    effective_rate_ext(mt_stepdown)
-    
+
+    local_investment = simulation.initial_investment
+    initial_year = simulation.initial_year
+    project_length = simulation.project_length
+    project_size = simulation.project_size
+    total_project_acreage = simulation.total_acreage
+    inside_fence_acreage =simulation.inside_fence_acreage
+    outside_fence_acreage = total_project_acreage - inside_fence_acreage
+    baseline_land_value = simulation.baseline_land_value
+    inside_fence_land_value = simulation.inside_fence_land_value
+    outside_fence_land_value = simulation.outside_fence_land_value
+    dominion_or_apco = simulation.dominion_or_apco
+
     '''
     Locality Variables
     '''
@@ -311,47 +362,48 @@ def performCalculations(locality, simulation):
     budget_escalator = locality.budget_escalator/100
     years_between_assessment = locality.years_between_assessment
     local_depreciation = locality.local_depreciation
-    effective_rate_ext(local_depreciation)
-
+    #scc_depreciation = [.9, .9, .9, .9, .8973, .8729, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10]
+    scc_depreciation = locality.scc_depreciation
+    #print(scc_depreciation)
+    effective_rate_ext(scc_depreciation, project_length)
+    effective_rate_ext(local_depreciation, project_length)
 
     '''
-    Simulation Variables
+    State Variables
     '''
-
-    local_investment = simulation.initial_investment
-    initial_year = simulation.initial_year
-    project_size = simulation.project_size
-    total_project_acreage = simulation.total_acreage
-    inside_fence_acreage =simulation.inside_fence_acreage
-    outside_fence_acreage = total_project_acreage - inside_fence_acreage
-    baseline_land_value = simulation.baseline_land_value
-    inside_fence_land_value = simulation.inside_fence_land_value
-    dominion_or_apco = simulation.dominion_or_apco
+    state_true_value = [1170092111098.94 for i in range(project_length)]
+    state_adj_gross_income = 269067675604.708
+    state_taxable_retail_sales = 100207273998.18
+    state_adm = 1239781.3
+    state_population = 8382993
+    mt_stepdown = [.8, .8, .8, .8, .8, .7, .7, .7, .7, .7, .6]
+    effective_rate_ext(mt_stepdown, project_length)
 
 
     if(project_size < 25 and not dominion_or_apco):
-        effective_tax_rate = [mt_tax_rate for i in range(31)]
+        effective_tax_rate = [mt_tax_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
     elif((project_size >= 25 or dominion_or_apco) and project_size < 150):
-        effective_tax_rate = [real_property_rate for i in range(31)]
+        effective_tax_rate = [real_property_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation
     else:
-        effective_tax_rate = [real_property_rate for i in range(31)]
-        effective_exemption_rate = [0 for i in range(31)]
+        effective_tax_rate = [real_property_rate for i in range(project_length)]
+        effective_exemption_rate = [0 for i in range(project_length)]
         effective_depreciation_schedule = scc_depreciation
 
+    print(effective_depreciation_schedule)
     '''
     Land Value Calculations
     '''
 
-    current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year)
+    current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year, project_length, years_between_assessment)
     current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)  
 
-    solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio)
+    solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio, project_length)
 
-    new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, baseline_land_value, initial_year)
+    new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, outside_fence_land_value, initial_year, project_length, years_between_assessment)
     land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assessment_ratio)
     increase_in_gross_revenue = increased_county_gross_revenue_from_project(solar_project_valuation, effective_tax_rate, land_value_increase, real_property_rate)
 
@@ -363,10 +415,10 @@ def performCalculations(locality, simulation):
     M&T Tax Calculations
     '''  
 
-    adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm)
-    adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm)
-    per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population)
-    per_capita_retail_sales = get_retail_sales_per_capita(local_taxable_retail_sales, local_population, state_taxable_retail_sales, state_population)
+    adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm, project_length)
+    adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm, project_length)
+    per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population, project_length)
+    per_capita_retail_sales = get_retail_sales_per_capita(local_taxable_retail_sales, local_population, state_taxable_retail_sales, state_population, project_length)
 
     base_adm_true_values = get_baseline_true_values_adm(local_baseline_true_value, local_adm, state_true_value, state_adm)
     base_per_capita_true_values = get_baseline_true_values_per_capita(local_baseline_true_value, local_population, state_true_value, state_population)
@@ -398,16 +450,17 @@ def performCalculations(locality, simulation):
     net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
     
     # adj_net_revenue = [net_revenue[i]/1000 for i in range(len(net_revenue))]
-    offset = initial_year - 2020
-    adj_net_revenue = [0 for i in range(offset)]
-    for i in range(2050 - initial_year + 1):
+    #offset = initial_year - 2020
+    #adj_net_revenue = [0 for i in range(project_length)]
+    adj_net_revenue = []
+    for i in range(project_length):
         if i % years_between_assessment == 0:
-            adj_net_revenue.append(net_revenue[i + offset]/1000)
+            adj_net_revenue.append(net_revenue[i]/1000)
         else:
-            adj_net_revenue.append(adj_net_revenue[i + offset -1])
+            adj_net_revenue.append(adj_net_revenue[i -1])
 
     cas_mt = adj_net_revenue
-    tot_mt = total_adj_rev(cas_mt, discount_rate)
+    tot_mt = total_adj_rev(cas_mt, discount_rate, initial_year)
 
 
     '''
@@ -430,19 +483,20 @@ def performCalculations(locality, simulation):
 
     real_property_increase_in_revenue = net_total_revenue_from_project(real_property_tax_revenue, real_property_increase_in_local_contribution)
     print(real_property_increase_in_revenue)
-    revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year)
+    revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year, project_length)
     revenue_share_total = [current_revenue_from_land[i] + revenue_share_income[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]
     
     # cas_rs = [revenue_share_total[i]/1000 for i in range(31)]
-    offset = initial_year - 2020
-    cas_rs = [0 for i in range(offset)]
-    for i in range(2050 - initial_year + 1):
+    #offset = initial_year - 2020
+    #cas_rs = [0 for i in range(offset)]
+    cas_rs = []
+    for i in range(project_length):
         if i % years_between_assessment == 0:
-            cas_rs.append(revenue_share_total[i + offset]/1000)
+            cas_rs.append(revenue_share_total[i]/1000)
         else:
-            cas_rs.append(cas_rs[i + offset -1])
+            cas_rs.append(cas_rs[i - 1])
 
-    tot_rs = total_adj_rev(cas_rs, discount_rate)
+    tot_rs = total_adj_rev(cas_rs, discount_rate, initial_year)
 
     try:
         sim = simulation.calculations
@@ -455,14 +509,22 @@ def performCalculations(locality, simulation):
         calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
     return calc
 
+def depreciation_ext(depreciation_schedule):
+    '''
+    Takes in schedule of effective rates for county + year of initial build
+    Extends list with final effective rate to be available for calculations out to 2050
+    '''
+    last_rate = depreciation_schedule[-1]
+    while len(depreciation_schedule) <= 29:
+        depreciation_schedule.append(last_rate)
 
-def effective_rate_ext (effective_rate_list):
+def effective_rate_ext (effective_rate_list, project_length):
     '''
     Takes in schedule of effective rates for county + year of initial build
     Extends list with final effective rate to be available for calculations out to 2050
     '''
     last_rate = effective_rate_list[-1]
-    while len(effective_rate_list) <= 32:
+    while len(effective_rate_list) <= project_length:
         effective_rate_list.append(last_rate)
 
 '''
@@ -497,16 +559,16 @@ def get_mt_tax_rate(size_mw, mt_tax_rate, real_estate_rate):
 # Calculations for Valuation of Proposed Solar Facility
 ##############################################################
 
-def solar_facility_valuation(year, investment, mt_exemption, depreciation_schedule, assessment_ratio):
+def solar_facility_valuation(year, investment, mt_exemption, depreciation_schedule, assessment_ratio, project_length):
     valuation = []
-    for i in range(0, 31):
-        if(i + 2020 >= year):
-            after_exemption = investment * (1 - mt_exemption[i])
-            after_depreciation = after_exemption * depreciation_schedule[i]
-            assessed_facility_valuation = after_depreciation * assessment_ratio
-            valuation.append(round(assessed_facility_valuation)) # If the index is at or past the initial year of project
-        else:
-            valuation.append(0) #If the index is before the initial year of project
+    for i in range(0, project_length):
+        # if(i + 2020 >= year):
+        after_exemption = investment * (1 - mt_exemption[i])
+        after_depreciation = after_exemption * depreciation_schedule[i]
+        assessed_facility_valuation = after_depreciation * assessment_ratio
+        valuation.append(round(assessed_facility_valuation)) # If the index is at or past the initial year of project
+        # else:
+        #     valuation.append(0) #If the index is before the initial year of project
     return valuation
 
 
@@ -514,32 +576,32 @@ def solar_facility_valuation(year, investment, mt_exemption, depreciation_schedu
 # Calculations for increase in Land Value
 ##############################################################
 
-def current_land_value(total_acreage, baseline_value, starting_year):
+def current_land_value(total_acreage, baseline_value, starting_year, project_length, years_between_assessment):
     baseline = []
-    offset = starting_year - 2020
-    for i in range(0, offset):
-        baseline.append(0)
-    for i in range(0, 2050-starting_year+1):
-        if(i % 5 == 0):
+    # offset = starting_year - 2020
+    # for i in range(0, offset):
+    #     baseline.append(0)
+    for i in range(0, project_length):
+        if(i % years_between_assessment == 0):
             baseline.append(round(baseline_value * total_acreage * ((1.012)**(i+1))))
         else:
-            baseline.append(baseline[i + offset - 1])
+            baseline.append(baseline[i - 1])
     return baseline
 
-def new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_value, outside_fence_value, starting_year):
+def new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_value, outside_fence_value, starting_year, project_length, years_between_assessment):
     total = []
-    offset = starting_year - 2020
+    # offset = starting_year - 2020
 
-    for i in range(0, offset):
-        total.append(0)
+    # for i in range(0, offset):
+    #     total.append(0)
 
-    for i in range(0, 2050-starting_year+1):
-        if( i % 6 == 0):
+    for i in range(0, project_length):
+        if( i % years_between_assessment == 0):
             inside = inside_fence_value * inside_acreage * ((1.012)**(i+1))
             outside = outside_fence_value * outside_acreage * ((1.012)**(i+1))
             total.append(round(inside + outside))
         else:
-            total.append(total[i + offset-1])
+            total.append(total[i-1])
         
     return total
 
@@ -687,17 +749,17 @@ def increase_in_taxable_property(increase_in_land_value, solar_facility_valuatio
 '''
 GROSS INCOME CALCULATIONS
 '''
-def get_gross_income_adm(adj_gross_income, divisional_adm, statewide_gross_income, total_state_adm):
+def get_gross_income_adm(adj_gross_income, divisional_adm, statewide_gross_income, total_state_adm, project_length):
     final_gross_income = []
-    for i in range(31):
+    for i in range(project_length):
         numerator = adj_gross_income/divisional_adm
         denominator = statewide_gross_income/total_state_adm
         final_gross_income.append(numerator/denominator)
     return final_gross_income
 
-def get_gross_income_per_capita(adj_gross_income, local_pop, statewide_gross_income, state_pop):
+def get_gross_income_per_capita(adj_gross_income, local_pop, statewide_gross_income, state_pop, project_length):
     final_gross_income = []
-    for i in range(31):
+    for i in range(project_length):
         numerator = adj_gross_income/local_pop
         denominator = statewide_gross_income/state_pop
         final_gross_income.append(numerator/denominator)
@@ -706,23 +768,23 @@ def get_gross_income_per_capita(adj_gross_income, local_pop, statewide_gross_inc
 '''
 RETAIL SALES CALCULATIONS
 '''
-def get_retail_sales_adm(local_taxable_retail_sales, divisional_adm, state_taxable_retail_sales, total_state_adm):
+def get_retail_sales_adm(local_taxable_retail_sales, divisional_adm, state_taxable_retail_sales, total_state_adm, project_length):
     final_retail_sales = []
-    for i in range(31):
+    for i in range(project_length):
         numerator = local_taxable_retail_sales/divisional_adm
         denominator = state_taxable_retail_sales/total_state_adm
         final_retail_sales.append(numerator/denominator)
     return final_retail_sales
 
-def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_taxable_retail_sales, state_pop):
+def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_taxable_retail_sales, state_pop, project_length):
     final_retail_sales = []
-    for i in range(31):
+    for i in range(project_length):
         numerator = local_taxable_retail_sales/local_pop
         denominator = state_taxable_retail_sales/state_pop
         final_retail_sales.append(numerator/denominator)
     return final_retail_sales
 
-def total_cashflow_rs(revenue_share_rate, megawatts, year):
+def total_cashflow_rs(revenue_share_rate, megawatts, year, project_length):
     '''
         :revenue_share_rate: the rate a locality sets for its revenue share (max $1400/MW, though not capped by function)
         :megawatts: Size of solar project
@@ -730,15 +792,15 @@ def total_cashflow_rs(revenue_share_rate, megawatts, year):
         :return: A list of reveneue share revenue generated during each year from 2020-2050, nominal $
     '''
     cashflow_rev = []
-    for i in range(0, 31):
-        if(i + 2020 >= year):
-            cashflow_rev.append((revenue_share_rate * megawatts)) # If the index is at or past the initial year of project
-        else:
-            cashflow_rev.append(0) #If the index is before the initial year of project
+    for i in range(0, project_length):
+        #if(i + 2020 >= year):
+        cashflow_rev.append((revenue_share_rate * megawatts)) # If the index is at or past the initial year of project
+        # else:
+        #     cashflow_rev.append(0) #If the index is before the initial year of project
     return cashflow_rev
 
 
-def total_adj_rev(cas, discount_rate):
+def total_adj_rev(cas, discount_rate, initial_year):
     '''
         :cas_rs: List of revenue generate during each year from 2020-2050, nominal $
         :discount_rate: rate at which revenue values will be discounted
@@ -746,7 +808,7 @@ def total_adj_rev(cas, discount_rate):
     '''
     tot_rs = []
     for i in range(len(cas)):
-        tot_rs.append(cas[i] / ((1 + discount_rate)**(i + 1))) # Present value formula
+        tot_rs.append(cas[i] / ((1 + discount_rate)**(i + (initial_year-2020)))) # Present value formula
     return tot_rs
         
 

@@ -395,3 +395,28 @@ li{
     padding-left: 25px;
     width: 200px;
 }
+
+.depreciation_btn_form{
+    padding: 1%;
+}
+.depreciation-forms{
+    padding: 2% 0;
+    text-align: center;
+}
+.local-depreciation-form{
+    margin: auto;
+    width: 280px;
+}
+.local-rate-submit{
+    margin-top: 5%;
+}
+.depreciation-form-year{
+    padding: 0 10px 5px;
+}
+.depreciation-form-rate{
+    padding-bottom: 5px;
+}
+.depreciation-row{
+    margin-right: 0px;
+}
+

@@ -64,6 +64,10 @@ def get_table_totals(l):
         sum += item
     return ("{:.1f}".format(round(sum*1000, -3)))
 
+@register.simple_tag
+def change_to_percentage(rate):
+    return ("{:.1f}".format(round(rate*100, 3)))
+
 @register.inclusion_tag("search_bar.html")
 def all_localities():
     all_localities = Locality.objects.order_by('name')

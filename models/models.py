@@ -7,6 +7,9 @@ def mt_tax_default():
     print(list(0 for i in range(0, 30)))
     return list(0 for i in range(0, 30))
 
+def get_scc_depreciation():
+    return list([.9, .9, .9, .9, .8973, .8729, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10])
+
 class Locality(models.Model):
     name = models.CharField(max_length=200)
     discount_rate = models.IntegerField(default = 6)
@@ -23,6 +26,7 @@ class Locality(models.Model):
     budget_escalator = models.FloatField(default = 0)
     years_between_assessment = models.IntegerField(default = 5)
     local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
+    scc_depreciation = ArrayField(models.FloatField(), default=list(get_scc_depreciation()))
 
     class Meta:
         verbose_name_plural = "Localities"
@@ -36,11 +40,13 @@ class Simulation(models.Model):
     locality = models.ForeignKey('Locality', on_delete=models.CASCADE)
     initial_investment = models.IntegerField(default = 100000000)
     initial_year = models.IntegerField(default = 2021)
+    project_length = models.IntegerField(default = 30)
     project_size = models.IntegerField(default = 100)
     total_acreage = models.IntegerField(default = 2000)
     inside_fence_acreage = models.IntegerField(default = 1000)
     baseline_land_value = models.IntegerField(default = 1000)
     inside_fence_land_value = models.IntegerField(default = 10000)
+    outside_fence_land_value = models.IntegerField(default = 1000)
     dominion_or_apco = models.BooleanField(default = True)
 
     
@@ -52,7 +58,7 @@ class Simulation(models.Model):
     
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=["locality", "initial_investment", "initial_year", "project_size", "total_acreage", "inside_fence_acreage", "baseline_land_value", "inside_fence_land_value", "dominion_or_apco"], name="unique_locality_simulation")
+            models.UniqueConstraint(fields=["locality", "initial_investment", "initial_year", "project_length", "project_size", "total_acreage", "inside_fence_acreage", "baseline_land_value", "inside_fence_land_value", "outside_fence_land_value", "dominion_or_apco"], name="unique_locality_simulation")
         ]
 
     

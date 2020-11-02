@@ -56,10 +56,10 @@
                             <table class="card-table table-striped">
                                 <tr class="card-table-row">
                                     <td>
-                                        <strong>Initial Year</strong>
+                                        <strong>Years</strong>
                                     </td>
                                     <td class="card-table-value">
-                                        {{simulation.initial_year}}
+                                        {{simulation.initial_year}} - {{simulation.initial_year|add:simulation.project_length}}
                                     </td>
                                 </tr>
                                 <tr class="card-table-row odd">
@@ -155,8 +155,8 @@
                     <td>
                         Revenue Share Rate
                     </td>
-                    <td class="dollar_value value">
-                        {{locality.revenue_share_rate}} /MW
+                    <td class="value">
+                        <span class="dollar_value">{{locality.revenue_share_rate}}</span> /MW
                     </td>
                 </tr>
                 <tr>
@@ -282,6 +282,11 @@
             <label for="discount_rate">Revenue Share Rate $/MW</label>
             <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br> -->
             <input class="btn btn-primary btn-lg" type="submit" value="Update Locality Parameters">
+        </form>
+
+        <form method="POST" action="update-depreciation-schedules/" class = "depreciation_btn_form">
+            {% csrf_token %}
+            <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
         </form>
 
         {% else %}
