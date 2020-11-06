@@ -51,9 +51,10 @@ def get_locality(sim):
 @register.simple_tag
 def get_totals(l):
     sum = 0
-    # print(l)
+    print(l)
     for item in l:
         sum += item
+    print(sum)
     return round(sum*1000, -3)
 
 @register.simple_tag
