@@ -86,8 +86,6 @@ def profile(request):
     return render(request, 'profile.html')
 
 def locality_home(request, locality_name):
-    print(locality_name.title())
-    print(request.POST.get('local-1'))
     if request.POST.get('simulation_id'):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         simulation.delete()
@@ -97,6 +95,7 @@ def locality_home(request, locality_name):
     simulations = locality.simulation_set.all()
 
     if request.POST.get('discount_rate'):
+        print(request.POST.get)
         locality.discount_rate = int(request.POST.get('discount_rate'))
         locality.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
         locality.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
@@ -110,7 +109,14 @@ def locality_home(request, locality_name):
         locality.required_local_matching = int(request.POST.get('required_local_matching'))
         locality.budget_escalator = float(request.POST.get('budget_escalator'))
         locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
+        #locality.use_composite_index = request.POST.get('use_composite_index')
+
+        if request.POST.get('use_composite_index') == None:
+            locality.use_composite_index = False
+        elif request.POST.get('use_composite_index') == "on":
+            locality.use_composite_index = True
         locality.save()
+
     if request.POST.get('local-1'):
         local = []
         for item in request.POST:
@@ -133,12 +139,16 @@ def locality_home(request, locality_name):
     for simulation in simulations:
         calc = performCalculations(locality, simulation)
         calc.save()
+        simulation.calculations = calc
         total_mt += sum(calc.tot_mt)*1000
         total_rs += sum(calc.tot_rs)*1000
+        simulation.save()
+        print(sum(simulation.calculations.tot_rs) - sum(simulation.calculations.tot_mt))
     total_mt = round(total_mt, -3)
     total_rs = round(total_rs, -3)
     difference = total_rs - total_mt
-
+    locality.save()
+    #simulation.save()
     return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference})
 
 
@@ -313,6 +323,7 @@ class UpdateLocalityParameterView(CreateView):
             form_class.fields['required_local_matching'].initial = locality.required_local_matching
             form_class.fields['budget_escalator'].initial = locality.budget_escalator
             form_class.fields['years_between_assessment'].initial = locality.years_between_assessment
+            form_class.fields['use_composite_index'].initial = locality.use_composite_index
             return render(request, 'update_form.html', {'form' : form_class, 'county': loc_name})
         else:
             return HttpResponse("ERROR")
@@ -348,6 +359,7 @@ def performCalculations(locality, simulation):
     '''
     Locality Variables
     '''
+    use_composite_index = locality.use_composite_index
     discount_rate = int(locality.discount_rate)/100
     revenue_share_rate = int(locality.revenue_share_rate)
     mt_tax_rate = locality.mt_tax_rate
@@ -455,7 +467,10 @@ def performCalculations(locality, simulation):
     adj_net_revenue = []
     for i in range(project_length):
         if i % years_between_assessment == 0:
-            adj_net_revenue.append(net_revenue[i]/1000)
+            if(not use_composite_index):
+                adj_net_revenue.append(mt_and_property_income[i]/1000)
+            else:
+                adj_net_revenue.append(net_revenue[i]/1000)
         else:
             adj_net_revenue.append(adj_net_revenue[i -1])
 
@@ -492,7 +507,12 @@ def performCalculations(locality, simulation):
     cas_rs = []
     for i in range(project_length):
         if i % years_between_assessment == 0:
-            cas_rs.append(revenue_share_total[i]/1000)
+            if(not use_composite_index):
+                cas_rs.append((current_revenue_from_land[i] + revenue_share_income[i] + real_property_tax_revenue[i])/1000)
+            else:
+                cas_rs.append(revenue_share_total[i]/1000)
+            # else:
+            #     cas_rs.append(0)
         else:
             cas_rs.append(cas_rs[i - 1])
 
@@ -505,6 +525,7 @@ def performCalculations(locality, simulation):
         calc.cas_rs = cas_rs
         calc.tot_mt = tot_mt
         calc.tot_rs = tot_rs
+        calc.save()
     except Calculations.DoesNotExist:
         calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
     return calc

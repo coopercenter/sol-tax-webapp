@@ -42,7 +42,7 @@ class SimulationForm(forms.ModelForm):
 class LocalityUpdateForm(forms.ModelForm):
     class Meta:
         model = Locality
-        fields = ('revenue_share_rate', 'discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment')
+        fields = ('revenue_share_rate', 'discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment', 'use_composite_index')
         labels = {
             'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
             'discount_rate': ugettext_lazy("Discount Rate (%)"), 
@@ -57,6 +57,7 @@ class LocalityUpdateForm(forms.ModelForm):
             'required_local_matching': ugettext_lazy("Required Local Matching ($)"), 
             'budget_escalator': ugettext_lazy("Budget Escalator ($)"), 
             'years_between_assessment': ugettext_lazy("Years Between Assessment"),
+            'use_composite_index': ugettext_lazy("Use Composite Index for Calculations?"),
         }
         widgets = {
             'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
@@ -72,6 +73,7 @@ class LocalityUpdateForm(forms.ModelForm):
             'required_local_matching': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'budget_escalator': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'years_between_assessment': forms.NumberInput(attrs={'class': 'form-control', 'min':1, 'max':30}),
+            'use_composite_index': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
         }
 
 # class LocalityDepreciationUpdateForm(forms.ModelForm):
