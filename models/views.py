@@ -17,8 +17,12 @@ from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
-from reportlab.pdfgen import canvas
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.platypus import SimpleDocTemplate, Frame, BaseDocTemplate, Paragraph
+from reportlab.platypus.tables import Table
 from reportlab.rl_config import defaultPageSize
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.enums import TA_CENTER
 
 from plotly.offline import plot
 import plotly.graph_objects as go
@@ -45,20 +49,102 @@ def logoutView(request):
     return HttpResponseRedirect('/')
 
 def testPDF(request, locality_name):
+    locality = Locality.objects.get(name = locality_name)
     height = defaultPageSize[1]
     width = defaultPageSize[0]
     buffer = io.BytesIO()
 
-    p = canvas.Canvas(buffer)
-    p.setFont("Times-Roman", 20)
-    #p.drawCenteredString(width/2, height, locality_name)
-    p.drawString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
+    # p = canvas.Canvas(buffer)
+    # p.setFont("Times-Roman", 20)
+    # #p.drawCenteredString(width/2, height, locality_name)
+    # p.drawCenteredString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
+    # print(locality.simulation_set.all())
+    # for simulation in locality.simulation_set.all():
+    #     table = Table(["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)])
+    #     p.append(table)
+    # p.showPage()
+    # p.save()
+    #response = HttpResponse(mimetype='application/pdf')
+    response = HttpResponse()
+    response['Content-Disposition'] = 'attachment; filename=somefilename.pdf'
 
-    p.showPage()
-    p.save()
+    elements = []
 
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
+    doc = SimpleDocTemplate(response, rightMargin=0, leftMargin=6.5 * 2.54, topMargin=0.3 * 2.54, bottomMargin=0)
+    frame_left = Frame(width/2, height, width/2, height, showBoundary = 1) 
+    #elements.append(frame_left)
+    tables = []
+    canvas = Canvas("test.pdf")
+    
+    style = getSampleStyleSheet()
+    style = ParagraphStyle(
+        'small',
+        parent = style['Normal'],
+        fontSize = 20,
+        alignment = TA_CENTER,
+        leading = 50,
+    )
+    #print(style['Normal'])
+    #style['fontSize'] = 20
+
+    title = Paragraph('''<strong> SolTax Analysis for ''' + locality_name + ''' </strong>''', style)
+    
+    #print(ParagraphStyle)
+    elements.append(title)
+    
+    locality_info_data = [
+        [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
+        ["Using Composite Index for Calculations?", locality.use_composite_index],
+        ["Revenue Share Rate", "$" + str('{:,}'.format(locality.revenue_share_rate)) + "/MW"],
+        ["Discount Rate", str(locality.discount_rate) + "%"],
+        ["M&T Tax Rate", "$" + str(locality.mt_tax_rate) + "/$100 Assessed Value"],
+        ["Real Property Rate", "$" + str(locality.real_property_rate) + "/$100 Assessed Value"],
+        ["Assessment Ratio", str(locality.assessment_ratio) + "%"],
+        [Paragraph(''' <strong> Composite Index Parameters </strong> ''')],
+        ["Local True Value", "$" + str('{:,}'.format(locality.baseline_true_value))],
+        ["Adjusted Gross Income", "$" + str('{:,}'.format(locality.adj_gross_income))],
+        ["Taxable Retail Sales", "$" + str('{:,}'.format(locality.taxable_retail_sales))],
+        ["Population", str('{:,}'.format(locality.population))],
+        ["ADM", str('{:,}'.format(locality.adm))],
+        ["Required Local Matching", "$" + str('{:,}'.format(locality.required_local_matching))],
+        ["Education Budget Escalator", str(locality.budget_escalator) + "%"],
+        ["Years Between Assessment", str(locality.years_between_assessment)],
+    ] 
+    locality_info_table = Table(locality_info_data, colWidths = 200, rowHeights = 20)
+    elements.append(locality_info_table)
+
+    for simulation in locality.simulation_set.all():
+        mt_tot = round(sum(simulation.calculations.tot_mt)*1000, -3)
+        rs_tot = round(sum(simulation.calculations.tot_rs)*1000, -3)
+        data = [
+            [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
+            #["Parameter", "Value"],
+            ["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)],
+            ["Initial Investment", "$" + '{:,}'.format(simulation.initial_investment)],
+            ["Project Size", str(simulation.project_size) + "MW"],
+            ["Dominion or APCO", simulation.dominion_or_apco],
+            ["Revenue Share Revenue", "$" + '{:,}'.format(rs_tot)],
+            ["M&T Revenue", "$" + '{:,}'.format(mt_tot)],
+            ["Difference", "$" + '{:,}'.format(rs_tot - mt_tot)],
+        ]
+        table = Table(data, colWidths = 150, rowHeights = 30)
+        #table.setStyle(TableStyle([('')]))
+        elements.append(table)
+        tables.append(table)
+    frame_left.addFromList(tables, canvas)
+    # canvas.showPage()
+    # canvas.save()
+        #elements.append(table)
+    # data=[(1,2),(3,4)]
+    # table = Table(data, colWidths=270, rowHeights=79)
+    # elements.append(table)
+    
+    doc.build(elements) 
+    canvas.showPage()
+    return response
+
+    #buffer.seek(0)
+    #return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
 
 def change_password(request):
     if request.method == 'POST':
