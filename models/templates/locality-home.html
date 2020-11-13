@@ -9,7 +9,7 @@
 
         <form action="/form/" method="POST" class="generateButton-form">
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Project Analysis</button>
+            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{user.username}}" name="generateButton">Generate New Project Analysis</button>
         </form>
         
         {% if simulations %}
@@ -117,12 +117,12 @@
                             <p>Total Revenue Share: $<span class="comma_value">{% get_totals simulation.calculations.tot_rs %}</span></p>
                             <p>Total M&T: $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span></p> -->
                             <div class="analysis-buttons">
-                                <form action="/locality-{{simulation.locality.name}}/{{simulation.id}}/" method="POST">
+                                <form action="/user-{{simulation.user.name}}/{{simulation.id}}/" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
                                     <button type="submit" class="btn btn-primary btn-md view-button" name = "viewButton">View Analysis</button>
                                 </form>
-                                <form action="/locality-{{simulation.locality.name}}/" method="POST">
+                                <form action="/user-{{simulation.user.name}}/" method="POST">
                                     {% csrf_token %}
                                     <input type="hidden" name="simulation_id" value ="{{simulation.id}}">
                                     <button type="submit" class="btn btn-md btn-danger delete-button" name = "deleteButton">Delete Analysis</button>
@@ -133,13 +133,13 @@
                 </div>
             {% endfor %}
             </div>
+        
+        {% else %}
+                <h2 class="no-analysis-header">Please Click to Generate a new Analysis</h2>
+        {% endif %}
 
-                   
-        <!--
-            Display as Table and have update button on bottom
-        -->
         <div class="locality-info">
-            <h2> Locality Parameters for Calculations</h2>
+            <h2> Parameters for Calculations</h2>
             <table class="table-striped locality-info-table">
                 <thead>
                     <tr>
@@ -189,7 +189,6 @@
                     </td>
                     <td class="value">
                         ${{locality.real_property_rate}} / $100 Assessed Value
-                        <!-- <span class="dollar_value">{{locality.real_property_rate}}</span>/$100 Assessed Value -->
                     </td>
                 </tr>
                 <tr>
@@ -200,14 +199,6 @@
                         {{locality.assessment_ratio}}%
                     </td>
                 </tr>
-                <!-- <tr>
-                    <td>
-                        Depreciation Schedule
-                    </td>
-                    <td>
-                        {{locality.local_depreciation}}
-                    </td>
-                </tr> -->
                 <tr>
                     <td>
                         <strong>Composite Index Parameters</strong>
@@ -281,30 +272,17 @@
                 </tr>
             </table>
         </div>
-        
-        <form method="POST" action="update-locality-parameters/" class="update-form">
-            {% csrf_token %}
-
-            <!-- <label for="discount_rate">Discount Rate %</label>
-            <input id="discount_rate" type="number" name="discount_rate" value="{{ locality.discount_rate }}"><br>
-            <label for="discount_rate">Revenue Share Rate $/MW</label>
-            <input id="revenue_share_rate" type="number" name="revenue_share_rate" value="{{ locality.revenue_share_rate }}"><br> -->
-            <input class="btn btn-primary btn-lg" type="submit" value="Update Locality Parameters">
-        </form>
-
-        <form method="POST" action="update-depreciation-schedules/" class = "depreciation_btn_form">
-            {% csrf_token %}
-            <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
-        </form>
-
-        {% else %}
-                <h2>Please Click to Generate a new Analysis</h2>
-                <!-- <form action="/form/" method="POST" class="generateButton-form">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{locality}}" name="generateButton">Generate New Model</button>
-                </form> -->
-        {% endif %}
     </div>
+
+    <form method="POST" action="update-user-parameters/" class="update-form">
+        {% csrf_token %}
+        <input class="btn btn-primary btn-lg" type="submit" value="Update User Parameters">
+    </form>
+
+    <form method="POST" action="update-depreciation-schedules/" class = "update-form">
+        {% csrf_token %}
+        <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
+    </form>
 
     
     {% else %}

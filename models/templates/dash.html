@@ -8,6 +8,7 @@
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters">
             <h2 class="entered-data-title">Project Parameters</h2>
+            <!-- {{simulation.0.fields}} -->
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -21,9 +22,9 @@
 
                     {% for i in simulation %}
                         {% for field,value in i.fields.items %}
-                            {% if field == 'locality' %}
+                            {% if field == 'user' %}
                                 <tr>
-                                    <td>Locality</td>
+                                    <td>User</td>
                                     <td class="value locality_name">{% get_locality simulation %}</td>
                                 </tr>
                                 <tr>
@@ -112,11 +113,11 @@
                 </tbody>
             </table>
 
-            <div class="back-button">
+            <!-- <div class="back-button">
                 <form action="form">
                     <button type="submit" class="btn btn-primary back-btn">Update Parameters</button>
                 </form>
-            </div>
+            </div> -->
         </div>
         
         <div class="col-xl-6 right-col">

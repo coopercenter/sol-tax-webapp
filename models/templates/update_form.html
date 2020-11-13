@@ -8,7 +8,7 @@
     </h1>
     
     <div class="form-group">
-        <form action = "/locality-{{county}}/" method="POST">
+        <form action = "/user-{{county}}/" method="POST">
             {% csrf_token %}
             {{ form.as_p }}
             <br>

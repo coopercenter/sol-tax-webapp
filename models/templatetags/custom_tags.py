@@ -2,7 +2,7 @@ from django import template
 
 register = template.Library()
 
-from ..models import Locality, Simulation, Calculations
+from ..models import Locality, Simulation, Calculations, UserProfile
 
 @register.filter
 def get_index(l, i):
@@ -20,22 +20,22 @@ def get_revenue_index(l, i):
 
 @register.simple_tag
 def get_discount_rate(sim):
-    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     return locality.discount_rate
 
 @register.simple_tag
 def get_rs_rate(sim):
-    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     return locality.revenue_share_rate
 
 @register.simple_tag
 def get_mt_rate(sim):
-    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     return locality.mt_tax_rate
 
 @register.simple_tag
 def get_real_property_rate(sim):
-    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     print(locality.real_property_rate)
     return locality.real_property_rate
 
@@ -45,7 +45,7 @@ def get_project_size(sim):
 
 @register.simple_tag
 def get_locality(sim):
-    locality = Locality.objects.get(id = sim[0]["fields"]["locality"])
+    locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     return locality.name
 
 @register.simple_tag
