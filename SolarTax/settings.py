@@ -47,7 +47,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'models.middleware.SolarTaxMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -190,3 +189,10 @@ except ImportError:
 #Password: admin1213
 
 LOGIN_REDIRECT_URL = 'localityName'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'soltaxcoopercenter@gmail.com'
+EMAIL_HOST_PASSWORD = '3greenApples!'

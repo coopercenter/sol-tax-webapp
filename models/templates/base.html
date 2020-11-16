@@ -35,10 +35,10 @@
                         <input class="btn btn-outline-primary log-button" type="submit" value="Update User Parameters">
                     </form>
                 
-                    <form method="POST" action="/update-user-{{user.username}}/">
+                    <!-- <form method="POST" action="/update-user-{{user.username}}/">
                         {% csrf_token %}
                         <input class="btn btn-outline-info log-button" type="submit" value="Change Initial Locality">
-                    </form>
+                    </form> -->
 
                     <form method="POST" action="/user-{{user.username}}/">
                         {% csrf_token %}

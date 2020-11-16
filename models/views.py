@@ -31,7 +31,6 @@ import plotly.graph_objects as go
 # Landing Page
 def index(request):
     #return redirect_no_parameters(request)
-    
     return render(request, 'index.html')
 
 # Login Page
