@@ -188,7 +188,7 @@ li{
     text-align: left;
     margin: 20px auto;
     width: 24rem;
-    height: 22rem;
+    height: auto;
     font-size: 18px;
 }
 .view-button{

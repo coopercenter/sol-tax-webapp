@@ -21,8 +21,9 @@ class SignUpForm(UserCreationForm):
 class SimulationForm(forms.ModelForm):
     class Meta:
         model = Simulation
-        fields = ('user', 'initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
+        fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
+            'name': ugettext_lazy('Project Name'),
             'initial_investment': ugettext_lazy('Initial Investment ($)'),
             'initial_year': ugettext_lazy('Initial Year'),
             'project_length': ugettext_lazy('Project Length (Years)'),
@@ -36,6 +37,7 @@ class SimulationForm(forms.ModelForm):
         }
         widgets = {
             'user': forms.HiddenInput(),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
             'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
             'project_length': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
