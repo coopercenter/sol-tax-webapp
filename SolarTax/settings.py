@@ -181,10 +181,6 @@ try:
     # Configure Django App for Heroku.
     import django_heroku
     django_heroku.settings(locals())
-    EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', '')
-    EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', '')
-    EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
-    EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
 except ImportError:
     found = False
 
@@ -193,6 +189,11 @@ except ImportError:
 #Password: admin1213
 
 LOGIN_REDIRECT_URL = 'localityName'
+
+    EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', '')
+    EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', '')
+    EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
+    EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
 
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 # EMAIL_HOST = 'smtp.gmail.com'
