@@ -73,7 +73,7 @@ class Locality(models.Model):
 
 class Simulation(models.Model):
     user = models.ForeignKey('UserProfile', on_delete=models.CASCADE, default="")
-    name = models.CharField(max_length=200, blank=True)
+    name = models.CharField(max_length=150, blank=True)
     initial_investment = models.IntegerField(default = 100000000)
     initial_year = models.IntegerField(default = 2021)
     project_length = models.IntegerField(default = 30)
