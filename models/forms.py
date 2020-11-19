@@ -1,19 +1,29 @@
 from django import forms
 from django.forms import ModelForm
-from .models import Simulation, Locality
+from .models import Simulation, Locality, UserProfile
 from django.utils.translation import ugettext_lazy
+from django.contrib.auth.models import User
+from django.contrib.auth.forms import UserCreationForm
 
 
 # class SelectForm(forms.Form):
 #     locality = forms.ModelChoiceField(queryset=Locality.objects.all())
 #     widget = forms.Select(attrs={'onchange': 'this.form.submit();'})
 
+class SignUpForm(UserCreationForm):
+    email = forms.EmailField(max_length=256, help_text="Provide a valid email address.")
+    
+    class Meta: 
+        model = User
+        fields = ('username', 'email', 'password1', 'password2')
+
 
 class SimulationForm(forms.ModelForm):
     class Meta:
         model = Simulation
-        fields = ('locality', 'initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
+        fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
+            'name': ugettext_lazy('Project Name'),
             'initial_investment': ugettext_lazy('Initial Investment ($)'),
             'initial_year': ugettext_lazy('Initial Year'),
             'project_length': ugettext_lazy('Project Length (Years)'),
@@ -26,7 +36,8 @@ class SimulationForm(forms.ModelForm):
             'dominion_or_apco': ugettext_lazy('Is the project operated by either Dominion or APCO?'),
         }
         widgets = {
-            'locality': forms.HiddenInput(),
+            'user': forms.HiddenInput(),
+            'name': forms.TextInput(attrs={'class':'form-control'}),
             'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
             'project_length': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
@@ -39,9 +50,9 @@ class SimulationForm(forms.ModelForm):
             'dominion_or_apco': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
         }
 
-class LocalityUpdateForm(forms.ModelForm):
+class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
-        model = Locality
+        model = UserProfile
         fields = ('revenue_share_rate', 'discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment', 'use_composite_index')
         labels = {
             'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 

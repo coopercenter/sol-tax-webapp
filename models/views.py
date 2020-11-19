@@ -5,26 +5,32 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse
 from django.views.generic import CreateView, ListView
 from django.views import generic
-from .models import Locality, Simulation, Calculations
-from .forms import SimulationForm, LocalityUpdateForm
+from .models import Locality, Simulation, Calculations, UserProfile
+from .forms import SimulationForm, UserProfileUpdateForm, SignUpForm
 from django.core import serializers
 import urllib, base64
 import PIL, PIL.Image, io
 from django.db.models import Count
-from django.contrib.auth import login, logout
+from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.models import AnonymousUser
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth.forms import PasswordChangeForm
 
-from reportlab.pdfgen import canvas
+from reportlab.pdfgen.canvas import Canvas
+from reportlab.platypus import SimpleDocTemplate, Frame, BaseDocTemplate, Paragraph
+from reportlab.platypus.tables import Table
 from reportlab.rl_config import defaultPageSize
+from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+from reportlab.lib.enums import TA_CENTER
 
 from plotly.offline import plot
 import plotly.graph_objects as go
 
 # Landing Page
 def index(request):
+    #return redirect_no_parameters(request)
     return render(request, 'index.html')
 
 # Login Page
@@ -34,9 +40,9 @@ def loginView(request):
         if form.is_valid(): # Form submitted
             user = form.get_user()
             login(request, user) # Check Login Information
-            return HttpResponseRedirect('/locality-' + str(user)+'/') #redirect to locality's home page
-        else: # Displays Login Form
-            form = AuthenticationForm(initial={'username': request.POST.get('locality')})
+            return HttpResponseRedirect('/user-' + str(user)+'/') #redirect to locality's home page
+    #else: # Displays Login Form
+    form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
 # Logout, redirects to landing page
@@ -44,21 +50,134 @@ def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/')
 
+def update_user_profile(request, user_profile):
+    return HttpResponse("TESTING")
+
+#SignUp
+def signup(request):
+    if request.method == 'POST':
+        form = SignUpForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            new_user_profile = UserProfile(name = username)
+            new_user_profile.save()
+
+            user = authenticate(username=username, password=raw_password)
+            login(request, user)
+
+            return HttpResponseRedirect("/update-user-"+username+"/")
+    else:
+        form = SignUpForm()
+    return render(request, 'signup.html', {'form': form})
+
+def update_user(request, username):
+    if request.method == 'POST':
+        print("testing")
+        
+    localities = Locality.objects.order_by('name')
+    return render(request, 'select_locality.html', {'all_localities': localities, 'username':username})
+
 def testPDF(request, locality_name):
+    locality = Locality.objects.get(name = locality_name)
     height = defaultPageSize[1]
     width = defaultPageSize[0]
     buffer = io.BytesIO()
 
-    p = canvas.Canvas(buffer)
-    p.setFont("Times-Roman", 20)
-    #p.drawCenteredString(width/2, height, locality_name)
-    p.drawString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
+    # p = canvas.Canvas(buffer)
+    # p.setFont("Times-Roman", 20)
+    # #p.drawCenteredString(width/2, height, locality_name)
+    # p.drawCenteredString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
+    # print(locality.simulation_set.all())
+    # for simulation in locality.simulation_set.all():
+    #     table = Table(["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)])
+    #     p.append(table)
+    # p.showPage()
+    # p.save()
+    #response = HttpResponse(mimetype='application/pdf')
+    response = HttpResponse()
+    response['Content-Disposition'] = 'attachment; filename=somefilename.pdf'
 
-    p.showPage()
-    p.save()
+    elements = []
 
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
+    doc = SimpleDocTemplate(response, rightMargin=0, leftMargin=6.5 * 2.54, topMargin=0.3 * 2.54, bottomMargin=0)
+    frame_left = Frame(width/2, height, width/2, height, showBoundary = 1) 
+    #elements.append(frame_left)
+    tables = []
+    canvas = Canvas("test.pdf")
+    
+    style = getSampleStyleSheet()
+    style = ParagraphStyle(
+        'small',
+        parent = style['Normal'],
+        fontSize = 20,
+        alignment = TA_CENTER,
+        spaceBefore = 50,
+        trailing = 50,
+        leading = 50,
+    )
+    #print(style['Normal'])
+    #style['fontSize'] = 20
+
+    title = Paragraph('''<strong> SolTax Analysis for ''' + locality_name + ''' </strong>''', style)
+    
+    #print(ParagraphStyle)
+    elements.append(title)
+    
+    locality_info_data = [
+        [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
+        ["Using Composite Index for Calculations?", locality.use_composite_index],
+        ["Revenue Share Rate", "$" + str('{:,}'.format(locality.revenue_share_rate)) + "/MW"],
+        ["Discount Rate", str(locality.discount_rate) + "%"],
+        ["M&T Tax Rate", "$" + str(locality.mt_tax_rate) + "/$100 Assessed Value"],
+        ["Real Property Rate", "$" + str(locality.real_property_rate) + "/$100 Assessed Value"],
+        ["Assessment Ratio", str(locality.assessment_ratio) + "%"],
+        [Paragraph(''' <strong> Composite Index Parameters </strong> ''')],
+        ["Local True Value", "$" + str('{:,}'.format(locality.baseline_true_value))],
+        ["Adjusted Gross Income", "$" + str('{:,}'.format(locality.adj_gross_income))],
+        ["Taxable Retail Sales", "$" + str('{:,}'.format(locality.taxable_retail_sales))],
+        ["Population", str('{:,}'.format(locality.population))],
+        ["ADM", str('{:,}'.format(locality.adm))],
+        ["Required Local Matching", "$" + str('{:,}'.format(locality.required_local_matching))],
+        ["Education Budget Escalator", str(locality.budget_escalator) + "%"],
+        ["Years Between Assessment", str(locality.years_between_assessment)],
+    ] 
+    locality_info_table = Table(locality_info_data, colWidths = 200, rowHeights = 20)
+    elements.append(locality_info_table)
+
+    for simulation in locality.simulation_set.all():
+        mt_tot = round(sum(simulation.calculations.tot_mt)*1000, -3)
+        rs_tot = round(sum(simulation.calculations.tot_rs)*1000, -3)
+        data = [
+            [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
+            #["Parameter", "Value"],
+            ["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)],
+            ["Initial Investment", "$" + '{:,}'.format(simulation.initial_investment)],
+            ["Project Size", str(simulation.project_size) + "MW"],
+            ["Dominion or APCO", simulation.dominion_or_apco],
+            ["Revenue Share Revenue", "$" + '{:,}'.format(rs_tot)],
+            ["M&T Revenue", "$" + '{:,}'.format(mt_tot)],
+            ["Difference", "$" + '{:,}'.format(rs_tot - mt_tot)],
+        ]
+        table = Table(data, colWidths = 150, rowHeights = 30)
+        #table.setStyle(TableStyle([('')]))
+        elements.append(table)
+        tables.append(table)
+    frame_left.addFromList(tables, canvas)
+    # canvas.showPage()
+    # canvas.save()
+        #elements.append(table)
+    # data=[(1,2),(3,4)]
+    # table = Table(data, colWidths=270, rowHeights=79)
+    # elements.append(table)
+    
+    doc.build(elements) 
+    canvas.showPage()
+    return response
+
+    #buffer.seek(0)
+    #return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
 
 def change_password(request):
     if request.method == 'POST':
@@ -85,37 +204,104 @@ def localityName(request):
 def profile(request):
     return render(request, 'profile.html')
 
-def locality_home(request, locality_name):
+# def user_home(request, username):
+#     user = UserProfile.objects.get(name=username)
+    
+#     if request.POST.get('locality'):
+#         locality_name = request.POST['locality']
+#         if locality_name != 'Choose Your Locality':
+#             locality = Locality.objects.get(name=locality_name)
+#             user.discount_rate = locality.discount_rate
+#             user.revenue_share_rate = locality.revenue_share_rate
+#             user.real_property_rate = locality.real_property_rate
+#             user.mt_tax_rate = locality.mt_tax_rate
+#             user.assessment_ratio = locality.assessment_ratio
+#             user.baseline_true_value = locality.baseline_true_value
+#             user.adj_gross_income = locality.adj_gross_income
+#             user.taxable_retail_sales = locality.taxable_retail_sales
+#             user.population = locality.population
+#             user.adm = locality.adm
+#             user.required_local_matching = locality.required_local_matching
+#             user.budget_escalator = locality.budget_escalator
+#             user.years_between_assessment = locality.years_between_assessment
+#             user.use_composite_index = locality.use_composite_index
+#             user.local_depreciation = locality.local_depreciation
+#             user.scc_depreciation = locality.scc_depreciation
+#             user.save()
+#     return HttpResponse("TESITNF")
+
+
+def user_home(request, username):
     if request.POST.get('simulation_id'):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         simulation.delete()
 
-    locality = Locality.objects.get(name = locality_name.title())
+    #locality = Locality.objects.get(name = locality_name.title())
     #locality = serializers.serialize("python", Locality.objects.filter(name = locality_name.title()))
-    simulations = locality.simulation_set.all()
+    user = UserProfile.objects.get(name = username)
+    #simulations = locality.simulation_set.all()
+    simulations = user.simulation_set.all()
+
+    if request.POST.get('locality'):
+        locality_name = request.POST['locality']
+        if locality_name != 'Choose Your Locality':
+            locality = Locality.objects.get(name=locality_name)
+            user.discount_rate = locality.discount_rate
+            user.revenue_share_rate = locality.revenue_share_rate
+            user.real_property_rate = locality.real_property_rate
+            user.mt_tax_rate = locality.mt_tax_rate
+            user.assessment_ratio = locality.assessment_ratio
+            user.baseline_true_value = locality.baseline_true_value
+            user.adj_gross_income = locality.adj_gross_income
+            user.taxable_retail_sales = locality.taxable_retail_sales
+            user.population = locality.population
+            user.adm = locality.adm
+            user.required_local_matching = locality.required_local_matching
+            user.budget_escalator = locality.budget_escalator
+            user.years_between_assessment = locality.years_between_assessment
+            user.use_composite_index = locality.use_composite_index
+            user.local_depreciation = locality.local_depreciation
+            user.scc_depreciation = locality.scc_depreciation
+            user.save()
+
+    if user.mt_tax_rate == 0:
+        return HttpResponseRedirect("/update-user-"+user.name+"/")
 
     if request.POST.get('discount_rate'):
         print(request.POST.get)
-        locality.discount_rate = int(request.POST.get('discount_rate'))
-        locality.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
-        locality.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
-        locality.real_property_rate = float(request.POST.get('real_property_rate'))
-        locality.assessment_ratio = float(request.POST.get('assessment_ratio'))
-        locality.baseline_true_value = int(request.POST.get('baseline_true_value'))
-        locality.adj_gross_income = int(request.POST.get('adj_gross_income'))
-        locality.taxable_retail_sales = int(request.POST.get('taxable_retail_sales'))
-        locality.population = int(request.POST.get('population'))
-        locality.adm = float(request.POST.get('adm'))
-        locality.required_local_matching = int(request.POST.get('required_local_matching'))
-        locality.budget_escalator = float(request.POST.get('budget_escalator'))
-        locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
+        # locality.discount_rate = int(request.POST.get('discount_rate'))
+        # locality.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
+        # locality.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
+        # locality.real_property_rate = float(request.POST.get('real_property_rate'))
+        # locality.assessment_ratio = float(request.POST.get('assessment_ratio'))
+        # locality.baseline_true_value = int(request.POST.get('baseline_true_value'))
+        # locality.adj_gross_income = int(request.POST.get('adj_gross_income'))
+        # locality.taxable_retail_sales = int(request.POST.get('taxable_retail_sales'))
+        # locality.population = int(request.POST.get('population'))
+        # locality.adm = float(request.POST.get('adm'))
+        # locality.required_local_matching = int(request.POST.get('required_local_matching'))
+        # locality.budget_escalator = float(request.POST.get('budget_escalator'))
+        # locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
         #locality.use_composite_index = request.POST.get('use_composite_index')
+        user.discount_rate = int(request.POST.get('discount_rate'))
+        user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
+        user.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
+        user.real_property_rate = float(request.POST.get('real_property_rate'))
+        user.assessment_ratio = float(request.POST.get('assessment_ratio'))
+        user.baseline_true_value = int(request.POST.get('baseline_true_value'))
+        user.adj_gross_income = int(request.POST.get('adj_gross_income'))
+        user.taxable_retail_sales = int(request.POST.get('taxable_retail_sales'))
+        user.population = int(request.POST.get('population'))
+        user.adm = float(request.POST.get('adm'))
+        user.required_local_matching = int(request.POST.get('required_local_matching'))
+        user.budget_escalator = float(request.POST.get('budget_escalator'))
+        user.years_between_assessment = int(request.POST.get('years_between_assessment'))
 
         if request.POST.get('use_composite_index') == None:
-            locality.use_composite_index = False
+            user.use_composite_index = False
         elif request.POST.get('use_composite_index') == "on":
-            locality.use_composite_index = True
-        locality.save()
+            user.use_composite_index = True
+        user.save()
 
     if request.POST.get('local-1'):
         local = []
@@ -123,21 +309,21 @@ def locality_home(request, locality_name):
             if item[:5] == "local":
                 local.append(float(request.POST.get(item))/100)
         print(local)
-        locality.local_depreciation = local
-        locality.save()
+        user.local_depreciation = local
+        user.save()
 
     if request.POST.get('scc-1'):
         scc = []
         for item in request.POST:
             if item[:3] == "scc":
                 scc.append(float(request.POST.get(item))/100)
-        locality.scc_depreciation = scc
-        locality.save()
+        user.scc_depreciation = scc
+        user.save()
 
     total_mt = 0
     total_rs = 0
     for simulation in simulations:
-        calc = performCalculations(locality, simulation)
+        calc = performCalculations(user, simulation)
         calc.save()
         simulation.calculations = calc
         total_mt += sum(calc.tot_mt)*1000
@@ -147,9 +333,9 @@ def locality_home(request, locality_name):
     total_mt = round(total_mt, -3)
     total_rs = round(total_rs, -3)
     difference = total_rs - total_mt
-    locality.save()
+    user.save()
     #simulation.save()
-    return render(request, 'locality-home.html', {'locality': locality, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference})
+    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference})
 
 
 # Creates Scatter Plot using plotly
@@ -183,6 +369,7 @@ def scatter(mt, rs, simulation):
 def form_dash(request):
     if request.method == 'POST':
         form = SimulationForm(request.POST)
+        print(form)
         # print(form)
         print(form.has_error('NON_FIELD_ERRORS'))
         if form.is_valid():
@@ -190,20 +377,25 @@ def form_dash(request):
             simulation = form.save(commit = False)
             simulation.save()
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0]
+            #loc = Locality.objects.filter(name = simulation.locality)[0]
+            loc = UserProfile.objects.filter(name = simulation.user)[0]
             print(simulation.id)
-            return HttpResponseRedirect("/locality-" + loc.name + '/' + str(simulation.id) + '/')
+            return HttpResponseRedirect("/user-" + loc.name + '/' + str(simulation.id) + '/')
         else:
             return HttpResponse("Error this analysis has already been created, go back to the Locality page to view the analysis with these parameters")
             
     else:
         return HttpResponse('Error please select fill out the model generation form')
 
-def dash(request, locality_name, simulation_id):
+def dash(request, username, simulation_id):
+    user = UserProfile.objects.get(name = username)
+    if user.mt_tax_rate == 0:
+        return HttpResponseRedirect("/update-user-"+user.name+"/")
+
     if(request.method == 'GET'):
         simulation = Simulation.objects.get(pk = simulation_id)
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-        loc = Locality.objects.get(name = locality_name)
+        loc = UserProfile.objects.get(name = username)
 
         calc = performCalculations(loc, simulation)
         calc.save()
@@ -216,7 +408,7 @@ def dash(request, locality_name, simulation_id):
     if(request.POST.get('simulation_id')):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-        loc = Locality.objects.filter(name = simulation.locality)[0]
+        loc = UserProfile.objects.filter(name = simulation.user)[0]
 
         calc = performCalculations(loc, simulation)
         calc.save()
@@ -234,7 +426,7 @@ def dash(request, locality_name, simulation_id):
             simulation = form.save(commit = False)
             simulation.save()
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0]
+            loc = UserProfile.objects.filter(name = simulation.user)[0]
         
             calc = performCalculations(loc, simulation)
             calc.save()
@@ -247,7 +439,7 @@ def dash(request, locality_name, simulation_id):
         else:
             simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            loc = Locality.objects.filter(name = simulation.locality)[0]
+            loc = UserProfile.objects.filter(name = simulation.user)[0]
             calc = performCalculations(loc, simulation)
             calc.save()
 
@@ -292,51 +484,51 @@ class NewSimulationView(CreateView):
 
     def post(self, request):
         if(request.POST.get('viewButton') == None):
-            locality_name = request.POST.get('generateButton')
+            username = request.POST.get('generateButton')
             form_class = SimulationForm() 
-            form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
+            form_class.fields['user'].initial = UserProfile.objects.get(name = username).id
 
-            return render(request, 'form.html', {'form' : form_class, 'county': locality_name})
+            return render(request, 'form.html', {'form' : form_class, 'county': username})
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
-class UpdateLocalityParameterView(CreateView):
+class UpdateUserParameterView(CreateView):
     
-    def post(self, request, locality_name):
+    def post(self, request, username):
         if(request.POST.get('viewButton') == None):
-            loc_name = locality_name
-            form_class = LocalityUpdateForm()
-            locality = Locality.objects.get(name = locality_name) 
+            # loc_name = username
+            form_class = UserProfileUpdateForm()
+            user = UserProfile.objects.get(name = username) 
             # form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
-            print(locality)
+            # print(locality)
             # form_class.fields['locality'].initial = locality.id
-            form_class.fields['revenue_share_rate'].initial = locality.revenue_share_rate
-            form_class.fields['discount_rate'].initial = locality.discount_rate
-            form_class.fields['mt_tax_rate'].initial = locality.mt_tax_rate
-            form_class.fields['real_property_rate'].initial = locality.real_property_rate
-            form_class.fields['assessment_ratio'].initial = locality.assessment_ratio
-            form_class.fields['baseline_true_value'].initial = locality.baseline_true_value
-            form_class.fields['adj_gross_income'].initial = locality.adj_gross_income
-            form_class.fields['taxable_retail_sales'].initial = locality.taxable_retail_sales
-            form_class.fields['population'].initial = locality.population
-            form_class.fields['adm'].initial = locality.adm
-            form_class.fields['required_local_matching'].initial = locality.required_local_matching
-            form_class.fields['budget_escalator'].initial = locality.budget_escalator
-            form_class.fields['years_between_assessment'].initial = locality.years_between_assessment
-            form_class.fields['use_composite_index'].initial = locality.use_composite_index
-            return render(request, 'update_form.html', {'form' : form_class, 'county': loc_name})
+            form_class.fields['revenue_share_rate'].initial = user.revenue_share_rate
+            form_class.fields['discount_rate'].initial = user.discount_rate
+            form_class.fields['mt_tax_rate'].initial = user.mt_tax_rate
+            form_class.fields['real_property_rate'].initial = user.real_property_rate
+            form_class.fields['assessment_ratio'].initial = user.assessment_ratio
+            form_class.fields['baseline_true_value'].initial = user.baseline_true_value
+            form_class.fields['adj_gross_income'].initial = user.adj_gross_income
+            form_class.fields['taxable_retail_sales'].initial = user.taxable_retail_sales
+            form_class.fields['population'].initial = user.population
+            form_class.fields['adm'].initial = user.adm
+            form_class.fields['required_local_matching'].initial = user.required_local_matching
+            form_class.fields['budget_escalator'].initial = user.budget_escalator
+            form_class.fields['years_between_assessment'].initial = user.years_between_assessment
+            form_class.fields['use_composite_index'].initial = user.use_composite_index
+            return render(request, 'update_form.html', {'form' : form_class, 'county': username})
         else:
             return HttpResponse("ERROR")
             #return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
-def depreciationUpdate(request, locality_name):
-    locality = Locality.objects.get(name = locality_name)
-    scc = locality.scc_depreciation
+def depreciationUpdate(request, username):
+    user = UserProfile.objects.get(name = username)
+    scc = user.scc_depreciation
     depreciation_ext(scc)
     scc=scc[:30]
-    local = locality.local_depreciation
+    local = user.local_depreciation
     depreciation_ext(local)
-    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': locality_name})
+    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': username})
 
 def performCalculations(locality, simulation):
 

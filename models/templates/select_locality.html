@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="update-locality-all">
+
+    <div class="update-locality-header">
+        <h2>Please Select a Locality to Initialize your Profile's Parameters</h2>
+        <p>You will be able to change any of the parameters once you have finished setting up your account.</p>
+        <p>You will not be able to select another locality past this page.</p>
+    </div>
+
+    <form method="POST" action="/user-{{username}}/">
+        {% csrf_token %}
+        <select class="selectpicker" data-live-search="true" id="inputGroupSelect01" name="locality">
+            <option selected>Choose Your Locality</option>
+            {% for locality in all_localities %}
+                <option value="{{locality.name}}" class="locality_name">{{locality.name}}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <button class="btn btn-lg btn-info update-locality-submit" type="submit">Continue</button>
+    </form>
+</div>
+{% endblock %}
