@@ -28,6 +28,19 @@ from reportlab.lib.enums import TA_CENTER
 from plotly.offline import plot
 import plotly.graph_objects as go
 
+from django.core.mail import send_mail
+from django.conf import settings
+
+
+def email(request):
+    subject = "Thanks"
+    message = "Thanks"
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = ['thomas.p.callen@gmail.com']
+
+    send_mail(subject, message, email_from, recipient_list)
+
+    return redirect('/index')
 # Landing Page
 def index(request):
     #return redirect_no_parameters(request)
