@@ -43,7 +43,7 @@ class SimulationForm(forms.ModelForm):
             'baseline_land_value': ugettext_lazy('Baseline Value of Land ($)'),
             'inside_fence_land_value': ugettext_lazy('Inside the Fence Value of Land ($)'),
             'outside_fence_land_value': ugettext_lazy('Outside the Fence Value of Land ($)'),
-            'dominion_or_apco': ugettext_lazy('Is the project operated by either Dominion or APCO?'),
+            'dominion_or_apco': ugettext_lazy('Is the project operated by either an electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
         }
         widgets = {
             'user': forms.HiddenInput(),
