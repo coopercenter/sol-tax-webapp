@@ -469,3 +469,30 @@ li{
    left: 200px;
    padding-top: 1%;
 }
+
+.password-reset-form{
+    text-align: center;
+    padding: 4% 2% 9.25%;
+}
+.password-reset-done{
+    text-align: center;
+    padding: 4% 2% 13.5%;
+    font-size: 25px;
+}
+.password-reset-confirm{
+    text-align: center;
+    padding: 4% 2%;
+}
+
+.password-change-form{
+    width: 33%;
+    margin: auto;
+    text-align: left;
+    padding: 2%;
+}
+
+.password-reset-complete{
+    text-align: center;
+    padding: 4% 2% 13.5%;
+    font-size: 25px;
+}
