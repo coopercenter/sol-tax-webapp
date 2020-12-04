@@ -13,65 +13,73 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top">
-        <h1> <a href="/" class="site-name"> The Virginia SolTax Model</a></h1>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                <!-- <h4> <a href="technical.html" class="technical-appendix"> Technical Appendix</a></h4> -->
+    <div class="header">
+        <div class="navbar navbar-expand-lg navbar-light bg-light">
+            <h1> <a href="/" class="site-name"> The Virginia SolTax Model</a></h1>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    <!-- <h4> <a href="technical.html" class="technical-appendix"> Technical Appendix</a></h4> -->
 
-                {% if user.is_authenticated %}
+                    {% if user.is_authenticated %}
+                        
+                        
+                        <!-- <h4><a href="/user-{{user.username}}/" class="technical-appendix"><strong class="locality_name">{{user.username}} Profile</strong></a></h4> -->
+                        <!-- <h4><a href="/user-{{user.username}}/update-user-parameters/" class="technical-appendix"><strong class="locality_name">Update User Parameters</strong></a></h4>
+                        <h4><a href="/update-user-{{user.username}}/" class="technical-appendix"><strong class="locality_name">Change Initial Locality</strong></a></h4> -->
+                        <!-- <button class="btn btn-outline-primary navbar-button"><a href="/user-{{user.username}}/update-user-parameters/" class="log-button">Update User Parameters</a></h4></button>
+                        <button class="btn btn-outline-info navbar-button"><a href="/update-user-{{user.username}}/" class="log-button">Change Initial Locality</a></h4></button> -->
+                        <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
+                            {% csrf_token %}
+                            <input class="btn btn-outline-primary log-button" type="submit" value="Update User Parameters">
+                        </form>
                     
+                        <!-- <form method="POST" action="/update-user-{{user.username}}/">
+                            {% csrf_token %}
+                            <input class="btn btn-outline-info log-button" type="submit" value="Change Initial Locality">
+                        </form> -->
+
+                        <form method="POST" action="/user-{{user.username}}/">
+                            {% csrf_token %}
+                            <input class="btn btn-outline-warning log-button" type="submit" value="{{user.username}} Profile">
+                        </form>
+                        <!-- <button class="btn btn-outline-warning log-button"><a href="/user-{{user.username}}/" class="log-button">{{user.username}} Profile</a></h4></button> -->
+                        <button class="btn btn-danger not-log-button"><a href="/logout/" class="not-log-button">Logout</a></h4></button>
+                    {% else %}
+                        <!-- {% all_localities %} -->
+                        <button class="btn btn-info not-log-button"><a href="/signup/" class="not-log-button">Create New Profile</a></h4>
+                        <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></h4>
+
+                    {% endif %}
+                </ul>
+                
+                
+                <!-- <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                    <label class="input-group-text" for="inputGroupSelect01">Options</label>
+                    </div>
                     
-                    <!-- <h4><a href="/user-{{user.username}}/" class="technical-appendix"><strong class="locality_name">{{user.username}} Profile</strong></a></h4> -->
-                    <!-- <h4><a href="/user-{{user.username}}/update-user-parameters/" class="technical-appendix"><strong class="locality_name">Update User Parameters</strong></a></h4>
-                    <h4><a href="/update-user-{{user.username}}/" class="technical-appendix"><strong class="locality_name">Change Initial Locality</strong></a></h4> -->
-                    <!-- <button class="btn btn-outline-primary navbar-button"><a href="/user-{{user.username}}/update-user-parameters/" class="log-button">Update User Parameters</a></h4></button>
-                    <button class="btn btn-outline-info navbar-button"><a href="/update-user-{{user.username}}/" class="log-button">Change Initial Locality</a></h4></button> -->
-                    <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
-                        {% csrf_token %}
-                        <input class="btn btn-outline-primary log-button" type="submit" value="Update User Parameters">
-                    </form>
-                
-                    <!-- <form method="POST" action="/update-user-{{user.username}}/">
-                        {% csrf_token %}
-                        <input class="btn btn-outline-info log-button" type="submit" value="Change Initial Locality">
-                    </form> -->
-
-                    <form method="POST" action="/user-{{user.username}}/">
-                        {% csrf_token %}
-                        <input class="btn btn-outline-warning log-button" type="submit" value="{{user.username}} Profile">
-                    </form>
-                    <!-- <button class="btn btn-outline-warning log-button"><a href="/user-{{user.username}}/" class="log-button">{{user.username}} Profile</a></h4></button> -->
-                    <button class="btn btn-danger not-log-button"><a href="/logout/" class="not-log-button">Logout</a></h4></button>
-                {% else %}
-                    <!-- {% all_localities %} -->
-                    <button class="btn btn-info not-log-button"><a href="/signup/" class="not-log-button">Create New Profile</a></h4>
-                    <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></h4>
-
-                {% endif %}
-            </ul>
-            
-            
-            <!-- <div class="input-group mb-3">
-                <div class="input-group-prepend">
-                  <label class="input-group-text" for="inputGroupSelect01">Options</label>
-                </div>
-                
-            </div> -->
-            <!-- <select class="selectpicker">
-                <option>Mustard</option>
-                <option>Ketchup</option>
-                <option>Relish</option>
-            </select>   -->
-            <!-- <form action="/locality-list">
-                                
-                <button type="submit" class="btn btn-primary back-btn">Choose Your Locality</button>
-            </form> -->
+                </div> -->
+                <!-- <select class="selectpicker">
+                    <option>Mustard</option>
+                    <option>Ketchup</option>
+                    <option>Relish</option>
+                </select>   -->
+                <!-- <form action="/locality-list">
+                                    
+                    <button type="submit" class="btn btn-primary back-btn">Choose Your Locality</button>
+                </form> -->
+            </div>
         </div>
-    </nav>
+    </div>  
+
+    <div class="header">
+        <div class="navbar navbar-expand-lg navbar-light bg-light d-none d-print-inline print-header">
+            <h1>The Virginia SolTax Model</h1>
+        </div>
+    </div>
 
     <div class="middle">
         {% block content %}
