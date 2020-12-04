@@ -4,10 +4,17 @@
 {% load static %}
 <div class="container-fluid">
     <div class="model-description">
-        <p>With passage of HB 1434, Virginia now offers localities two options to generate revenues from
+        <!-- Give more introduction
+        This tool was developed by the Weldon Cooper Center at UVA, DMME and other's
+            
+            -->
+        <!--
+            
+        -->
+        <p>With passage of HB 1131, Virginia now offers localities two options to generate revenues from
             utility-scale
             solar
-            development. The default option is for localities to levy a <em>Machinery and Tools (M&amp;T) tax</em>
+            development <!--on solar facilities of solar generation of 25 MW or less-->. The default option is for localities to levy a <em>Machinery and Tools (M&amp;T) tax</em>
             on
             capital investments in solar generation facilities. Alternatively, a locality may adopt an ordinance to
             replace
@@ -18,6 +25,8 @@
             the revenues that a locality could realize under each of these two taxation arrangements involve
             calculations
             that are non-trivial in complexity.</p>
+
+        <!--- Description of Revenue Share-->
         <p>The UVA SolTax Model is designed to assist Virginia localities to estimate the revenues they could
             realize
             under
@@ -37,6 +46,7 @@
             in multiple years to allow examination of the revenue implications of alternative scenarios.</p>
         <div id="important-comments-and-cautions" class="section level3">
             <h3><strong>Important comments and cautions:</strong></h3>
+            <!-- User Profile Usage-->
             <p>To create a new profile select the "Create New Profile" Button in the top right. This will direct you to a page to enter a username, email and password. Once the account has been
                 created, you will be asked to select a locality to base your initial profile parameters off of. This can not be changed for your profile. In order to create new projects associated with
                 another locality's parameters create a new profile.
@@ -45,8 +55,11 @@
             <!-- <p>After choosing your locality, you will be asked to log in. The username should automatically populate, taking the form "Locality_Name". The username for the locality
                 King and Queen is "King_And_Queen" for example. The password is "solarTax" for all localities.
             </p> -->
+
+            <!-- Move to bottom smaller print, italics-->
             <p><strong>THIS TOOL COMES WITH ABSOLUTELY NO WARRANTY.</strong></p>
             <p><strong>THIS IS NOT A FORECASTING TOOL.</strong></p>
+            <!-- Not a forecasting tool, this is a tool meant for localities to consult with, this does not constitute legal advice-->
             <p>
                  
             </p>
@@ -82,12 +95,12 @@
                 </p>
                 <ul>
                     <li>
-                        If a project is under 25 MW and is not owned by an electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The M&T tax rate is
+                        If a project is 25 MW or less and is not owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The M&T tax rate is
                         used along with the locality's depreciation schedule and the M&T stepdown exemption rate.
                     </li>
                     <li>
-                        If a project is greater than 25 MW and less than 150 MW OR is owned by an electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The real estate tax rate is applied to the project along with the SCC
-                        depreciation schedule and the M&T stepdown exemption rate.
+                        If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The real estate tax rate is applied to the project along with the SCC
+                        depreciation schedule and the M&T stepdown exemption rate. <!-- Add local assessment ratios -->
                     </li>
                     <li>
                         All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
@@ -146,12 +159,12 @@
             <ul>
 
                 <li>The initial year the solar project will operate in</li>
-                <li>The inital investment into the solar project</li>
+                <li>The initial <!-- total capitalized investment -->investment into the solar project</li>
                 <li>The size of the project in megawatts</li>
-                <li>The total acerage of the project</li>
-                <li>The total acerage of the project that is "inside the fence"</li>
+                <li>The total acreage of the project</li>
+                <li>The total acreage of the project that is "inside the fence"</li>
                 <li>The value of the land, both baseline value, and the value of land "inside the fence".</li>
-                <li>Whether the project is operated by an electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative</li>
+                <li>Whether the project is operated by an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative</li>
             </ul>
             <p>In addition to these variables for each analysis, each user is tied to a locality with locality specific 
                 parameters including,
@@ -162,6 +175,7 @@
                 <li>Real Estate Tax Rate</li>
                 <li>Assessment Ratio</li>
                 <li>The locality's depreciation schedule</li>
+                <li>SCC's depreciation schedule</li>
                 <li>The discount rate to be applied to all projects</li>
             </ul>
             <p>These variable can be changed by a user to make their analyses more accurate</p>
@@ -259,7 +273,7 @@
                     and
                     the
                     revenue sharing model remains in its current form in perpetuity).</li>
-                <li>All new investments solar will continue to exist through 2050.</li>
+                <!-- <li>All new investments solar will continue to exist through 2050.</li> -->
                 <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
                     level
                     is
@@ -288,6 +302,10 @@
                     extent of solar development in a locality.</li>
             </ul>
         </div>
+
+        <!-- Acknowledgements -->
+
+        <!-- New Disclaimer -->
         <!-- <div class="locality-dropup">
             <div class="dropup">
                 <button class="btn btn-primary btn-lg dropdown-toggle" type="button" id="dropdownMenuButtonBottom" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
