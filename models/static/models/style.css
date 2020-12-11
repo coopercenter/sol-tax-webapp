@@ -341,13 +341,11 @@ li{
     padding: 30px;
 }
 
-.locality-summary{
+/* .locality-summary{
     /* border: 1px solid gray; */
     /* position: relative;
-    left: 28vw; */
-}
-
-
+    left: 28vw; 
+}*/
 
 .locality-summary-table{
     border: 1px solid rgb(184, 183, 183);
