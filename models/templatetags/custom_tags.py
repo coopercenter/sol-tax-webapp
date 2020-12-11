@@ -67,7 +67,7 @@ def get_table_totals(l):
 
 @register.simple_tag
 def change_to_percentage(rate):
-    return ("{:.1f}".format(round(rate*100, 3)))
+    return ("{:.2f}".format(round(rate*100, 4)))
 
 @register.inclusion_tag("search_bar.html")
 def all_localities():

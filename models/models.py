@@ -4,12 +4,12 @@ from django.urls import reverse
 from django.db.models import UniqueConstraint
 from django.contrib.auth.models import User
 
-def mt_tax_default():
-    print(list(0 for i in range(0, 30)))
-    return list(0 for i in range(0, 30))
+# def mt_tax_default():
+#     print(list(0 for i in range(0, 30)))
+#     return list(0 for i in range(0, 30))
 
 def get_scc_depreciation():
-    return list([.9, .9, .9, .9, .8973, .8729, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10])
+    return list([.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10])
 
 ########
 ## NEW USER TYPE

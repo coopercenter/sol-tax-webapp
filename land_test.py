@@ -38,3 +38,4 @@ fmv_increase = 1.2
 yrs_between = 5
 
 print(land_value(total_acerage, inside_acerage, outside_acerage, baseline_value, inside_fence_value, outside_fence_value, fmv_increase, yrs_between, 2023)[1])
+print(len(list([.9, .9, .9, .9, .8973, .8729, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10])))

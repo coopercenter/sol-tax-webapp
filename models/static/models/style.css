@@ -10,6 +10,9 @@ li{
     /* line-height: .8rem; */
     margin: -10px;
 }
+.locality_name{
+    margin: 3px;
+}
 .not-log-button{
     color: whitesmoke;
     font-size: 18px;

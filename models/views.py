@@ -575,7 +575,9 @@ def depreciationUpdate(request, username):
     user = UserProfile.objects.get(name = username)
     scc = user.scc_depreciation
     depreciation_ext(scc)
-    scc=scc[:30]
+    scc=scc[:36]
+    print("scc")
+    print(scc)
     local = user.local_depreciation
     depreciation_ext(local)
     return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': username})
@@ -778,7 +780,7 @@ def depreciation_ext(depreciation_schedule):
     Extends list with final effective rate to be available for calculations out to 2050
     '''
     last_rate = depreciation_schedule[-1]
-    while len(depreciation_schedule) <= 29:
+    while len(depreciation_schedule) <= 35:
         depreciation_schedule.append(last_rate)
 
 def effective_rate_ext (effective_rate_list, project_length):
