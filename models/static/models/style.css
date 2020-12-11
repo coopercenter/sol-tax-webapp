@@ -6,6 +6,10 @@ body{
 h2, h3, h4{
     font-size: 28px;
 }
+li{
+    /* line-height: .8rem; */
+    margin: -10px;
+}
 .not-log-button{
     color: whitesmoke;
     font-size: 18px;
