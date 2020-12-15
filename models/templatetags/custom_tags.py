@@ -31,13 +31,15 @@ def get_rs_rate(sim):
 @register.simple_tag
 def get_mt_rate(sim):
     locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
-    return locality.mt_tax_rate
+    return ("{:.2f}".format(locality.mt_tax_rate))
+    #return locality.mt_tax_rate
 
 @register.simple_tag
 def get_real_property_rate(sim):
     locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     print(locality.real_property_rate)
-    return locality.real_property_rate
+    return ("{:.2f}".format(locality.real_property_rate))
+    #return locality.real_property_rate
 
 @register.simple_tag
 def get_project_size(sim):

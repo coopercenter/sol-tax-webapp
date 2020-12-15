@@ -48,7 +48,7 @@
                                 </tr>
                             {% elif field == 'initial_investment' %}
                                 <tr>
-                                    <td>Initial Investment</td>
+                                    <td>Total Capitalized Investment</td>
                                     <td class="value"><span class="dollar_value">{{value}}</span></td>
                                 </tr>
                             {% elif field == 'initial_year' %}
@@ -114,6 +114,7 @@
                     </tr> -->
                 </tbody>
             </table>
+            <p class="parameter-note">Note: The tax rate highlighted in green is used for M&T/Real Estate tax calculations.</p>
 
             <!-- <div class="back-button">
                 <form action="form">
@@ -140,7 +141,7 @@
                         </tr>
                         <tr>
                             <td>
-                                <strong class="mt-revenue-title">M&T Tax</strong>
+                                <strong class="mt-revenue-title">M&T/Real Estate Tax</strong>
                             </td>
                             <td>
                                 <span class="dollar_value">{% get_totals calculations.tot_mt %}</span>
@@ -181,9 +182,9 @@
             <thead>
                 <tr class="header">
                     <th scope="col">Year</th>
-                    <th scope="col">M&T Tax Nominal $</th>
+                    <th scope="col">M&T/Real Estate Tax Nominal $</th>
                     <th scope="col">Revenue Share Nominal $</th>
-                    <th scope="col">M&T Tax in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
+                    <th scope="col">M&T/Real Estate Tax in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
                     <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
                 </tr>
             </thead>
