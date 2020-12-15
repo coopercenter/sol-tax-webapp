@@ -34,7 +34,7 @@ class SimulationForm(forms.ModelForm):
         fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
             'name': ugettext_lazy('Project Name'),
-            'initial_investment': ugettext_lazy('Initial Investment ($)'),
+            'initial_investment': ugettext_lazy('Total Capitalized Investment ($)'),
             'initial_year': ugettext_lazy('Initial Year'),
             'project_length': ugettext_lazy('Project Length (Years)'),
             'project_size': ugettext_lazy('Project Size (MW)'),

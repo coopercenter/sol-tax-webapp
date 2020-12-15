@@ -8,7 +8,7 @@ h2, h3, h4{
 }
 li{
     /* line-height: .8rem; */
-    margin: -10px;
+    margin: -20px;
 }
 .locality_name{
     margin: 3px;
@@ -28,7 +28,9 @@ li{
     text-decoration: none;
     color: black;
 }
-
+.parameter-note{
+    text-align: center;
+}
 .not-log-button:hover{
     text-decoration: none;
     color: rgb(197, 193, 193);;
