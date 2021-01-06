@@ -15,11 +15,6 @@ from django.utils.http import urlsafe_base64_encode
 
 UserModel = get_user_model()
 
-
-# class SelectForm(forms.Form):
-#     locality = forms.ModelChoiceField(queryset=Locality.objects.all())
-#     widget = forms.Select(attrs={'onchange': 'this.form.submit();'})
-
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=256, help_text="Provide a valid email address.")
     
@@ -29,10 +24,12 @@ class SignUpForm(UserCreationForm):
 
 
 class SimulationForm(forms.ModelForm):
+    # Form for creating a project analysis
     class Meta:
         model = Simulation
         fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
+            # Labels for each field of the form
             'name': ugettext_lazy('Project Name'),
             'initial_investment': ugettext_lazy('Total Capitalized Investment ($)'),
             'initial_year': ugettext_lazy('Initial Year'),
@@ -46,6 +43,7 @@ class SimulationForm(forms.ModelForm):
             'dominion_or_apco': ugettext_lazy('Is the project operated by either an electirc supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
         }
         widgets = {
+            # Defines the input expected for each field of the form and sets minimum and maximum values for the inputs.
             'user': forms.HiddenInput(),
             'name': forms.TextInput(attrs={'class':'form-control'}),
             'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
@@ -57,10 +55,11 @@ class SimulationForm(forms.ModelForm):
             'baseline_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'inside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'outside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
-            'dominion_or_apco': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
+            'dominion_or_apco': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}), #adds some styling to the checkbox, couldn't do it using css for some reason
         }
 
 class UserProfileUpdateForm(forms.ModelForm):
+    # Form for updating user parameters
     class Meta:
         model = UserProfile
         fields = ('revenue_share_rate', 'discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment', 'use_composite_index')
@@ -96,14 +95,6 @@ class UserProfileUpdateForm(forms.ModelForm):
             'years_between_assessment': forms.NumberInput(attrs={'class': 'form-control', 'min':1, 'max':30}),
             'use_composite_index': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
         }
-
-# class LocalityDepreciationUpdateForm(forms.ModelForm):
-#     class Meta:
-#         model = Locality
-#         fields = {'locality_depreciation', 'scc_depreciation'}
-#         labels = {
-
-#         }
 
 def _unicode_ci_compare(s1, s2):
     """

@@ -18,7 +18,6 @@ urlpatterns = [
     path('user-<str:username>/update-depreciation-schedules/', views.depreciationUpdate, name='update_depreciation'),
     path('user-<str:username>/', views.user_home, name='locality_home'),
     path('user-<str:username>/<int:simulation_id>/', views.dash, name='simulation_dash'),
-    path('profile/', views.profile, name="profile"),
     path('localityName/', views.localityName, name='localityName'),
     path('login/', views.loginView, name = 'login'),
     path('logout/', views.logoutView, name = 'logout'),

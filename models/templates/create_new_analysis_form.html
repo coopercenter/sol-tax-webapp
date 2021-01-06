@@ -1,10 +1,11 @@
+<!-- Form to generate new analysis for a user. Uses the simulationForm as described in forms.py -->
+
 {% extends 'base.html' %}
 
 {% block content %}
 <div class="container-fluid">
     <h1 class="selected-locality">
         Create Custom Analysis for <span class="locality_name">{{ county }}</span>
-        <!-- Generate SolTax Model for <span class="locality_name">{{ county }}</span> -->
     </h1>
     
     <div class="form-group">

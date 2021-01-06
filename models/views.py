@@ -210,9 +210,6 @@ def localityName(request):
         locality = (request.POST.get('locality'))
     return HttpResponseRedirect('/locality-'+locality+'/')
 
-def profile(request):
-    return render(request, 'profile.html')
-
 # def user_home(request, username):
 #     user = UserProfile.objects.get(name=username)
     
