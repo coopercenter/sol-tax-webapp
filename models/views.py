@@ -497,7 +497,7 @@ class NewSimulationView(CreateView):
             form_class = SimulationForm() 
             form_class.fields['user'].initial = UserProfile.objects.get(name = username).id
 
-            return render(request, 'form.html', {'form' : form_class, 'county': username})
+            return render(request, 'create_new_analysis_form.html', {'form' : form_class, 'county': username})
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
