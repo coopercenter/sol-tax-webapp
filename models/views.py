@@ -484,11 +484,6 @@ def request_page(request):
 #     else:
 #         return HttpResponse('Error please select fill out the model generation form')
 
-def index_page(request):
-    localities = Locality.objects.order_by('name')
-    simulations = Locality.objects.annotate(number_of_simulations=Count('simulation'))
-    return render(request, 'locality-list.html', {'localities': localities, 'simulations':simulations})
-
 class NewSimulationView(CreateView):
 
     def post(self, request):

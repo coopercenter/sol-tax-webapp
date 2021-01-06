@@ -1,3 +1,6 @@
+<!-- Page that shows results of a specific analysis. Includes the total amount of revenue under both tax models, a graph showing the income 
+each year, and a table showing the breakdown for each year. -->
+
 {% extends 'base.html' %}
 
 {% block content %}
@@ -10,7 +13,6 @@
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters">
             <h2 class="entered-data-title">Project Parameters</h2>
-            <!-- {{simulation.0.fields}} -->
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -41,7 +43,6 @@
                                     <td class="{% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">Real Property Rate per $100 of Assessed Value</td>
                                     <td class="value {% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_real_property_rate simulation %}</td>
                                 </tr>
-                                <!-- {{simulation.0.fields.project_size}} -->
                                 <tr>
                                     <td class="{% if simulation.0.fields.project_size < 25 and not simulation.0.fields.dominion_or_apco %} color {% endif %}">M&T Tax Rate per $100 of Assessed Value</td>
                                     <td class="value {% if simulation.0.fields.project_size < 25 and not simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_mt_rate simulation %}</td>
@@ -89,38 +90,9 @@
                             {% endif %}
                         {% endfor %}
                     {% endfor %}
-                    <!-- <tr>
-                        <td colspan="2">Effective M&T Tax Rate per $100 Assessed Value</td>
-                    </tr>
-                    <tr>
-                        <td class="value-rate">Year 1</td>
-                        <td class="value">${% get_mt_rate simulation%}</td>
-                    </tr>
-                    <tr>
-                        <td class="value-rate">Year 2</td>
-                        <td class="value">${% get_mt_rate simulation%}</td>
-                    </tr>
-                    <tr>
-                        <td class="value-rate">Year 3</td>
-                        <td class="value">${% get_mt_rate simulation%}</td>
-                    </tr>
-                    <tr>
-                        <td class="value-rate">Year 4</td>
-                        <td class="value">${% get_mt_rate simulation%}</td>
-                    </tr>
-                    <tr>
-                        <td class="value-rate">Year 5 & on</td>
-                        <td class="value">${% get_mt_rate simulation%}</td>
-                    </tr> -->
                 </tbody>
             </table>
             <p class="parameter-note">Note: The tax rate highlighted in green is used for M&T/Real Estate tax calculations.</p>
-
-            <!-- <div class="back-button">
-                <form action="form">
-                    <button type="submit" class="btn btn-primary back-btn">Update Parameters</button>
-                </form>
-            </div> -->
         </div>
         
         <div class="col-xl-6 right-col">
@@ -156,9 +128,6 @@
                             </td>
                         </tr>
                     </table>
-                    <!-- <p><strong>Revenue Share:</strong> $<span class="comma_value">{% get_totals calculations.tot_rs %}</span></p>
-                    <p><strong>M&T Tax:</strong> $<span class="comma_value">{% get_totals calculations.tot_mt %}</span></p>
-                    <p><strong>Increase from Revenue Share: </strong>$<span class="comma_value"> {% subtract calculations.tot_rs calculations.tot_mt %}</span></p> -->
                 </div>
             </div>
 
