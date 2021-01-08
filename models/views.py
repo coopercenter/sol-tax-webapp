@@ -1,45 +1,43 @@
 from matplotlib import pylab
 from pylab import *
+
+from .models import Locality, Simulation, Calculations, UserProfile
+from .forms import SimulationForm, UserProfileUpdateForm, SignUpForm, PasswordResetUsernameForm
+from .revenue_calculations import *
+
+from django.contrib import messages
+from django.contrib.auth import login, logout, authenticate, update_session_auth_hash
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib.auth.models import AnonymousUser
+from django.contrib.auth.tokens import default_token_generator
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.http import HttpResponse, HttpResponseRedirect, FileResponse
-from django.views.generic import CreateView, ListView
 from django.views import generic
-from .models import Locality, Simulation, Calculations, UserProfile
-from .forms import SimulationForm, UserProfileUpdateForm, SignUpForm, PasswordResetUsernameForm
-from django.core import serializers
-import urllib, base64
-import PIL, PIL.Image, io
-from django.db.models import Count
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth.models import AnonymousUser
-from django.contrib import messages
-from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.forms import PasswordChangeForm
+from django.views.generic import CreateView, ListView
 from django.views.generic.edit import FormView
+from django.views.decorators.csrf import csrf_protect
+from django.core import serializers
+from django.core.mail import send_mail
 from django.utils.translation import gettext_lazy as _
 from django.utils.decorators import method_decorator
-
-from django.contrib.auth.tokens import default_token_generator
-from django.views.decorators.csrf import csrf_protect
-
-from reportlab.pdfgen.canvas import Canvas
-from reportlab.platypus import SimpleDocTemplate, Frame, BaseDocTemplate, Paragraph
-from reportlab.platypus.tables import Table
-from reportlab.rl_config import defaultPageSize
-from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-from reportlab.lib.enums import TA_CENTER
-
-from plotly.offline import plot
-import plotly.graph_objects as go
-
-from django.core.mail import send_mail
+from django.db.models import Count
 from django.conf import settings
+from plotly.offline import plot
+
+import plotly.graph_objects as go
+import urllib, base64
+import PIL, PIL.Image, io
+
+# from reportlab.pdfgen.canvas import Canvas
+# from reportlab.platypus import SimpleDocTemplate, Frame, BaseDocTemplate, Paragraph
+# from reportlab.platypus.tables import Table
+# from reportlab.rl_config import defaultPageSize
+# from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
+# from reportlab.lib.enums import TA_CENTER
 
 # Landing Page
 def index(request):
-    #return redirect_no_parameters(request)
     return render(request, 'index.html')
 
 # Login Page
@@ -59,8 +57,8 @@ def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-def update_user_profile(request, user_profile):
-    return HttpResponse("TESTING")
+# def update_user_profile(request, user_profile):
+#     return HttpResponse("TESTING")
 
 #SignUp
 def signup(request):
@@ -88,105 +86,105 @@ def update_user(request, username):
     localities = Locality.objects.order_by('name')
     return render(request, 'select_locality.html', {'all_localities': localities, 'username':username})
 
-def testPDF(request, locality_name):
-    locality = Locality.objects.get(name = locality_name)
-    height = defaultPageSize[1]
-    width = defaultPageSize[0]
-    buffer = io.BytesIO()
+# def testPDF(request, locality_name):
+#     locality = Locality.objects.get(name = locality_name)
+#     height = defaultPageSize[1]
+#     width = defaultPageSize[0]
+#     buffer = io.BytesIO()
 
-    # p = canvas.Canvas(buffer)
-    # p.setFont("Times-Roman", 20)
-    # #p.drawCenteredString(width/2, height, locality_name)
-    # p.drawCenteredString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
-    # print(locality.simulation_set.all())
-    # for simulation in locality.simulation_set.all():
-    #     table = Table(["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)])
-    #     p.append(table)
-    # p.showPage()
-    # p.save()
-    #response = HttpResponse(mimetype='application/pdf')
-    response = HttpResponse()
-    response['Content-Disposition'] = 'attachment; filename=somefilename.pdf'
+#     # p = canvas.Canvas(buffer)
+#     # p.setFont("Times-Roman", 20)
+#     # #p.drawCenteredString(width/2, height, locality_name)
+#     # p.drawCenteredString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
+#     # print(locality.simulation_set.all())
+#     # for simulation in locality.simulation_set.all():
+#     #     table = Table(["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)])
+#     #     p.append(table)
+#     # p.showPage()
+#     # p.save()
+#     #response = HttpResponse(mimetype='application/pdf')
+#     response = HttpResponse()
+#     response['Content-Disposition'] = 'attachment; filename=somefilename.pdf'
 
-    elements = []
+#     elements = []
 
-    doc = SimpleDocTemplate(response, rightMargin=0, leftMargin=6.5 * 2.54, topMargin=0.3 * 2.54, bottomMargin=0)
-    frame_left = Frame(width/2, height, width/2, height, showBoundary = 1) 
-    #elements.append(frame_left)
-    tables = []
-    canvas = Canvas("test.pdf")
+#     doc = SimpleDocTemplate(response, rightMargin=0, leftMargin=6.5 * 2.54, topMargin=0.3 * 2.54, bottomMargin=0)
+#     frame_left = Frame(width/2, height, width/2, height, showBoundary = 1) 
+#     #elements.append(frame_left)
+#     tables = []
+#     canvas = Canvas("test.pdf")
     
-    style = getSampleStyleSheet()
-    style = ParagraphStyle(
-        'small',
-        parent = style['Normal'],
-        fontSize = 20,
-        alignment = TA_CENTER,
-        spaceBefore = 50,
-        trailing = 50,
-        leading = 50,
-    )
-    #print(style['Normal'])
-    #style['fontSize'] = 20
+#     style = getSampleStyleSheet()
+#     style = ParagraphStyle(
+#         'small',
+#         parent = style['Normal'],
+#         fontSize = 20,
+#         alignment = TA_CENTER,
+#         spaceBefore = 50,
+#         trailing = 50,
+#         leading = 50,
+#     )
+#     #print(style['Normal'])
+#     #style['fontSize'] = 20
 
-    title = Paragraph('''<strong> SolTax Analysis for ''' + locality_name + ''' </strong>''', style)
+#     title = Paragraph('''<strong> SolTax Analysis for ''' + locality_name + ''' </strong>''', style)
     
-    #print(ParagraphStyle)
-    elements.append(title)
+#     #print(ParagraphStyle)
+#     elements.append(title)
     
-    locality_info_data = [
-        [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
-        ["Using Composite Index for Calculations?", locality.use_composite_index],
-        ["Revenue Share Rate", "$" + str('{:,}'.format(locality.revenue_share_rate)) + "/MW"],
-        ["Discount Rate", str(locality.discount_rate) + "%"],
-        ["M&T Tax Rate", "$" + str(locality.mt_tax_rate) + "/$100 Assessed Value"],
-        ["Real Property Rate", "$" + str(locality.real_property_rate) + "/$100 Assessed Value"],
-        ["Assessment Ratio", str(locality.assessment_ratio) + "%"],
-        [Paragraph(''' <strong> Composite Index Parameters </strong> ''')],
-        ["Local True Value", "$" + str('{:,}'.format(locality.baseline_true_value))],
-        ["Adjusted Gross Income", "$" + str('{:,}'.format(locality.adj_gross_income))],
-        ["Taxable Retail Sales", "$" + str('{:,}'.format(locality.taxable_retail_sales))],
-        ["Population", str('{:,}'.format(locality.population))],
-        ["ADM", str('{:,}'.format(locality.adm))],
-        ["Required Local Matching", "$" + str('{:,}'.format(locality.required_local_matching))],
-        ["Education Budget Escalator", str(locality.budget_escalator) + "%"],
-        ["Years Between Assessment", str(locality.years_between_assessment)],
-    ] 
-    locality_info_table = Table(locality_info_data, colWidths = 200, rowHeights = 20)
-    elements.append(locality_info_table)
+#     locality_info_data = [
+#         [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
+#         ["Using Composite Index for Calculations?", locality.use_composite_index],
+#         ["Revenue Share Rate", "$" + str('{:,}'.format(locality.revenue_share_rate)) + "/MW"],
+#         ["Discount Rate", str(locality.discount_rate) + "%"],
+#         ["M&T Tax Rate", "$" + str(locality.mt_tax_rate) + "/$100 Assessed Value"],
+#         ["Real Property Rate", "$" + str(locality.real_property_rate) + "/$100 Assessed Value"],
+#         ["Assessment Ratio", str(locality.assessment_ratio) + "%"],
+#         [Paragraph(''' <strong> Composite Index Parameters </strong> ''')],
+#         ["Local True Value", "$" + str('{:,}'.format(locality.baseline_true_value))],
+#         ["Adjusted Gross Income", "$" + str('{:,}'.format(locality.adj_gross_income))],
+#         ["Taxable Retail Sales", "$" + str('{:,}'.format(locality.taxable_retail_sales))],
+#         ["Population", str('{:,}'.format(locality.population))],
+#         ["ADM", str('{:,}'.format(locality.adm))],
+#         ["Required Local Matching", "$" + str('{:,}'.format(locality.required_local_matching))],
+#         ["Education Budget Escalator", str(locality.budget_escalator) + "%"],
+#         ["Years Between Assessment", str(locality.years_between_assessment)],
+#     ] 
+#     locality_info_table = Table(locality_info_data, colWidths = 200, rowHeights = 20)
+#     elements.append(locality_info_table)
 
-    for simulation in locality.simulation_set.all():
-        mt_tot = round(sum(simulation.calculations.tot_mt)*1000, -3)
-        rs_tot = round(sum(simulation.calculations.tot_rs)*1000, -3)
-        data = [
-            [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
-            #["Parameter", "Value"],
-            ["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)],
-            ["Initial Investment", "$" + '{:,}'.format(simulation.initial_investment)],
-            ["Project Size", str(simulation.project_size) + "MW"],
-            ["Dominion or APCO", simulation.dominion_or_apco],
-            ["Revenue Share Revenue", "$" + '{:,}'.format(rs_tot)],
-            ["M&T Revenue", "$" + '{:,}'.format(mt_tot)],
-            ["Difference", "$" + '{:,}'.format(rs_tot - mt_tot)],
-        ]
-        table = Table(data, colWidths = 150, rowHeights = 30)
-        #table.setStyle(TableStyle([('')]))
-        elements.append(table)
-        tables.append(table)
-    frame_left.addFromList(tables, canvas)
-    # canvas.showPage()
-    # canvas.save()
-        #elements.append(table)
-    # data=[(1,2),(3,4)]
-    # table = Table(data, colWidths=270, rowHeights=79)
-    # elements.append(table)
+#     for simulation in locality.simulation_set.all():
+#         mt_tot = round(sum(simulation.calculations.tot_mt)*1000, -3)
+#         rs_tot = round(sum(simulation.calculations.tot_rs)*1000, -3)
+#         data = [
+#             [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
+#             #["Parameter", "Value"],
+#             ["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)],
+#             ["Initial Investment", "$" + '{:,}'.format(simulation.initial_investment)],
+#             ["Project Size", str(simulation.project_size) + "MW"],
+#             ["Dominion or APCO", simulation.dominion_or_apco],
+#             ["Revenue Share Revenue", "$" + '{:,}'.format(rs_tot)],
+#             ["M&T Revenue", "$" + '{:,}'.format(mt_tot)],
+#             ["Difference", "$" + '{:,}'.format(rs_tot - mt_tot)],
+#         ]
+#         table = Table(data, colWidths = 150, rowHeights = 30)
+#         #table.setStyle(TableStyle([('')]))
+#         elements.append(table)
+#         tables.append(table)
+#     frame_left.addFromList(tables, canvas)
+#     # canvas.showPage()
+#     # canvas.save()
+#         #elements.append(table)
+#     # data=[(1,2),(3,4)]
+#     # table = Table(data, colWidths=270, rowHeights=79)
+#     # elements.append(table)
     
-    doc.build(elements) 
-    canvas.showPage()
-    return response
+#     doc.build(elements) 
+#     canvas.showPage()
+#     return response
 
-    #buffer.seek(0)
-    #return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
+#     #buffer.seek(0)
+#     #return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
 
 def change_password(request):
     if request.method == 'POST':
@@ -579,7 +577,6 @@ def performCalculations(locality, simulation):
     '''
     Simulation Variables
     '''
-
     local_investment = simulation.initial_investment
     initial_year = simulation.initial_year
     project_length = simulation.project_length
@@ -766,306 +763,306 @@ def performCalculations(locality, simulation):
         calc = Calculations.objects.create(simulation=simulation, cas_mt = cas_mt, cas_rs=cas_rs, tot_mt=tot_mt, tot_rs=tot_rs)
     return calc
 
-def depreciation_ext(depreciation_schedule):
-    '''
-    Takes in schedule of effective rates for county + year of initial build
-    Extends list with final effective rate to be available for calculations out to 2050
-    '''
-    last_rate = depreciation_schedule[-1]
-    while len(depreciation_schedule) <= 35:
-        depreciation_schedule.append(last_rate)
+# def depreciation_ext(depreciation_schedule):
+#     '''
+#     Takes in schedule of effective rates for county + year of initial build
+#     Extends list with final effective rate to be available for calculations out to 2050
+#     '''
+#     last_rate = depreciation_schedule[-1]
+#     while len(depreciation_schedule) <= 35:
+#         depreciation_schedule.append(last_rate)
 
-def effective_rate_ext (effective_rate_list, project_length):
-    '''
-    Takes in schedule of effective rates for county + year of initial build
-    Extends list with final effective rate to be available for calculations out to 2050
-    '''
-    last_rate = effective_rate_list[-1]
-    while len(effective_rate_list) <= project_length:
-        effective_rate_list.append(last_rate)
+# def effective_rate_ext (effective_rate_list, project_length):
+#     '''
+#     Takes in schedule of effective rates for county + year of initial build
+#     Extends list with final effective rate to be available for calculations out to 2050
+#     '''
+#     last_rate = effective_rate_list[-1]
+#     while len(effective_rate_list) <= project_length:
+#         effective_rate_list.append(last_rate)
 
-'''
-FUNCTIONS TO GET TOTAL MT REVENUE GENERATED BY SOLAR FACILITY
+# '''
+# FUNCTIONS TO GET TOTAL MT REVENUE GENERATED BY SOLAR FACILITY
 
-'''
-
-
-##############################################################
-# Functions to determine tax rates for project
-##############################################################
-
-'''
-    Get the exemption rate for the project. If above 150 MW a solar project does not have any exemptions applied. Otherwise it is the M&T stepdown exemption rate
-'''
-def get_mt_exemption(size_mw, mt_exemption):
-    if(size_mw > 150):
-        return 0
-    else:
-        return mt_exemption
-
-'''
-    Get the M&T tax rate for the project. If above 20 MW use the real estate rate for the project, otherwise use the mt_tax_rate
-'''
-def get_mt_tax_rate(size_mw, mt_tax_rate, real_estate_rate):
-    if size_mw > 25:
-        return real_estate_rate
-    else:
-        return mt_tax_rate
-
-##############################################################
-# Calculations for Valuation of Proposed Solar Facility
-##############################################################
-
-def solar_facility_valuation(year, investment, mt_exemption, depreciation_schedule, assessment_ratio, project_length):
-    valuation = []
-    for i in range(0, project_length):
-        # if(i + 2020 >= year):
-        after_exemption = investment * (1 - mt_exemption[i])
-        after_depreciation = after_exemption * depreciation_schedule[i]
-        assessed_facility_valuation = after_depreciation * assessment_ratio
-        valuation.append(round(assessed_facility_valuation)) # If the index is at or past the initial year of project
-        # else:
-        #     valuation.append(0) #If the index is before the initial year of project
-    return valuation
+# '''
 
 
-##############################################################
-# Calculations for increase in Land Value
-##############################################################
+# ##############################################################
+# # Functions to determine tax rates for project
+# ##############################################################
 
-def current_land_value(total_acreage, baseline_value, starting_year, project_length, years_between_assessment):
-    baseline = []
-    # offset = starting_year - 2020
-    # for i in range(0, offset):
-    #     baseline.append(0)
-    for i in range(0, project_length):
-        if(i % years_between_assessment == 0):
-            baseline.append(round(baseline_value * total_acreage * ((1.012)**(i+1))))
-        else:
-            baseline.append(baseline[i - 1])
-    return baseline
+# '''
+#     Get the exemption rate for the project. If above 150 MW a solar project does not have any exemptions applied. Otherwise it is the M&T stepdown exemption rate
+# '''
+# def get_mt_exemption(size_mw, mt_exemption):
+#     if(size_mw > 150):
+#         return 0
+#     else:
+#         return mt_exemption
 
-def new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_value, outside_fence_value, starting_year, project_length, years_between_assessment):
-    total = []
-    # offset = starting_year - 2020
+# '''
+#     Get the M&T tax rate for the project. If above 20 MW use the real estate rate for the project, otherwise use the mt_tax_rate
+# '''
+# def get_mt_tax_rate(size_mw, mt_tax_rate, real_estate_rate):
+#     if size_mw > 25:
+#         return real_estate_rate
+#     else:
+#         return mt_tax_rate
 
-    # for i in range(0, offset):
-    #     total.append(0)
+# ##############################################################
+# # Calculations for Valuation of Proposed Solar Facility
+# ##############################################################
 
-    for i in range(0, project_length):
-        if( i % years_between_assessment == 0):
-            inside = inside_fence_value * inside_acreage * ((1.012)**(i+1))
-            outside = outside_fence_value * outside_acreage * ((1.012)**(i+1))
-            total.append(round(inside + outside))
-        else:
-            total.append(total[i-1])
+# def solar_facility_valuation(year, investment, mt_exemption, depreciation_schedule, assessment_ratio, project_length):
+#     valuation = []
+#     for i in range(0, project_length):
+#         # if(i + 2020 >= year):
+#         after_exemption = investment * (1 - mt_exemption[i])
+#         after_depreciation = after_exemption * depreciation_schedule[i]
+#         assessed_facility_valuation = after_depreciation * assessment_ratio
+#         valuation.append(round(assessed_facility_valuation)) # If the index is at or past the initial year of project
+#         # else:
+#         #     valuation.append(0) #If the index is before the initial year of project
+#     return valuation
+
+
+# ##############################################################
+# # Calculations for increase in Land Value
+# ##############################################################
+
+# def current_land_value(total_acreage, baseline_value, starting_year, project_length, years_between_assessment):
+#     baseline = []
+#     # offset = starting_year - 2020
+#     # for i in range(0, offset):
+#     #     baseline.append(0)
+#     for i in range(0, project_length):
+#         if(i % years_between_assessment == 0):
+#             baseline.append(round(baseline_value * total_acreage * ((1.012)**(i+1))))
+#         else:
+#             baseline.append(baseline[i - 1])
+#     return baseline
+
+# def new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_value, outside_fence_value, starting_year, project_length, years_between_assessment):
+#     total = []
+#     # offset = starting_year - 2020
+
+#     # for i in range(0, offset):
+#     #     total.append(0)
+
+#     for i in range(0, project_length):
+#         if( i % years_between_assessment == 0):
+#             inside = inside_fence_value * inside_acreage * ((1.012)**(i+1))
+#             outside = outside_fence_value * outside_acreage * ((1.012)**(i+1))
+#             total.append(round(inside + outside))
+#         else:
+#             total.append(total[i-1])
         
-    return total
+#     return total
 
-def increase_in_land_value(current_land_value, new_land_value, assessment_ratio):
-    difference = []
-    for i in range(0, len(current_land_value)):
-        difference.append(round((new_land_value[i] - current_land_value[i]) * assessment_ratio))
-    return difference
+# def increase_in_land_value(current_land_value, new_land_value, assessment_ratio):
+#     difference = []
+#     for i in range(0, len(current_land_value)):
+#         difference.append(round((new_land_value[i] - current_land_value[i]) * assessment_ratio))
+#     return difference
 
-##############################################################
-
-
-
-##############################################################
-# Gross Revenue from Project Calculations
-##############################################################
-
-def increased_county_gross_revenue_from_project(solar_valuation_list, applied_mt_tax_rate, increase_in_land_value, applied_real_estate_rate):
-    gross_revenue_increase = []
-    for i in range(0, len(solar_valuation_list)):
-        increase_from_solar = (solar_valuation_list[i] * applied_mt_tax_rate[i])/100
-        increase_from_land = (increase_in_land_value[i] * applied_real_estate_rate)/100
-        gross_revenue_increase.append(round(increase_from_solar + increase_from_land))
-    return gross_revenue_increase
-
-def current_land_revenue(current_land_value, applied_real_estate_rate):
-    current_revenue = []
-    for i in range(len(current_land_value)):
-        current_revenue.append(round(current_land_value[i] * (applied_real_estate_rate/100)))
-    return current_revenue
-
-def total_gross_revenue_mt(current_revenue, gross_revenue_increase):
-    total_revenue = []
-    for i in range(len(current_revenue)):
-        total_revenue.append(current_revenue[i] + gross_revenue_increase[i])
-    return total_revenue
-##############################################################
-
-'''
-FUNCTIONS TO GET TOTAL TAX AVAILABLE TO LOCALITIES FROM MT TAX
-'''
-
-def net_total_revenue_from_project(gross_revenue_project, increase_in_local_contribution):
-    net_total_revenue = []
-    for i in range(len(gross_revenue_project)):
-        net_total_revenue.append(round(gross_revenue_project[i] - increase_in_local_contribution[i],))
-    return net_total_revenue
-
-def increase_in_local_contribution(pv_required_education_contribution, baseline_required_education_contribution):
-    increase_contribution = []
-    for i in range(len(pv_required_education_contribution)):
-        increase_contribution.append(pv_required_education_contribution[i] - baseline_required_education_contribution[i])
-    return increase_contribution
-
-def pv_required_education_contribution(locality_education_budget, budget_escalator, pv_composite_index):
-    pv_education_contribution = []
-    for i in range(len(pv_composite_index)):
-        pv_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * pv_composite_index[i])
-    return pv_education_contribution
-
-def baseline_required_education_contribution(locality_education_budget, budget_escalator, baseline_composite_index):
-    baseline_education_contribution = []
-    for i in range(len(baseline_composite_index)):
-        baseline_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * baseline_composite_index[i])
-    return baseline_education_contribution
-
-'''
-COMPOSITE INDEX FUNCTIONS
-'''
-
-def composite_index(adm_composite_index, per_capita_composite_index):
-    final_pv_composite_index = []
-    for i in range(len(adm_composite_index)):
-        local_composite_index = ((2/3) * adm_composite_index[i]) + ((1/3) * per_capita_composite_index[i])
-        value = 0.45 * local_composite_index
-        factor = 10.0 ** 4
-        final_pv_composite_index.append(math.trunc((value * factor)) / factor)
-    return final_pv_composite_index
-
-def adm_composite_index(true_values_adm, gross_income_adm, retail_sales_adm):
-    final_adm_composite_index = []
-    for i in range(len(true_values_adm)):
-        adm_value = .5 * true_values_adm[i] + .4 * gross_income_adm[i] + .1 * retail_sales_adm[i]
-        final_adm_composite_index.append(adm_value)
-    return final_adm_composite_index
-
-def per_capita_composite_index(true_values_per_capita, gross_income_per_capita, retail_sales_per_capita):
-    final_per_capita_composite_index = []
-    for i in range(len(true_values_per_capita)):
-        per_capita_value = .5 * true_values_per_capita[i] + .4 * gross_income_per_capita[i] + .1 * retail_sales_per_capita[i]
-        final_per_capita_composite_index.append(per_capita_value)
-    return final_per_capita_composite_index
-
-'''
-TRUE VALUE CALCULATIONS
-'''
-def get_true_values_adm(local_true_values, divisional_adm, statewide_total_true_values, total_state_adm):
-    final_true_values = []
-    for i in range(len(local_true_values)):
-        numerator = local_true_values[i]/divisional_adm
-        denominator = statewide_total_true_values[i]/total_state_adm
-        final_true_values.append(numerator/denominator)
-    return final_true_values
-
-def get_true_values_per_capita(local_true_values, local_pop, statewide_total_true_values, state_pop):
-    final_true_values = []
-    for i in range(len(local_true_values)):
-        numerator = local_true_values[i]/local_pop
-        denominator = statewide_total_true_values[i]/state_pop
-        final_true_values.append(numerator/denominator)
-    return final_true_values
-
-def get_baseline_true_values_adm(baseline_true_values, divisional_adm, baseline_state_true_values, total_state_adm):
-    final_true_values = []
-    for i in range(len(baseline_state_true_values)):
-        numerator = baseline_true_values/divisional_adm
-        denominator = baseline_state_true_values[i]/total_state_adm
-        final_true_values.append(numerator/denominator)
-    return final_true_values
-
-def get_baseline_true_values_per_capita(baseline_true_values, local_pop, baseline_state_true_values, state_pop):
-    final_true_values = []
-    for i in range(len(baseline_state_true_values)):
-        numerator = baseline_true_values/local_pop
-        denominator = baseline_state_true_values[i]/state_pop
-        final_true_values.append(numerator/denominator)
-    return final_true_values
-
-def local_true_values(baseline_true_value, increase_in_taxable_property):
-    final_local_true_values = []
-    for i in range(len(increase_in_taxable_property)):
-        final_local_true_values.append(baseline_true_value + increase_in_taxable_property[i])
-    return final_local_true_values
-
-def state_total_true_values(baseline_state_true_value, increase_in_taxable_property):
-    final_state_true_values = []
-    for i in range(len(increase_in_taxable_property)):
-        final_state_true_values.append(baseline_state_true_value[i] + increase_in_taxable_property[i])
-    return final_state_true_values
-
-def increase_in_taxable_property(increase_in_land_value, solar_facility_valuation):
-    inc_taxable_property = [increase_in_land_value[i] + solar_facility_valuation[i] for i in range(len(solar_facility_valuation))]
-    return inc_taxable_property
-
-'''
-GROSS INCOME CALCULATIONS
-'''
-def get_gross_income_adm(adj_gross_income, divisional_adm, statewide_gross_income, total_state_adm, project_length):
-    final_gross_income = []
-    for i in range(project_length):
-        numerator = adj_gross_income/divisional_adm
-        denominator = statewide_gross_income/total_state_adm
-        final_gross_income.append(numerator/denominator)
-    return final_gross_income
-
-def get_gross_income_per_capita(adj_gross_income, local_pop, statewide_gross_income, state_pop, project_length):
-    final_gross_income = []
-    for i in range(project_length):
-        numerator = adj_gross_income/local_pop
-        denominator = statewide_gross_income/state_pop
-        final_gross_income.append(numerator/denominator)
-    return final_gross_income
-
-'''
-RETAIL SALES CALCULATIONS
-'''
-def get_retail_sales_adm(local_taxable_retail_sales, divisional_adm, state_taxable_retail_sales, total_state_adm, project_length):
-    final_retail_sales = []
-    for i in range(project_length):
-        numerator = local_taxable_retail_sales/divisional_adm
-        denominator = state_taxable_retail_sales/total_state_adm
-        final_retail_sales.append(numerator/denominator)
-    return final_retail_sales
-
-def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_taxable_retail_sales, state_pop, project_length):
-    final_retail_sales = []
-    for i in range(project_length):
-        numerator = local_taxable_retail_sales/local_pop
-        denominator = state_taxable_retail_sales/state_pop
-        final_retail_sales.append(numerator/denominator)
-    return final_retail_sales
-
-def total_cashflow_rs(revenue_share_rate, megawatts, year, project_length):
-    '''
-        :revenue_share_rate: the rate a locality sets for its revenue share (max $1400/MW, though not capped by function)
-        :megawatts: Size of solar project
-        :year: Starting year of the solar project
-        :return: A list of reveneue share revenue generated during each year from 2020-2050, nominal $
-    '''
-    cashflow_rev = []
-    for i in range(0, project_length):
-        #if(i + 2020 >= year):
-        cashflow_rev.append((revenue_share_rate * megawatts)) # If the index is at or past the initial year of project
-        # else:
-        #     cashflow_rev.append(0) #If the index is before the initial year of project
-    return cashflow_rev
+# ##############################################################
 
 
-def total_adj_rev(cas, discount_rate, initial_year):
-    '''
-        :cas_rs: List of revenue generate during each year from 2020-2050, nominal $
-        :discount_rate: rate at which revenue values will be discounted
-        :return: A list of revenue generated during each year from 2020-2050, 2020 $
-    '''
-    tot_rs = []
-    for i in range(len(cas)):
-        tot_rs.append(cas[i] / ((1 + discount_rate)**(i + (initial_year-2020)))) # Present value formula
-    return tot_rs
+
+# ##############################################################
+# # Gross Revenue from Project Calculations
+# ##############################################################
+
+# def increased_county_gross_revenue_from_project(solar_valuation_list, applied_mt_tax_rate, increase_in_land_value, applied_real_estate_rate):
+#     gross_revenue_increase = []
+#     for i in range(0, len(solar_valuation_list)):
+#         increase_from_solar = (solar_valuation_list[i] * applied_mt_tax_rate[i])/100
+#         increase_from_land = (increase_in_land_value[i] * applied_real_estate_rate)/100
+#         gross_revenue_increase.append(round(increase_from_solar + increase_from_land))
+#     return gross_revenue_increase
+
+# def current_land_revenue(current_land_value, applied_real_estate_rate):
+#     current_revenue = []
+#     for i in range(len(current_land_value)):
+#         current_revenue.append(round(current_land_value[i] * (applied_real_estate_rate/100)))
+#     return current_revenue
+
+# def total_gross_revenue_mt(current_revenue, gross_revenue_increase):
+#     total_revenue = []
+#     for i in range(len(current_revenue)):
+#         total_revenue.append(current_revenue[i] + gross_revenue_increase[i])
+#     return total_revenue
+# ##############################################################
+
+# '''
+# FUNCTIONS TO GET TOTAL TAX AVAILABLE TO LOCALITIES FROM MT TAX
+# '''
+
+# def net_total_revenue_from_project(gross_revenue_project, increase_in_local_contribution):
+#     net_total_revenue = []
+#     for i in range(len(gross_revenue_project)):
+#         net_total_revenue.append(round(gross_revenue_project[i] - increase_in_local_contribution[i],))
+#     return net_total_revenue
+
+# def increase_in_local_contribution(pv_required_education_contribution, baseline_required_education_contribution):
+#     increase_contribution = []
+#     for i in range(len(pv_required_education_contribution)):
+#         increase_contribution.append(pv_required_education_contribution[i] - baseline_required_education_contribution[i])
+#     return increase_contribution
+
+# def pv_required_education_contribution(locality_education_budget, budget_escalator, pv_composite_index):
+#     pv_education_contribution = []
+#     for i in range(len(pv_composite_index)):
+#         pv_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * pv_composite_index[i])
+#     return pv_education_contribution
+
+# def baseline_required_education_contribution(locality_education_budget, budget_escalator, baseline_composite_index):
+#     baseline_education_contribution = []
+#     for i in range(len(baseline_composite_index)):
+#         baseline_education_contribution.append(locality_education_budget * ((1+budget_escalator) ** i) * baseline_composite_index[i])
+#     return baseline_education_contribution
+
+# '''
+# COMPOSITE INDEX FUNCTIONS
+# '''
+
+# def composite_index(adm_composite_index, per_capita_composite_index):
+#     final_pv_composite_index = []
+#     for i in range(len(adm_composite_index)):
+#         local_composite_index = ((2/3) * adm_composite_index[i]) + ((1/3) * per_capita_composite_index[i])
+#         value = 0.45 * local_composite_index
+#         factor = 10.0 ** 4
+#         final_pv_composite_index.append(math.trunc((value * factor)) / factor)
+#     return final_pv_composite_index
+
+# def adm_composite_index(true_values_adm, gross_income_adm, retail_sales_adm):
+#     final_adm_composite_index = []
+#     for i in range(len(true_values_adm)):
+#         adm_value = .5 * true_values_adm[i] + .4 * gross_income_adm[i] + .1 * retail_sales_adm[i]
+#         final_adm_composite_index.append(adm_value)
+#     return final_adm_composite_index
+
+# def per_capita_composite_index(true_values_per_capita, gross_income_per_capita, retail_sales_per_capita):
+#     final_per_capita_composite_index = []
+#     for i in range(len(true_values_per_capita)):
+#         per_capita_value = .5 * true_values_per_capita[i] + .4 * gross_income_per_capita[i] + .1 * retail_sales_per_capita[i]
+#         final_per_capita_composite_index.append(per_capita_value)
+#     return final_per_capita_composite_index
+
+# '''
+# TRUE VALUE CALCULATIONS
+# '''
+# def get_true_values_adm(local_true_values, divisional_adm, statewide_total_true_values, total_state_adm):
+#     final_true_values = []
+#     for i in range(len(local_true_values)):
+#         numerator = local_true_values[i]/divisional_adm
+#         denominator = statewide_total_true_values[i]/total_state_adm
+#         final_true_values.append(numerator/denominator)
+#     return final_true_values
+
+# def get_true_values_per_capita(local_true_values, local_pop, statewide_total_true_values, state_pop):
+#     final_true_values = []
+#     for i in range(len(local_true_values)):
+#         numerator = local_true_values[i]/local_pop
+#         denominator = statewide_total_true_values[i]/state_pop
+#         final_true_values.append(numerator/denominator)
+#     return final_true_values
+
+# def get_baseline_true_values_adm(baseline_true_values, divisional_adm, baseline_state_true_values, total_state_adm):
+#     final_true_values = []
+#     for i in range(len(baseline_state_true_values)):
+#         numerator = baseline_true_values/divisional_adm
+#         denominator = baseline_state_true_values[i]/total_state_adm
+#         final_true_values.append(numerator/denominator)
+#     return final_true_values
+
+# def get_baseline_true_values_per_capita(baseline_true_values, local_pop, baseline_state_true_values, state_pop):
+#     final_true_values = []
+#     for i in range(len(baseline_state_true_values)):
+#         numerator = baseline_true_values/local_pop
+#         denominator = baseline_state_true_values[i]/state_pop
+#         final_true_values.append(numerator/denominator)
+#     return final_true_values
+
+# def local_true_values(baseline_true_value, increase_in_taxable_property):
+#     final_local_true_values = []
+#     for i in range(len(increase_in_taxable_property)):
+#         final_local_true_values.append(baseline_true_value + increase_in_taxable_property[i])
+#     return final_local_true_values
+
+# def state_total_true_values(baseline_state_true_value, increase_in_taxable_property):
+#     final_state_true_values = []
+#     for i in range(len(increase_in_taxable_property)):
+#         final_state_true_values.append(baseline_state_true_value[i] + increase_in_taxable_property[i])
+#     return final_state_true_values
+
+# def increase_in_taxable_property(increase_in_land_value, solar_facility_valuation):
+#     inc_taxable_property = [increase_in_land_value[i] + solar_facility_valuation[i] for i in range(len(solar_facility_valuation))]
+#     return inc_taxable_property
+
+# '''
+# GROSS INCOME CALCULATIONS
+# '''
+# def get_gross_income_adm(adj_gross_income, divisional_adm, statewide_gross_income, total_state_adm, project_length):
+#     final_gross_income = []
+#     for i in range(project_length):
+#         numerator = adj_gross_income/divisional_adm
+#         denominator = statewide_gross_income/total_state_adm
+#         final_gross_income.append(numerator/denominator)
+#     return final_gross_income
+
+# def get_gross_income_per_capita(adj_gross_income, local_pop, statewide_gross_income, state_pop, project_length):
+#     final_gross_income = []
+#     for i in range(project_length):
+#         numerator = adj_gross_income/local_pop
+#         denominator = statewide_gross_income/state_pop
+#         final_gross_income.append(numerator/denominator)
+#     return final_gross_income
+
+# '''
+# RETAIL SALES CALCULATIONS
+# '''
+# def get_retail_sales_adm(local_taxable_retail_sales, divisional_adm, state_taxable_retail_sales, total_state_adm, project_length):
+#     final_retail_sales = []
+#     for i in range(project_length):
+#         numerator = local_taxable_retail_sales/divisional_adm
+#         denominator = state_taxable_retail_sales/total_state_adm
+#         final_retail_sales.append(numerator/denominator)
+#     return final_retail_sales
+
+# def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_taxable_retail_sales, state_pop, project_length):
+#     final_retail_sales = []
+#     for i in range(project_length):
+#         numerator = local_taxable_retail_sales/local_pop
+#         denominator = state_taxable_retail_sales/state_pop
+#         final_retail_sales.append(numerator/denominator)
+#     return final_retail_sales
+
+# def total_cashflow_rs(revenue_share_rate, megawatts, year, project_length):
+#     '''
+#         :revenue_share_rate: the rate a locality sets for its revenue share (max $1400/MW, though not capped by function)
+#         :megawatts: Size of solar project
+#         :year: Starting year of the solar project
+#         :return: A list of reveneue share revenue generated during each year from 2020-2050, nominal $
+#     '''
+#     cashflow_rev = []
+#     for i in range(0, project_length):
+#         #if(i + 2020 >= year):
+#         cashflow_rev.append((revenue_share_rate * megawatts)) # If the index is at or past the initial year of project
+#         # else:
+#         #     cashflow_rev.append(0) #If the index is before the initial year of project
+#     return cashflow_rev
+
+
+# def total_adj_rev(cas, discount_rate, initial_year):
+#     '''
+#         :cas_rs: List of revenue generate during each year from 2020-2050, nominal $
+#         :discount_rate: rate at which revenue values will be discounted
+#         :return: A list of revenue generated during each year from 2020-2050, 2020 $
+#     '''
+#     tot_rs = []
+#     for i in range(len(cas)):
+#         tot_rs.append(cas[i] / ((1 + discount_rate)**(i + (initial_year-2020)))) # Present value formula
+#     return tot_rs
         
 
