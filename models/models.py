@@ -4,10 +4,6 @@ from django.urls import reverse
 from django.db.models import UniqueConstraint
 from django.contrib.auth.models import User
 
-# def mt_tax_default():
-#     print(list(0 for i in range(0, 30)))
-#     return list(0 for i in range(0, 30))
-
 def get_scc_depreciation():
     return list([.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10])
 
@@ -35,13 +31,9 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name_plural = "User Profiles"
-        # constraints = [
-        #     models.UniqueConstraint(fields=["name"], name="unique_user_profile")
-        # ]
 
     def __str__(self):
         return self.name
-########
 
 class Locality(models.Model):
     name = models.CharField(max_length=200)

@@ -1,31 +1,30 @@
+<!-- Landing page for website, describes the two tax models, the information used to calculate the revenues, and further instructions
+on how the use the product.-->
+
 {% extends 'base.html' %}
 
 {% block content %}
 {% load static %}
 <div class="container-fluid">
     <div class="model-description">
-        <!-- Give more introduction
-        This tool was developed by the Weldon Cooper Center at UVA, DMME and other's
-            
-            -->
-        <!--
-            
-        -->
-        <p>With passage of <a
-            href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a>, Virginia now offers localities two options to generate revenues from
-            utility-scale
-            solar
-            development <!--on solar facilities of solar generation of 25 MW or less-->. The default option is for localities to levy a <em>Machinery and Tools (M&amp;T)/Real Estate tax</em>
-            on
-            capital investments in solar generation facilities. Alternatively, a locality may adopt an ordinance to
-            replace
-            the M&amp;T/Real Estate tax with a <em>Revenue Share</em> arrangement. Under the Revenue Share model, localities
-            receive
-            income from solar facilities at a flat rate in dollars per megawatt of generation capacity per year. To
-            estimate
-            the revenues that a locality could realize under each of these two taxation arrangements involve
-            calculations
-            that are non-trivial in complexity.</p>
+        <!-- Give more introduction -->
+        <p>
+            This tool was developed by the Weldon Cooper Center at UVA, the Department of Mines, Minerals and Energy (DMME) and others. 
+            This tool is meant for use by localities to help aid in the decision of which model of taxation to use for solar generating 
+            facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. Each of these models have benefits 
+            and drawbacks depending on the types of solar facilities that are being developed and the various tax rates of the 
+            localities where they are being built.
+        </p>
+
+        <p>
+            With passage of <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a>, 
+            Virginia now offers localities two options to generate revenues from utility-scale solar development. The default 
+            option is for localities to levy a <em>Machinery and Tools (M&amp;T)/Real Estate tax</em> on capital investments 
+            in solar generation facilities. Alternatively, a locality may adopt an ordinance to replace the M&amp;T/Real Estate 
+            tax with a <em>Revenue Share</em> arrangement. Under the Revenue Share model, localities receive income from solar facilities 
+            at a flat rate in dollars per megawatt of generation capacity per year. To estimate the revenues that a locality could realize 
+            under each of these two taxation arrangements involve calculations that are non-trivial in complexity.
+        </p>
 
         <!--- Description of Revenue Share-->
         <p>The UVA SolTax Model is designed to assist Virginia localities to estimate the revenues they could
@@ -102,7 +101,7 @@
                     </li>
                     <li>
                         If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The real estate tax rate is applied to the project along with the SCC
-                        depreciation schedule and the M&T stepdown exemption rate. <!-- Add local assessment ratios -->
+                        depreciation schedule, the M&T stepdown exemption rate, and uses local assessment ratios. <!-- Add local assessment ratios -->
                     </li>
                     <li>
                         All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
@@ -286,7 +285,6 @@
                     and
                     the
                     revenue sharing model remains in its current form in perpetuity).</li>
-                <!-- <li>All new investments solar will continue to exist through 2050.</li> -->
                 <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
                     level
                     is

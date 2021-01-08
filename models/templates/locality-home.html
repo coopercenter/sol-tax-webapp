@@ -1,3 +1,5 @@
+<!-- Main user page, where a user can view a summary of all the projects they have entered and the total revenues from these projects. -->
+
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
@@ -41,9 +43,6 @@
                     </tr>
                 
                 </table>
-                <!-- <h2>Total Revenue Share Income from all Analyses: </h2>
-                <h2>Total M&T Income from all Analyses: </h2>
-                <h2>Increase in income from Revenue Share: </h2> -->
             </div>
             {% for simulation in simulations %}
                 {% if forloop.first %}
@@ -57,14 +56,6 @@
                             
                             <table class="card-table table-striped">
                                 <h2>{{simulation.name}}</h2>
-                                <!-- <tr class="card-table-row odd">
-                                    <td>
-                                        <strong>Project Name</strong>
-                                    </td>
-                                    <td class="card-table-value">
-                                        {{simulation.name}}
-                                    </td>
-                                </tr> -->
                                 <tr class="card-table-row">
                                     <td>
                                         <strong>Years</strong>
@@ -122,11 +113,6 @@
                                     </td>
                                 </tr>
                             </table>
-                            <!-- <p class="card-text">Initial Year: {{simulation.initial_year}}</p>
-                            <p class="card-text">Initial Investment: $<span class="comma_value">{{simulation.initial_investment}}</span></p>
-                            <p class="card-text">Project Size: {{simulation.project_size}} MW</p>
-                            <p>Total Revenue Share: $<span class="comma_value">{% get_totals simulation.calculations.tot_rs %}</span></p>
-                            <p>Total M&T: $<span class="comma_value">{% get_totals simulation.calculations.tot_mt %}</span></p> -->
                             <div class="analysis-buttons">
                                 <form action="/user-{{simulation.user.name}}/{{simulation.id}}/" method="POST">
                                     {% csrf_token %}
