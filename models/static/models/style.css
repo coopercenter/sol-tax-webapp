@@ -513,6 +513,10 @@ li{
     text-align: center;
 }
 
+.helptext{
+    color: rgb(60, 60, 255);
+}
+
 @media print{
     .chart{
         margin-top: 500px

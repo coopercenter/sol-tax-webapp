@@ -12,6 +12,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
+from django.utils.safestring import mark_safe
 
 UserModel = get_user_model()
 
@@ -66,18 +67,22 @@ class UserProfileUpdateForm(forms.ModelForm):
         labels = {
             'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
             'discount_rate': ugettext_lazy("Discount Rate (%)"), 
-            'mt_tax_rate': ugettext_lazy("M&T Tax Rate ($/ $100 Assessed Value"), 
-            'real_property_rate': ugettext_lazy("Real Property Rate ($/ $100 Assessed Value"), 
+            'mt_tax_rate': ugettext_lazy("M&T Tax Rate ($/ $100 Assessed Value)"), 
+            'real_property_rate': ugettext_lazy("Real Property Rate ($/ $100 Assessed Value)"), 
             'assessment_ratio': ugettext_lazy("Assessment Ratio (%)"), 
             'baseline_true_value': ugettext_lazy("Baseline True Value ($)"), 
             'adj_gross_income': ugettext_lazy("Adjusted Gross Income ($)"), 
             'taxable_retail_sales': ugettext_lazy("Taxable Retail Sales ($)"), 
             'population': ugettext_lazy("Population"), 
             'adm': ugettext_lazy("Average Daily Student Membership (ADM)"), 
-            'required_local_matching': ugettext_lazy("Required Local Matching ($)"), 
-            'budget_escalator': ugettext_lazy("Budget Escalator ($)"), 
+            'required_local_matching': ugettext_lazy("Required Local Matching ($):"),
+            # <br /> <div class='form-info'>Enter sum of RLE for Standards of Quality and RLM for Incentive and Lottery Accounts.</div>") 
+            'budget_escalator': ugettext_lazy("Budget Escalator (%)"), 
             'years_between_assessment': ugettext_lazy("Years Between Assessment"),
             'use_composite_index': ugettext_lazy("Use Composite Index for Calculations?"),
+        }
+        help_texts = {
+            'required_local_matching': ugettext_lazy("Enter the sum of locality's Required Local Effort (RLE) for Standards of Quality and Required Local Match (RLM) for Incentive and Lottery Accounts."),
         }
         widgets = {
             'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
