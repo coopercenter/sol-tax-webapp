@@ -96,6 +96,9 @@ class UserProfileUpdateForm(forms.ModelForm):
             'use_composite_index': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
         }
 
+
+## Code used to send password reset email and form when a user requests.
+
 def _unicode_ci_compare(s1, s2):
     """
     Perform case-insensitive comparison of two identifiers, using the
