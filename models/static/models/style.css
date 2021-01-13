@@ -33,7 +33,7 @@ li{
 }
 .not-log-button:hover{
     text-decoration: none;
-    color: rgb(197, 193, 193);;
+    color: rgb(197, 193, 193);
 }
 
 /* Table for model */
@@ -513,6 +513,37 @@ li{
     text-align: center;
 }
 
+.feedback-form{
+    padding: 2%;
+    text-align: center;
+}
+
+.feedback-form-header{
+    padding-bottom: 1%;
+}
+
+.control-group{
+    padding: 1%;
+}
+
+/* .feedback-form-fields{
+    text-align: left;
+} */
+
+.feedback-success{
+    text-align: center;
+    padding: 9.6%;
+}
+.feedback-success-text{
+    padding: 2%;
+}
+#feedback-home{
+    color: whitesmoke;
+}
+#feedback-home:hover{
+    text-decoration: none;
+    color: rgb(197, 193, 193);
+}
 .helptext{
     color: rgb(60, 60, 255);
 }
