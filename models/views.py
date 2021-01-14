@@ -102,6 +102,10 @@ def commentPage(request):
             return redirect("feedback-success")
     return render(request, "feedback.html", {'form': form})
 
+def cronjob():
+    print("Cron job is running")
+    print("Tick! the time is: %s" % datetime.now())
+
 def commentSuccessPage(request):
     return render(request, "feedback_success.html")
 # def testPDF(request, locality_name):
