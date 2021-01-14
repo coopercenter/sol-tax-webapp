@@ -25,6 +25,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
             </button>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
                 <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                    
                     {% if user.is_authenticated %}
                         <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
                             {% csrf_token %}
@@ -36,11 +37,12 @@ include 'extends 'base.html'' at the top of the file to include the base html el
                             <input class="btn btn-outline-warning log-button" type="submit" value="{{user.username}} Profile">
                         </form>
 
+                        <button class="btn btn-info log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></h4></button>
                         <button class="btn btn-danger not-log-button"><a href="/logout/" class="not-log-button">Logout</a></h4></button>
                     {% else %}
-
-                        <button class="btn btn-info not-log-button"><a href="/signup/" class="not-log-button">Create New Profile</a></h4>
-                        <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></h4>
+                        <button class="btn btn-success not-log-button"><a href="/signup/" class="not-log-button">Create New Profile</a></h4></button>
+                        <button class="btn btn-info log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></h4></button>
+                        <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></h4></button>
 
                     {% endif %}
                 </ul>

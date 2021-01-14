@@ -3,10 +3,22 @@ from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 from django.db.models import UniqueConstraint
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 def get_scc_depreciation():
     return list([.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10])
 
+
+class Feedback(models.Model):
+    email = models.EmailField()
+    message = models.CharField(max_length=5000)
+    date = models.DateTimeField(default=timezone.now())
+
+    class Meta:
+        verbose_name_plural = "Feedback"
+    
+    def __str__(self):
+        return self.email + "- " + str(self.date)
 
 # Model that represents a user, someone who is generating analyses for solar projects
 # they are developing.

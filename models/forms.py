@@ -23,6 +23,9 @@ class SignUpForm(UserCreationForm):
         model = User
         fields = ('username', 'email', 'password1', 'password2')
 
+class FeedbackForm(forms.Form):
+    email = forms.EmailField(required=True)
+    message = forms.CharField(widget=forms.Textarea, required=True)
 
 class SimulationForm(forms.ModelForm):
     # Form for creating a project analysis
