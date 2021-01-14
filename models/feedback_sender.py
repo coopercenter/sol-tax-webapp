@@ -3,6 +3,7 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from .models import Feedback
 from datetime import *
 from django.core.mail import send_mail
+import time
 
 # Main cronjob function.
 # sched = BlockingScheduler()
@@ -18,6 +19,7 @@ from django.core.mail import send_mail
 # sched.start()
 
 def print_update():
+    time.sleep(.6)
     #If monday get any feedback from 3pm friday to 3pm monday
     if(datetime.now().isoweekday() == 1):
     # test = Feedback.objects.filter(date__lte=datetime.now() and date__gt=datetime.now()-timedelta(days=3))
@@ -42,6 +44,6 @@ def print_update():
 
 def cronjob():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=16, minute=30, second=0)
+    scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=15, minute=0, second=0)
     #scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=datetime.now().hour, minute=datetime.now().minute, second=datetime.now().second + 5)
     scheduler.start()
