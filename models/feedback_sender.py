@@ -40,5 +40,5 @@ def print_update():
 
 def cronjob():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=9', minute=0, second=0)
+    scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=9, minute=10, second=0)
     scheduler.start()
