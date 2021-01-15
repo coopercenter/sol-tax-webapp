@@ -6,26 +6,10 @@ from django.core.mail import send_mail
 import time
 
 # Main cronjob function.
-# sched = BlockingScheduler()
-
-# @sched.scheduled_job('interval', seconds = 30)
-# def timed_job():
-#     print('This job runs every 30 seconds')
-
-# # Create an instance of scheduler and add function.
-# # scheduler = BlockingScheduler()
-# # scheduler.add_job(cronjob, "interval", seconds=30)
-
-# sched.start()
-
 def print_update():
     time.sleep(.6)
     #If monday get any feedback from 3pm friday to 3pm monday
     if(datetime.now().isoweekday() == 1):
-    # test = Feedback.objects.filter(date__lte=datetime.now() and date__gt=datetime.now()-timedelta(days=3))
-    # print(datetime.now() - timedelta(days=3))
-    # test = Feedback.objects.filter(date__gte=datetime.now()).filter(date__lt=(datetime.now() - timedelta(days=3)))
-    # test = Feedback.objects.filter(date__gt=(datetime.now() - timedelta(days=3)))
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=3)))
     else:
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=1)))
