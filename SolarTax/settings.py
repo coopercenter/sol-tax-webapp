@@ -23,7 +23,7 @@ import psycopg2
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-66s#jccz%1s(pnb$&w%7q-(iz2cn2y6f_3zy1i(2@p9qszu42'
+DJANGO_SECRET_KEY = '-66s#jccz%1s(pnb$&w%7q-(iz2cn2y6f_3zy1i(2@p9qszu42'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -199,8 +199,4 @@ try:
     django_heroku.settings(locals())
 except ImportError:
     found = False
-
-#Default Locality Login
-#Username: Locality Name
-#Password: admin1213
 
