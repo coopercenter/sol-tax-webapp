@@ -15,7 +15,7 @@ import time
 
 scheduler = BlockingScheduler()
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=14, minute=14)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=17, minute=0)
 def print_update():
     if(datetime.now().isoweekday() == 1):
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=3)))
