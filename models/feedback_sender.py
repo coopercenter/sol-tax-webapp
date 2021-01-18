@@ -1,7 +1,15 @@
 # Package Scheduler.
-import django
 import os
+
+from django.core.wsgi import get_wsgi_application
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
+
+application = get_wsgi_application()
+
+import django
+# import os
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
 django.setup()
 # import django
 # django.setup()
