@@ -1,17 +1,13 @@
 # Package Scheduler.
 import django
 import os
-
-
-
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
-# settings.configure(default_settings=models_defaults, DEBUG=True)
 django.setup()
 # import django
 # django.setup()
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from .feedback_worker import print_update
+from models.feedback_worker import print_update
 
 scheduler = BackgroundScheduler()
 
