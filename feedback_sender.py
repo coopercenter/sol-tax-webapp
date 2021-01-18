@@ -19,12 +19,12 @@ scheduler = BlockingScheduler()
 # if(datetime.now().hour > 9 and datetime.now().hour < 5):
 #     @scheduler.scheduled_jbo('interval', minutes = 30)
 #    def 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour="9-18", minute="0, 30, 59")
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour="9-17", minute="0, 30, 59")
 def ping_site():
     requests.get("https://solar-tax-webapp.herokuapp.com/")
 
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=17, minute=0)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=15, minute=0)
 def print_update():
     if(datetime.now().isoweekday() == 1):
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=3)))
