@@ -15,7 +15,7 @@ django.setup()
 # django.setup()
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from models.feedback_worker import print_update
+from feedback_worker import print_update
 
 scheduler = BackgroundScheduler()
 
