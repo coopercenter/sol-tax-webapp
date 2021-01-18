@@ -1,4 +1,10 @@
-from models.models import Feedback
+import django
+import os
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
+# settings.configure(default_settings=models_defaults, DEBUG=True)
+django.setup()
+
+from .models import Feedback
 from datetime import *
 from django.core.mail import send_mail
 import time

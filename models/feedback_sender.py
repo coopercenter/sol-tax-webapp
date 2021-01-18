@@ -1,7 +1,5 @@
 # Package Scheduler.
 import django
-# from django.conf import settings
-# from SolarTax import solartax_defaults
 import os
 
 
