@@ -1,6 +1,6 @@
 # Package Scheduler.
-import os
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
+# import os
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
 # import django
 # django.setup()
 
@@ -14,7 +14,7 @@ scheduler = BackgroundScheduler()
 
 # Main cronjob function.
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=10, minute=38, second=0)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=10, minute=56 , second=0)
 def print_update():
     #If monday get any feedback from 3pm friday to 3pm monday
     if(datetime.now().isoweekday() == 1):
