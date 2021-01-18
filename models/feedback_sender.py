@@ -1,6 +1,6 @@
 # Package Scheduler.
 from apscheduler.schedulers.background import BackgroundScheduler
-from .models import Feedback
+from models.models import Feedback
 from datetime import *
 from django.core.mail import send_mail
 import time
@@ -9,7 +9,7 @@ scheduler = BackgroundScheduler()
 
 # Main cronjob function.
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=9, minute=57, second=0)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=10, minute=4, second=0)
 def print_update():
     #If monday get any feedback from 3pm friday to 3pm monday
     if(datetime.now().isoweekday() == 1):
