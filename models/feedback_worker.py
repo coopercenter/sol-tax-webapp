@@ -12,7 +12,7 @@ import django
 # settings.configure(default_settings=models_defaults, DEBUG=True)
 django.setup()
 
-from models.models import Feedback
+from .models import Feedback
 from datetime import *
 from django.core.mail import send_mail
 import time
