@@ -1,6 +1,14 @@
-import django
 import os
+
+from django.core.asgi import get_asgi_application
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
+
+application = get_asgi_application()
+
+import django
+# import os
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
 # settings.configure(default_settings=models_defaults, DEBUG=True)
 django.setup()
 
