@@ -1,9 +1,11 @@
 # Package Scheduler.
 import django
-django.setup()
-
 import os
+
+
+
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'SolarTax.settings')
+django.setup()
 # import django
 # django.setup()
 
