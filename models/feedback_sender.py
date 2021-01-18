@@ -5,7 +5,7 @@
 # django.setup()
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from .feedback_worker import print_update
+from models.feedback_worker import print_update
 
 scheduler = BackgroundScheduler()
 
@@ -29,7 +29,7 @@ scheduler = BackgroundScheduler()
     #     send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['tpc3yw@virginia.edu'], fail_silently=False,)
     #     print("sent_mail")
 # scheduler.add_job(print_update)
-scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=11, minute=10, second=0)
+scheduler.add_job(print_update, 'cron', day_of_week='mon-fri', hour=11, minute=13, second=0)
 
 scheduler.start()
 
