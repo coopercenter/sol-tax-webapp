@@ -1,14 +1,17 @@
+<!-- 
+    HTML page for the Feedback/Questions page of the site. 
+-->
 {% extends 'base.html' %}
 
 {% block content %}
 
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags %} <!-- Load the crispy_form library to use -->
 <div class="feedback-form">
     <h1 class="feedback-form-header">Give any Feedback or Questions you have below</h1>
     <form method="post">
         {% csrf_token %}
         <div class="feedback-form-fields">
-            {{ form|crispy}}
+            {{ form|crispy}} <!-- Styles the form using crispy_form settings -->
         </div>
         
         <div class="form-group">
