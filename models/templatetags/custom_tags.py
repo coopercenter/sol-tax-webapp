@@ -4,9 +4,10 @@ register = template.Library()
 
 from ..models import Locality, Simulation, Calculations, UserProfile
 
-@register.filter
-def get_index(l, i):
-    return l[i]
+#######
+# These functions are new tags that can be used in html files
+# to get data from variables passed from the views to the templates.
+#######
 
 @register.simple_tag
 def subtract(a, b):
@@ -32,18 +33,12 @@ def get_rs_rate(sim):
 def get_mt_rate(sim):
     locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     return ("{:.2f}".format(locality.mt_tax_rate))
-    #return locality.mt_tax_rate
 
 @register.simple_tag
 def get_real_property_rate(sim):
     locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     print(locality.real_property_rate)
     return ("{:.2f}".format(locality.real_property_rate))
-    #return locality.real_property_rate
-
-@register.simple_tag
-def get_project_size(sim):
-    return sim.project_size
 
 @register.simple_tag
 def get_locality(sim):
@@ -62,7 +57,6 @@ def get_totals(l):
 @register.simple_tag
 def get_table_totals(l):
     sum = 0
-    # print(l)
     for item in l:
         sum += item
     return ("{:.1f}".format(round(sum*1000, -3)))
