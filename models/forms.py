@@ -16,13 +16,19 @@ from django.utils.safestring import mark_safe
 
 UserModel = get_user_model()
 
+####
+# Defines the various forms used throughout the web app.
+####
+
+# SignUpForm extends the basic Django UserCreationForm and adds an extra field that needs to be given, an email.
 class SignUpForm(UserCreationForm):
     email = forms.EmailField(max_length=256, help_text="Provide a valid email address.")
     
     class Meta: 
-        model = User
+        model = User #Associates the form to a model of the project
         fields = ('username', 'email', 'password1', 'password2')
 
+# FeedbackForm is used for the feedback/questions page, needs an email and message to submit properly.
 class FeedbackForm(forms.Form):
     email = forms.EmailField(required=True)
     message = forms.CharField(widget=forms.Textarea, required=True)
@@ -30,7 +36,7 @@ class FeedbackForm(forms.Form):
 class SimulationForm(forms.ModelForm):
     # Form for creating a project analysis
     class Meta:
-        model = Simulation
+        model = Simulation #Defines that the fields of this form correspond to the Simulation model
         fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
             # Labels for each field of the form
@@ -79,14 +85,13 @@ class UserProfileUpdateForm(forms.ModelForm):
             'population': ugettext_lazy("Population"), 
             'adm': ugettext_lazy("Average Daily Student Membership (ADM)"), 
             'required_local_matching': ugettext_lazy("Required Local Matching ($):"),
-            # <br /> <div class='form-info'>Enter sum of RLE for Standards of Quality and RLM for Incentive and Lottery Accounts.</div>") 
             'budget_escalator': ugettext_lazy("Budget Escalator (%)"), 
             'years_between_assessment': ugettext_lazy("Years Between Assessment"),
             'use_composite_index': ugettext_lazy("Use Composite Index for Calculations?"),
         }
         help_texts = {
             'required_local_matching': ugettext_lazy("Enter the sum of locality's Required Local Effort (RLE) for Standards of Quality and Required Local Match (RLM) for Incentive and Lottery Accounts."),
-        }
+        } # Defines a help text to be displayed under the form entry box to help define the variable for the user.
         widgets = {
             'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
             'discount_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
@@ -115,6 +120,8 @@ def _unicode_ci_compare(s1, s2):
     """
     return unicodedata.normalize('NFKC', s1).casefold() == unicodedata.normalize('NFKC', s2).casefold()
 
+# Defines a form for password reset, requires email and username to submit. On a submit if the form is correctly filled out
+# an email will be sent to the email entered. 
 class PasswordResetUsernameForm(forms.Form):
     email = forms.EmailField(
         label=ugettext_lazy("Email"),
@@ -127,6 +134,7 @@ class PasswordResetUsernameForm(forms.Form):
         max_length = 150,
     )
 
+    #Function to send email to user
     def send_mail(self, subject_template_name, email_template_name,
                   context, from_email, to_email, html_email_template_name=None):
         """
