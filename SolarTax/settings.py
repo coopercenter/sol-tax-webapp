@@ -195,22 +195,22 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 
-if os.path.exists('hiddenVars/email.txt'):
-    with open('hiddenVars/email.txt') as f:
-        EMAIL_HOST_USER = str(f.read().strip())
-else:
-    EMAIL_HOST_USER = str(os.environ['EMAIL_HOST_USER'])
+# if os.path.exists('hiddenVars/email.txt'):
+#     with open('hiddenVars/email.txt') as f:
+#         EMAIL_HOST_USER = str(f.read().strip())
+# else:
+#     EMAIL_HOST_USER = str(os.environ['EMAIL_HOST_USER'])
 
-if os.path.exists('hiddenVars/email_password.txt'):
-    with open('hiddenVars/email_password.txt') as f:
-        EMAIL_HOST_PASSWORD = str(f.read().strip())
-else:
-    EMAIL_HOST_PASSWORD= str(os.environ['EMAIL_HOST_PASSWORD'])
-print(EMAIL_HOST_USER)
-print(EMAIL_HOST_PASSWORD)
+# if os.path.exists('hiddenVars/email_password.txt'):
+#     with open('hiddenVars/email_password.txt') as f:
+#         EMAIL_HOST_PASSWORD = str(f.read().strip())
+# else:
+#     EMAIL_HOST_PASSWORD= str(os.environ['EMAIL_HOST_PASSWORD'])
+# print(EMAIL_HOST_USER)
+# print(EMAIL_HOST_PASSWORD)
 
-# EMAIL_HOST_USER = 'coopercentersoltax@gmail.com'
-# EMAIL_HOST_PASSWORD = '3greenApples!'
+EMAIL_HOST_USER = 'coopercentersoltax@gmail.com'
+EMAIL_HOST_PASSWORD = '3greenApples!'
 
 
 try:
