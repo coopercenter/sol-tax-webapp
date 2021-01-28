@@ -24,7 +24,7 @@ def ping_site():
     requests.get("https://solar-tax-webapp.herokuapp.com/")
 
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=17, minute=49)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=17, minute=57)
 def print_update():
     if(datetime.now().isoweekday() == 1):
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=3)))
