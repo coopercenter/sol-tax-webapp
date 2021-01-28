@@ -17,7 +17,6 @@ urlpatterns = [
     path('login/', views.loginView, name = 'login'),
     path('logout/', views.logoutView, name = 'logout'),
     path('password/', views.change_password, name="change_password"),
-    # path('pdf-<str:locality_name>/', views.testPDF, name="pdf"),
     path('signup/', views.signup, name="signup"),
     path('update-user-<str:username>/', views.update_user, name="update_user"),
     path('reset-password/', views.PasswordResetUsernameView.as_view(), name="reset_password"),

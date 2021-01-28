@@ -23,7 +23,12 @@ import psycopg2
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '-66s#jccz%1s(pnb$&w%7q-(iz2cn2y6f_3zy1i(2@p9qszu42'
+if os.path.exists('hiddenVars/secret_key.txt'):
+    with open('hiddenVars/secret_key.txt') as f:
+        SECRET_KEY = f.read().strip()
+else:
+    SECRET_KEY = os.environ['SECRET_KEY']
+# SECRET_KEY = '-66s#jccz%1s(pnb$&w%7q-(iz2cn2y6f_3zy1i(2@p9qszu42'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -189,8 +194,20 @@ LOGIN_REDIRECT_URL = 'localityName'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'coopercentersoltax@gmail.com'
-EMAIL_HOST_PASSWORD = '3greenApples!'
+if os.path.exists('hiddenVars/email.txt'):
+    with open('hiddenVars/email.txt') as f:
+        EMAIL_HOST_USER = f.read().strip()
+else:
+    EMAIL_HOST_USER = os.environ['EMAIL_HOST_USER']
+
+if os.path.exists('hiddenVars/email_password.txt'):
+    with open('hiddenVars/email_password.txt') as f:
+        EMAIL_HOST_PASSWORD = f.read().strip()
+else:
+    EMAIL_HOST_PASSWORD= os.environ['EMAIL_HOST_PASSWORD']
+
+# EMAIL_HOST_USER = 'coopercentersoltax@gmail.com'
+# EMAIL_HOST_PASSWORD = '3greenApples!'
 
 
 try:
