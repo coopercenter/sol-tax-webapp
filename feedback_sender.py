@@ -24,7 +24,7 @@ def ping_site():
     requests.get("https://solar-tax-webapp.herokuapp.com/")
 
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=17, minute=57)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=18, minute=8)
 def print_update():
     if(datetime.now().isoweekday() == 1):
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=3)))
@@ -37,8 +37,13 @@ def print_update():
         for item in test:
             message += "From: " + str(item.email) + "\n" + "Date/Time: " + str(item.date) + "\n" + item.message + "\n\n"
 
-        #send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['tpc3yw@virginia.edu', 'emm2t@virginia.edu', 'carrie.hearne@dmme.virginia.gov'], fail_silently=False,)
-        send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['tpc3yw@virginia.edu'], fail_silently=False,)
+        if not os.path.exists('hiddenVars'): # FOR Use with Heroku
+            email_1 = os.environ['STAKEHOLDER_EMAIL_1']
+            send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', [email_1], fail_silently=False,)
+            # send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['tpc3yw@virginia.edu', 'emm2t@virginia.edu', 'carrie.hearne@dmme.virginia.gov'], fail_silently=False,)
+        
+        #For use on local server, enter your email in the brackets inside quotes
+        #send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['YOUR EMAIL HERE'], fail_silently=False,)
         print("sent_mail")
 
 
