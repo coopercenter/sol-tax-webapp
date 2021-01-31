@@ -20,7 +20,7 @@ scheduler = BlockingScheduler()
 def ping_site():
     requests.get("https://solar-tax-webapp.herokuapp.com/")
 
-@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=15, minute=)
+@scheduler.scheduled_job('cron', day_of_week='mon-fri', hour=15, minute=0)
 def print_update():
     if(datetime.now().isoweekday() == 1):
         test = Feedback.objects.filter(date__lte=(datetime.now())).filter(date__gt=(datetime.now() - timedelta(days=3)))
@@ -32,7 +32,7 @@ def print_update():
         for item in test:
             message += "From: " + str(item.email) + "\n" + "Date/Time: " + str(item.date) + "\n" + item.message + "\n\n"
 
-        if not os.path.exists('hiddenVars'): # FOR Use with Heroku
+        if not os.path.exists('hiddenVars'): # FOR use with Heroku
             email_1 = os.environ['STAKEHOLDER_EMAIL_1']
             email_2 = os.environ['STAKEHOLDER_EMAIL_2']
             email_3 = os.environ['STAKEHOLDER_EMAIL_3']

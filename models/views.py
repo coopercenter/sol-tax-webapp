@@ -30,13 +30,6 @@ import plotly.graph_objects as go
 import urllib, base64
 import PIL, PIL.Image, io
 
-# from reportlab.pdfgen.canvas import Canvas
-# from reportlab.platypus import SimpleDocTemplate, Frame, BaseDocTemplate, Paragraph
-# from reportlab.platypus.tables import Table
-# from reportlab.rl_config import defaultPageSize
-# from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet
-# from reportlab.lib.enums import TA_CENTER
-
 # Landing Page
 def index(request):
     return render(request, 'index.html')
@@ -108,105 +101,6 @@ def commentPage(request):
 
 def commentSuccessPage(request):
     return render(request, "feedback_success.html")
-# def testPDF(request, locality_name):
-#     locality = Locality.objects.get(name = locality_name)
-#     height = defaultPageSize[1]
-#     width = defaultPageSize[0]
-#     buffer = io.BytesIO()
-
-#     # p = canvas.Canvas(buffer)
-#     # p.setFont("Times-Roman", 20)
-#     # #p.drawCenteredString(width/2, height, locality_name)
-#     # p.drawCenteredString(width/2-100, height-80, "SolTax Analysis for " + locality_name)
-#     # print(locality.simulation_set.all())
-#     # for simulation in locality.simulation_set.all():
-#     #     table = Table(["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)])
-#     #     p.append(table)
-#     # p.showPage()
-#     # p.save()
-#     #response = HttpResponse(mimetype='application/pdf')
-#     response = HttpResponse()
-#     response['Content-Disposition'] = 'attachment; filename=somefilename.pdf'
-
-#     elements = []
-
-#     doc = SimpleDocTemplate(response, rightMargin=0, leftMargin=6.5 * 2.54, topMargin=0.3 * 2.54, bottomMargin=0)
-#     frame_left = Frame(width/2, height, width/2, height, showBoundary = 1) 
-#     #elements.append(frame_left)
-#     tables = []
-#     canvas = Canvas("test.pdf")
-    
-#     style = getSampleStyleSheet()
-#     style = ParagraphStyle(
-#         'small',
-#         parent = style['Normal'],
-#         fontSize = 20,
-#         alignment = TA_CENTER,
-#         spaceBefore = 50,
-#         trailing = 50,
-#         leading = 50,
-#     )
-#     #print(style['Normal'])
-#     #style['fontSize'] = 20
-
-#     title = Paragraph('''<strong> SolTax Analysis for ''' + locality_name + ''' </strong>''', style)
-    
-#     #print(ParagraphStyle)
-#     elements.append(title)
-    
-#     locality_info_data = [
-#         [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
-#         ["Using Composite Index for Calculations?", locality.use_composite_index],
-#         ["Revenue Share Rate", "$" + str('{:,}'.format(locality.revenue_share_rate)) + "/MW"],
-#         ["Discount Rate", str(locality.discount_rate) + "%"],
-#         ["M&T Tax Rate", "$" + str(locality.mt_tax_rate) + "/$100 Assessed Value"],
-#         ["Real Property Rate", "$" + str(locality.real_property_rate) + "/$100 Assessed Value"],
-#         ["Assessment Ratio", str(locality.assessment_ratio) + "%"],
-#         [Paragraph(''' <strong> Composite Index Parameters </strong> ''')],
-#         ["Local True Value", "$" + str('{:,}'.format(locality.baseline_true_value))],
-#         ["Adjusted Gross Income", "$" + str('{:,}'.format(locality.adj_gross_income))],
-#         ["Taxable Retail Sales", "$" + str('{:,}'.format(locality.taxable_retail_sales))],
-#         ["Population", str('{:,}'.format(locality.population))],
-#         ["ADM", str('{:,}'.format(locality.adm))],
-#         ["Required Local Matching", "$" + str('{:,}'.format(locality.required_local_matching))],
-#         ["Education Budget Escalator", str(locality.budget_escalator) + "%"],
-#         ["Years Between Assessment", str(locality.years_between_assessment)],
-#     ] 
-#     locality_info_table = Table(locality_info_data, colWidths = 200, rowHeights = 20)
-#     elements.append(locality_info_table)
-
-#     for simulation in locality.simulation_set.all():
-#         mt_tot = round(sum(simulation.calculations.tot_mt)*1000, -3)
-#         rs_tot = round(sum(simulation.calculations.tot_rs)*1000, -3)
-#         data = [
-#             [Paragraph('''<strong> Parameter </strong>'''), Paragraph('''<strong> Value </strong>''')],
-#             #["Parameter", "Value"],
-#             ["Years", str(simulation.initial_year) + " - " + str(simulation.initial_year + simulation.project_length)],
-#             ["Initial Investment", "$" + '{:,}'.format(simulation.initial_investment)],
-#             ["Project Size", str(simulation.project_size) + "MW"],
-#             ["Dominion or APCO", simulation.dominion_or_apco],
-#             ["Revenue Share Revenue", "$" + '{:,}'.format(rs_tot)],
-#             ["M&T Revenue", "$" + '{:,}'.format(mt_tot)],
-#             ["Difference", "$" + '{:,}'.format(rs_tot - mt_tot)],
-#         ]
-#         table = Table(data, colWidths = 150, rowHeights = 30)
-#         #table.setStyle(TableStyle([('')]))
-#         elements.append(table)
-#         tables.append(table)
-#     frame_left.addFromList(tables, canvas)
-#     # canvas.showPage()
-#     # canvas.save()
-#         #elements.append(table)
-#     # data=[(1,2),(3,4)]
-#     # table = Table(data, colWidths=270, rowHeights=79)
-#     # elements.append(table)
-    
-#     doc.build(elements) 
-#     canvas.showPage()
-#     return response
-
-#     #buffer.seek(0)
-#     #return FileResponse(buffer, as_attachment=True, filename="hello.pdf")
 
 def change_password(request):
     if request.method == 'POST':
@@ -236,10 +130,7 @@ def user_home(request, username):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         simulation.delete()
 
-    #locality = Locality.objects.get(name = locality_name.title())
-    #locality = serializers.serialize("python", Locality.objects.filter(name = locality_name.title()))
     user = UserProfile.objects.get(name = username)
-    #simulations = locality.simulation_set.all()
     simulations = user.simulation_set.all()
 
     if request.POST.get('locality'):
@@ -269,20 +160,6 @@ def user_home(request, username):
 
     if request.POST.get('discount_rate'):
         print(request.POST.get)
-        # locality.discount_rate = int(request.POST.get('discount_rate'))
-        # locality.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
-        # locality.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
-        # locality.real_property_rate = float(request.POST.get('real_property_rate'))
-        # locality.assessment_ratio = float(request.POST.get('assessment_ratio'))
-        # locality.baseline_true_value = int(request.POST.get('baseline_true_value'))
-        # locality.adj_gross_income = int(request.POST.get('adj_gross_income'))
-        # locality.taxable_retail_sales = int(request.POST.get('taxable_retail_sales'))
-        # locality.population = int(request.POST.get('population'))
-        # locality.adm = float(request.POST.get('adm'))
-        # locality.required_local_matching = int(request.POST.get('required_local_matching'))
-        # locality.budget_escalator = float(request.POST.get('budget_escalator'))
-        # locality.years_between_assessment = int(request.POST.get('years_between_assessment'))
-        #locality.use_composite_index = request.POST.get('use_composite_index')
         user.discount_rate = int(request.POST.get('discount_rate'))
         user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
         user.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
@@ -475,9 +352,6 @@ class UpdateUserParameterView(CreateView):
             # loc_name = username
             form_class = UserProfileUpdateForm()
             user = UserProfile.objects.get(name = username) 
-            # form_class.fields['locality'].initial = Locality.objects.get(name = locality_name).id
-            # print(locality)
-            # form_class.fields['locality'].initial = locality.id
             form_class.fields['revenue_share_rate'].initial = user.revenue_share_rate
             form_class.fields['discount_rate'].initial = user.discount_rate
             form_class.fields['mt_tax_rate'].initial = user.mt_tax_rate
