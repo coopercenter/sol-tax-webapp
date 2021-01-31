@@ -28,7 +28,6 @@ if os.path.exists('hiddenVars/secret_key.txt'):
         SECRET_KEY = f.read().strip()
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
-# SECRET_KEY = '-66s#jccz%1s(pnb$&w%7q-(iz2cn2y6f_3zy1i(2@p9qszu42'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -63,10 +62,6 @@ MIDDLEWARE = [
 
 ]
 
-# MIDDLEWARE_CLASSES = (
-    
-# )
-
 ROOT_URLCONF = 'SolarTax.urls'
 
 TEMPLATES = [
@@ -88,18 +83,12 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'SolarTax.wsgi.application'
+# WSGI_APPLICATION = 'SolarTax.wsgi.application'
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': BASE_DIR / 'db.sqlite3',
-#     }
-# }
 
 DATABASES = {
     'default': { #Local Database
@@ -185,11 +174,6 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'localityName'
 
-# EMAIL_HOST = os.environ.get('MAILGUN_SMTP_SERVER', '')
-# EMAIL_PORT = os.environ.get('MAILGUN_SMTP_PORT', '')
-# EMAIL_HOST_USER = os.environ.get('MAILGUN_SMTP_LOGIN', '')
-# EMAIL_HOST_PASSWORD = os.environ.get('MAILGUN_SMTP_PASSWORD', '')
-
 #EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
@@ -206,12 +190,6 @@ if os.path.exists('hiddenVars/email_password.txt'):
         EMAIL_HOST_PASSWORD = str(f.read().strip())
 else:
     EMAIL_HOST_PASSWORD= str(os.environ['EMAIL_HOST_PASSWORD'])
-# print(EMAIL_HOST_USER)
-# print(EMAIL_HOST_PASSWORD)
-
-# EMAIL_HOST_USER = 'coopercentersoltax@gmail.com'
-# EMAIL_HOST_PASSWORD = '3greenApples!'
-
 
 try:
     # Configure Django App for Heroku.
