@@ -53,12 +53,12 @@ A. Project Setup
 4. To install all libraries needed for the project, use _pip install -r requirements.txt_, if you are using pip. This will install all packages that are listed in the requirements file.
 5. You will need to set up a local PostgreSQL database to use for local development. Follow [this](https://djangocentral.com/using-postgresql-with-django/) guide and you should be good.
   1. These are the parameters used for local database and are located in settings.py. Use these to set up your local database. They are found in _settings.py_.
-  2. &#39;ENGINE&#39;: &#39;django.db.backends.postgresql\_psycopg2&#39;,
-  3. &#39;NAME&#39;:&#39;soltax&#39;,
-  4. &#39;USER&#39;: &#39;soltaxuser&#39;,
-  5. &#39;PASSWORD&#39;: &#39;password&#39;,
-  6. &#39;HOST&#39;: &#39;localhost&#39;,
-  7. &#39;PORT&#39;: &#39;&#39;,
+  - &#39;ENGINE&#39;: &#39;django.db.backends.postgresql\_psycopg2&#39;,
+  - &#39;NAME&#39;:&#39;soltax&#39;,
+  - &#39;USER&#39;: &#39;soltaxuser&#39;,
+  - &#39;PASSWORD&#39;: &#39;password&#39;,
+  - &#39;HOST&#39;: &#39;localhost&#39;,
+  - &#39;PORT&#39;: &#39;&#39;,
 6. To test that the project has been set up properly on your local machine, type _python manage.py runserver_ to run the web application locally. If no errors appear in the terminal visit _localhost:8000_ or [_http://127.0.0.1:8000/_](http://127.0.0.1:8000/) to view the site.
 
 B. File Structure
@@ -69,12 +69,12 @@ The project has three main components
 2. An app which contains the code for what the web application should do, this is the models folder.
 3. Other files needed for Heroku, Github, and the virtual environment.
 
-1. SolarTax Folder - Only these three files should be changed.
+SolarTax Folder - Only these three files should be changed.
   1. Settings.py - Defines all the Django settings needed for the project. If you install a new dependency, you may have to add it to INSTALLED\_APPS.
   2. Asgi.py - Spins up an instance of the application and uses the settings as defined in the settings.py file.
   3. Wsgi.py - Spins up an instance of the application and uses the settings as defined in the settings.py file. Used for the Heroku site
   4. Urls.py - Defines the admin url, urls that authenticate users which are defined by Django, a url that makes it possible to display a graph for each project analysis, and then any url that is defined in the models app.
-2. Models - Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the html that defines how to display the information received by the views, although it has a bit more functionality compared to straight html as you can pass variables in and use for loops.
+Models - Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the html that defines how to display the information received by the views, although it has a bit more functionality compared to straight html as you can pass variables in and use for loops.
   1. Admin.py - tells the admin site to include information about all the models in the project. The admin site allows us to view all data of the project.
   2. Apps.py - defines this app to be named models
   3. Forms.py - defines any forms that are used throughout the project. Most are tied to a model so they can create an instance of a model through a submission of a form. [https://docs.djangoproject.com/en/3.1/topics/forms/](https://docs.djangoproject.com/en/3.1/topics/forms/)
@@ -86,7 +86,7 @@ The project has three main components
     1. The registration sub-folder contains the templates that are used for the password reset functionality of the web application.
   9. Static Folder - This folder contains any images that are displayed on the site and the CSS and JS files used to further design the pages of the web application. Add any new images into this folder and continue to edit the CSS and JS files in this folder if needed.
   10. Templatetags Folder - The _custom\_tags.py_ file defines tags that can be used in the HTML templates to manipulate data if necessary from variables that are passed into the templates.
-3. Other Files
+Other Files
   1. Feedback\_sender.py - This file is used to send an email to Elizabeth, Carrie, and Thomas at 3pm each weekday, if someone submitted feedback through the web application. This also pings the website 3 times an hour each weekday from 9-5 so the dyno on heroku is constantly up in this time period. This means loading times should be faster.
   2. Manage.py - Django file that boots the application up when called. Don&#39;t touch unless absolutely necessary.
   3. Pipfile and Pipfile.lock - These files are for the virtual environment and heroku and list all the dependencies of the project and the versions used.
