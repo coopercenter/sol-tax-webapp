@@ -74,6 +74,7 @@ SolarTax Folder - Only these three files should be changed.
   2. Asgi.py - Spins up an instance of the application and uses the settings as defined in the settings.py file.
   3. Wsgi.py - Spins up an instance of the application and uses the settings as defined in the settings.py file. Used for the Heroku site
   4. Urls.py - Defines the admin url, urls that authenticate users which are defined by Django, a url that makes it possible to display a graph for each project analysis, and then any url that is defined in the models app.
+
 Models - Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the html that defines how to display the information received by the views, although it has a bit more functionality compared to straight html as you can pass variables in and use for loops.
   1. Admin.py - tells the admin site to include information about all the models in the project. The admin site allows us to view all data of the project.
   2. Apps.py - defines this app to be named models
@@ -86,6 +87,7 @@ Models - Django application which follows the MVT framework. MVT framework stand
     1. The registration sub-folder contains the templates that are used for the password reset functionality of the web application.
   9. Static Folder - This folder contains any images that are displayed on the site and the CSS and JS files used to further design the pages of the web application. Add any new images into this folder and continue to edit the CSS and JS files in this folder if needed.
   10. Templatetags Folder - The _custom\_tags.py_ file defines tags that can be used in the HTML templates to manipulate data if necessary from variables that are passed into the templates.
+
 Other Files
   1. Feedback\_sender.py - This file is used to send an email to Elizabeth, Carrie, and Thomas at 3pm each weekday, if someone submitted feedback through the web application. This also pings the website 3 times an hour each weekday from 9-5 so the dyno on heroku is constantly up in this time period. This means loading times should be faster.
   2. Manage.py - Django file that boots the application up when called. Don&#39;t touch unless absolutely necessary.
