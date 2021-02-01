@@ -9,8 +9,8 @@ Link to Live Site: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-w
 1. [Github](#2ga15kwy16nx)
 2. [Python](#scoqj6sek23g)
 3. [Django](#i6x9imrr2t08)
-  1. Setup including virtual environment
-  2. How it works/ File Structure
+  - Setup including virtual environment
+  - How it works/ File Structure
 4. [Heroku](#zho0313diu0q)
 5. [PostgreSQL](#q5yts6g2ir2u)
 6. [Gmail](#o16f2efg332b)
@@ -47,8 +47,8 @@ A. Project Setup
 
 1. Create a virtual environment. This means the local soltax project is in a dedicated directory with specific versions of all libraries needed for the application.
 2. Project was created using the pipenv virtual environment which can be found [here](https://pypi.org/project/pipenv/). Pipenv should be used again as the repository has a Pipfile and Pipfile.lock which contains information about the libraries needed for the project.
-  1. To activate the virtual environment when setup enter pipenv shell into the terminal
-  2. To exit the virtual environment, type exit.
+  - To activate the virtual environment when setup enter pipenv shell into the terminal
+  - To exit the virtual environment, type exit.
 3. When the virtual environment is activated you can then install Django.
 4. To install all libraries needed for the project, use _pip install -r requirements.txt_, if you are using pip. This will install all packages that are listed in the requirements file.
 5. You will need to set up a local PostgreSQL database to use for local development. Follow [this](https://djangocentral.com/using-postgresql-with-django/) guide and you should be good.
