@@ -1,6 +1,6 @@
 # sol-tax-webapp
 
-This tool is meant for use by localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
+This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
 
 Link to Live Site: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-webapp.herokuapp.com/)
 
@@ -18,11 +18,6 @@ Link to Live Site: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-w
 8. [Local Development](#h22fw0m05rg4)
 
 **Github**
-
-Link to Github repo: [https://github.com/coopercenter/sol-tax-webapp](https://github.com/coopercenter/sol-tax-webapp)
-
-Need access provided, it&#39;s a private repository
-
 Any changes made to the master branch are automatically pushed into the live server through Heroku. Make sure changes are working properly before pushing to the master branch. Commit changes to branches other than master branch then merge when appropriate. Make sure you commit changes frequently to save changes to GitHub.
 
 **Python**
@@ -121,9 +116,10 @@ To download PostgreSQL visit their page [here](https://www.postgresql.org/downlo
 
 To connect to the live server database you need to get the database credentials from the Heroku page as described in the Heroku section above.
 
+For a local database follow the guide that was laid out in step 5 of "Project Setup" above.
 **Gmail**
 
-I have created a gmail account for use on this project. Contact Arthur Small at [asmall@virginia.edu](mailto:asmall@virginia.edu) for gmail login information
+I have created a gmail account for use on this project. Contact Arthur Small at [asmall@virginia.edu](mailto:asmall@virginia.edu) for gmail login information.
 
 The sole purpose of this email is to send emails to users for password reset and to send Thomas, Carrie, and Elizabeth emails about feedback received.
 
