@@ -14,13 +14,22 @@
                     {{field.label_tag}}   {{field}}
                 </div>
             {% endfor %}
+
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    <a class="close" href="#" data-dismiss="alert">×</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
+            
             <p><a href="/signup">Create New Account</a></p>
             <p><a href="/reset-password">Forgot Password?</a></p>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary btn-lg login-submit" value="Login"/>
             </div>
-
         </form>
+
+        </div>
     </div>
 </div>
 
