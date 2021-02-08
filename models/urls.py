@@ -28,4 +28,4 @@ urlpatterns = [
     path('feedback-success', views.commentSuccessPage, name="feedback-success"),
 ]
 
-handler404 = views.custom_404_error
+handler404 = 'models.views.custom_404_error'
