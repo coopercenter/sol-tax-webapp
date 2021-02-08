@@ -49,8 +49,11 @@ def loginView(request):
             user = form.get_user()
             login(request, user) # Check Login Information
             return HttpResponseRedirect('/user-' + str(user)+'/') #redirect to locality's home page
-    #else: # Displays Login Form
-    form = AuthenticationForm()
+        else:
+            messages.error(request, 'Username or Password is incorrect')
+            return HttpResponseRedirect('/login/')
+    else: # Displays Login Form
+        form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
 
 # Logout, redirects to landing page

@@ -30,9 +30,13 @@ else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
 
-ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000']
+if os.path.exists('hiddenVars'):
+    DEBUG = True
+    ALLOWED_HOSTS = []
+else:
+    DEBUG = False
+    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000']
 #ALLOWED_HOSTS = []
 
 # Application definition
