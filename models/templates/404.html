@@ -1,8 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>404 Error - Page not Found</h1>
-<h1>Here is a link back to the homepage:</h1>
-<button class="btn btn-lg btn-primary"> Return to Homepage</button>
+<div class="error-container">
+    <h1 class="error-header">404 Error - Page not Found</h1>
+    <h1 class="error-header">Here is a link back to the Homepage:</h1>
+    <button class="btn btn-primary btn-lg error-button"><a href="/" id="feedback-home">Return to Homepage</a></button>
+</div>
+
 
 {% endblock %}

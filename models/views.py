@@ -36,7 +36,10 @@ def index(request):
 
 # 404 Error Page
 def custom_404_error(request, exception):
-    return render(request, '404_error.html')
+    return render(request, '404.html')
+
+# def custom_404_error2(request):
+#     return render(request, '404.html')
 
 # Login Page
 def loginView(request):
