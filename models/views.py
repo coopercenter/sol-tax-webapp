@@ -34,6 +34,10 @@ import PIL, PIL.Image, io
 def index(request):
     return render(request, 'index.html')
 
+# 404 Error Page
+def custom_404_error(request, exception):
+    return render(request, '404_error.html')
+
 # Login Page
 def loginView(request):
     if request.method == "POST":
