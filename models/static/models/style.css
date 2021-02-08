@@ -548,6 +548,17 @@ li{
     color: rgb(60, 60, 255);
 }
 
+.error-container{
+    text-align: center;
+    padding: 2%;
+}
+.error-header{
+    padding: 2%;
+}
+.error-button{
+    margin-bottom: 7.5%;
+}
+
 @media print{
     .chart{
         margin-top: 500px

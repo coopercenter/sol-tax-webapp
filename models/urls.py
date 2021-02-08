@@ -26,6 +26,7 @@ urlpatterns = [
     path('reset-password-complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     path('feedback/', views.commentPage, name="feedback"),
     path('feedback-success', views.commentSuccessPage, name="feedback-success"),
+    # path('test', views.custom_404_error2, name="404"),
 ]
 
 handler404 = 'models.views.custom_404_error'
