@@ -3,6 +3,7 @@ from .views import NewSimulationView, UpdateUserParameterView
 from django.contrib.auth import views as auth_views
 # from models.dash_apps.finished_apps import *
 from . import views
+from django.conf.urls import handler404
 
 urlpatterns = [
     path('', views.index, name='index'),
@@ -26,3 +27,5 @@ urlpatterns = [
     path('feedback/', views.commentPage, name="feedback"),
     path('feedback-success', views.commentSuccessPage, name="feedback-success"),
 ]
+
+handler404 = views.custom_404_error
