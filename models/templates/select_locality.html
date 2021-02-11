@@ -16,7 +16,7 @@ off of.-->
     <form method="POST" action="/user-{{username}}/">
         {% csrf_token %}
 
-        <select data-live-search="true" class="selectpicker">
+        <select data-live-search="true" class="selectpicker" name="locality">
             <option selected>Choose Your Locality</option>
             {% for locality in all_localities %}
                 <option value="{{locality.name}}">{{locality.name}}</option>
