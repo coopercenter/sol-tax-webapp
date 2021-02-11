@@ -87,7 +87,7 @@ def new_land_value(total_acreage, inside_acreage, outside_acreage, inside_fence_
     #     total.append(0)
 
     for i in range(0, project_length):
-        if( i % years_between_assessment == 0):
+        if( i % years_between_assessment == 0 ):
             inside = inside_fence_value * inside_acreage * ((1.012)**(i+1))
             outside = outside_fence_value * outside_acreage * ((1.012)**(i+1))
             total.append(round(inside + outside))
