@@ -6,12 +6,12 @@ body{
 h2, h3, h4{
     font-size: 28px;
 }
-li{
-    /* line-height: .8rem; */
+.model-description li{
     margin: -20px;
 }
+
 .locality_name{
-    margin: 3px;
+    margin: 5px;
 }
 .not-log-button{
     color: whitesmoke;
@@ -89,14 +89,14 @@ li{
 
 
 /* Dropdown/Dropup Buttons*/ 
-.locality-dropup{
+/* .locality-dropup{
     text-align: center;
     padding: 5% 5% 2%;
 }
 .dropdown-menu a:hover{
     background-image: none;
     background-color:rgb(166, 198, 226);
-}
+} */
 
 
 /* Form */
@@ -454,9 +454,9 @@ li{
 .update-locality-header{
     padding: 5% 0 2%;
 }
-.selectpicker{
-    padding-bottom: 1%;
-}
+/* .selectpicker{
+    padding-bottom: 5%;
+} */
 .update-locality-submit{
     margin: 1% 1% 7.75%;
 }
