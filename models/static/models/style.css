@@ -141,9 +141,10 @@ li{
     text-align: center;
 }
 .chart-title{
-    /* position: relative;
-    left: 100px; */
+    position: relative;
+    left: 100px;
     padding-top: 5%;
+
 }
 .chart{
     height: 300px;
@@ -176,9 +177,33 @@ li{
 .table td.value-rate{
     padding-left: 30px;
 }
-.side-by-side-comparison{
-    padding: 7% 0;
+
+@media (min-width: 1200px) {
+    .side-by-side-comparison {
+      padding-top: 1%;
+    }
 }
+
+@media (max-width: 1100px) {
+    .side-by-side-comparison {
+        padding-top: 8%;
+    }
+}
+
+@media (max-width: 900px) {
+    .side-by-side-comparison{
+      padding-top: 15%;
+    }
+}
+
+@media (max-width: 735px) {
+    .side-by-side-comparison {
+      padding-top: 45%;
+    }
+}
+/* .side-by-side-comparison{
+    padding: 14% 0;
+} */
 
 
 /* Technical Page */
