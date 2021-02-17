@@ -13,6 +13,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
+    <link rel="stylesheet" href="{% static "models/icofont/icofont.min.css" %}">
     <link rel="stylesheet" href="{% static "models/style.css" %}">
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
@@ -52,7 +53,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
 
     <div class="header">
         <div class="navbar navbar-expand-lg navbar-light bg-light d-none d-print-inline print-header">
-            <h1>The Virginia SolTax Model</h1>
+            <h1 class="dontprint">The Virginia SolTax Model</h1>
         </div>
     </div>
 
@@ -62,7 +63,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
     </div>
 
     
-    <div class="footer">
+    <div class="footer dontprint">
         <div class="logos">
             <img src="{% static "models/ETI_Logo.png" %}" alt="ETI LOGO" class="eti-logo">
             <img src="{% static "models/DMME_FullLogo.png" %}"" alt="DMME LOGO" class="dmme-logo">

@@ -65,6 +65,10 @@ def get_table_totals(l):
 def change_to_percentage(rate):
     return ("{:.2f}".format(round(rate*100, 4)))
 
+@register.simple_tag
+def modulo(num, div):
+    return num % div
+
 @register.inclusion_tag("search_bar.html")
 def all_localities():
     all_localities = Locality.objects.order_by('name')

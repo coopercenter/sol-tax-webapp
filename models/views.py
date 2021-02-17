@@ -143,6 +143,12 @@ def user_home(request, username):
     user = UserProfile.objects.get(name = username)
     simulations = user.simulation_set.all()
 
+    remainder = len(simulations) % 6
+    if remainder == 3 or remainder == 4:
+        gap = "True"
+    else:
+        gap = "False"
+    print(gap)
     if request.POST.get('locality'):
         locality_name = request.POST['locality']
         if locality_name != 'Choose Your Locality':
@@ -222,7 +228,7 @@ def user_home(request, username):
     difference = total_rs - total_mt
     user.save()
     #simulation.save()
-    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference})
+    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference, 'gap':gap})
 
 
 # Creates Scatter Plot using plotly
@@ -288,7 +294,8 @@ def dash(request, username, simulation_id):
         calc.save()
 
         context = {
-            'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
+            'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation),
+            'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
         }
 
         return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
@@ -301,7 +308,8 @@ def dash(request, username, simulation_id):
         calc.save()
 
         context = {
-            'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
+            'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation),
+            'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
         }
 
         return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
@@ -319,7 +327,8 @@ def dash(request, username, simulation_id):
             calc.save()
 
             context = {
-                'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
+                'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation),
+                'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
             }
             return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
         
@@ -331,7 +340,8 @@ def dash(request, username, simulation_id):
             calc.save()
 
             context = {
-                'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation)
+                'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation),
+                'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
             }
 
             return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})

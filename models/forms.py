@@ -50,7 +50,7 @@ class SimulationForm(forms.ModelForm):
             'baseline_land_value': ugettext_lazy('Baseline Value of Land ($)'),
             'inside_fence_land_value': ugettext_lazy('Inside the Fence Value of Land ($)'),
             'outside_fence_land_value': ugettext_lazy('Outside the Fence Value of Land ($)'),
-            'dominion_or_apco': ugettext_lazy('Is the project operated by either an electirc supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
+            'dominion_or_apco': ugettext_lazy('Is the project operated by either an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
         }
         widgets = {
             # Defines the input expected for each field of the form and sets minimum and maximum values for the inputs.
