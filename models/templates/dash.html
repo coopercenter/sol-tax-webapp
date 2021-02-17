@@ -15,7 +15,7 @@ each year, and a table showing the breakdown for each year. -->
     
     <div class="row">
         {% load custom_tags %}
-        <div class = "col-xl-6 project-parameters">
+        <div class = "col-xl-6 project-parameters print-col" id="dash-outline">
             <h2 class="entered-data-title">Project Parameters</h2>
             <table class="table table-striped">
                 <thead>
@@ -136,7 +136,7 @@ each year, and a table showing the breakdown for each year. -->
             </div>
 
             <div class="chart dontprint">
-                <h3 class="chart-title">Lineplot of Nominal Cashflows through 2050</h3>
+                <h3 class="chart-title">Lineplot of Nominal Cashflows</h3>
                 
                 {% load static %}
                 {% load plotly_dash %}

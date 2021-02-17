@@ -613,4 +613,10 @@ li{
         /* color: blue; */
         /* background-color: red; */
     }
+    @media (min-width: 576px) {
+        .print-col{
+            flex: 0 0 auto;
+            width: 50%;
+        }
+    }
 }
