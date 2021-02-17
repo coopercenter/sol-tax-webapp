@@ -114,7 +114,7 @@ li{
 
 /* Graph and Table Page */
 #solar-tool-prototype{
-    padding: 2.25% 7% 4.25% 4.25%;
+    padding: 1% 7% 4.25% 4.25%;
 }
 .data-header{
     text-align: center;
@@ -207,9 +207,9 @@ li{
     margin-top: 4%;
 }
 
-.locality-home-body{
+/* .locality-home-body{
     text-align: center;
-}
+} */
 .locality-home-header{
     text-align: center;
     padding: 1%;
@@ -305,6 +305,22 @@ li{
     text-align: center;
     padding: 0.5% 0 1.5%;
 }
+
+/* .update-form-right{
+    text-align: left;
+    padding: 0.5% 0 1.5%;
+    margin-left: 30px;
+} */
+/* .pdf-button{
+    margin: .5% 45px 1.5% 5px;
+    position: relative;
+    left: 46%;
+}*/
+.local-pdf-button{
+    text-align: left;
+    position: absolute;
+    margin: 1%;
+} 
 
 .card-body{
     text-align: center;
@@ -558,15 +574,43 @@ li{
 .error-button{
     margin-bottom: 7.5%;
 }
+.dontshow{
+    display: none;
+}
+
+/* .print-row{
+    /* margin: 500px; 
+} */
 
 @media print{
     .chart{
-        margin-top: 500px
+        margin-top: 450px;
+        text-align: center;
+    }
+    .prototype-graph{
+        margin-left: 155px;
     }
     .side-by-side-comparison{
-        margin-top: 500px;
+        margin-top: 300px;
     }
     .locality-info{
+        margin-top: 50px;
+    }
+    .dontprint{
+        display: none;
+    }
+    .dontshow{
+        display: inline;
+    }
+    .fourth-panel{
+        width: 100%;
+        margin: 120px;
+    }
+    .parameter-panel{
         margin-top: 500px;
+        /* width: 100%;
+        height: 20000px; */
+        /* color: blue; */
+        /* background-color: red; */
     }
 }
