@@ -13,6 +13,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.safestring import mark_safe
+from django.core.exceptions import ValidationError
 
 UserModel = get_user_model()
 
@@ -36,6 +37,7 @@ class FeedbackForm(forms.Form):
 class SimulationForm(forms.ModelForm):
     # Form for creating a project analysis
     class Meta:
+        # app_attributes = {'oninvalid': 'this.setCustomValidity("Application field is required")', 'oninput': 'this.setCustomValidity("")', 'class':'form-control', 'min':0}
         model = Simulation #Defines that the fields of this form correspond to the Simulation model
         fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
@@ -60,8 +62,8 @@ class SimulationForm(forms.ModelForm):
             'project_length': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'project_size': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
-            'total_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':100, 'max':10000}),
-            'inside_fence_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':100, 'max':10000}),
+            'total_acreage': forms.NumberInput(attrs={'class':'form-control', 'min':0}),
+            'inside_fence_acreage': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'baseline_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'inside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
             'outside_fence_land_value': forms.NumberInput(attrs={'class': 'form-control', 'min':100}),
