@@ -3,6 +3,10 @@ from django.contrib.postgres.fields import ArrayField
 from django.urls import reverse
 from django.db.models import UniqueConstraint
 from django.utils import timezone
+from django.core.validators import MaxValueValidator
+from django.core.exceptions import ValidationError
+
+
 
 def get_scc_depreciation():
     return list([.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10])
@@ -90,8 +94,14 @@ class Simulation(models.Model):
     def __str__(self):
         return self.user.name + str(self.initial_investment)
     
-    # def get_absolute_url(self):
-    #     return reverse('dash')
+    def clean(self):
+        cleaned_data=super(Simulation, self).clean()
+        tot = self.total_acreage
+        inside = self.inside_fence_acreage
+
+        if inside > tot:
+            raise ValidationError("Inside fence acreage is higher than total project acreage.")
+        return cleaned_data
     
     class Meta:
         constraints = [

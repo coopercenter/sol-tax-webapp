@@ -262,9 +262,8 @@ def scatter(mt, rs, simulation):
 def form_dash(request):
     if request.method == 'POST':
         form = SimulationForm(request.POST)
-        print(form)
-        # print(form)
         print(form.has_error('NON_FIELD_ERRORS'))
+        # print(form.errors)
         if form.is_valid():
             print("valid")
             simulation = form.save(commit = False)
@@ -275,8 +274,27 @@ def form_dash(request):
             print(simulation.id)
             return HttpResponseRedirect("/user-" + loc.name + '/' + str(simulation.id) + '/')
         else:
-            return HttpResponse("Error this analysis has already been created, go back to the Locality page to view the analysis with these parameters")
-            
+            if form.has_error('NON_FIELD_ERRORS'):
+                return HttpResponse("Error this analysis has already been created, go back to the Locality page to view the analysis with these parameters")
+            else:
+                print("error message")
+                form_class = SimulationForm()
+                print(form_class.fields)
+                username = UserProfile.objects.get(id = request.POST.get('user')).name
+                form_class.fields['user'].initial = request.POST.get('user')
+                form_class.fields['name'].initial = request.POST.get('name')
+                form_class.fields['initial_year'].initial = request.POST.get('initial_year')
+                form_class.fields['project_length'].initial = request.POST.get('project_length')
+                form_class.fields['initial_investment'].initial = request.POST.get('initial_investment')
+                form_class.fields['project_size'].initial = request.POST.get('project_size')
+                form_class.fields['total_acreage'].initial = request.POST.get('total_acreage')
+                form_class.fields['inside_fence_acreage'].initial = request.POST.get('inside_fence_acreage')
+                form_class.fields['baseline_land_value'].initial = request.POST.get('baseline_land_value')
+                form_class.fields['inside_fence_land_value'].initial = request.POST.get('inside_fence_land_value')
+                form_class.fields['outside_fence_land_value'].initial = request.POST.get('outside_fence_land_value')
+                form_class.fields['dominion_or_apco'].initial = request.POST.get('dominion_or_apco')                
+                messages.error(request, 'Total project acreage was less than inside the fence acreage.')
+                return render(request, 'create_new_analysis_form.html', {'form' : form_class, 'county': username})
     else:
         return HttpResponse('Error please select fill out the model generation form')
 
@@ -355,12 +373,15 @@ def request_page(request):
 
 class NewSimulationView(CreateView):
 
+    # def get(self, request):
+        
     def post(self, request):
+        # print(request.post.get('viewButton'))
         if(request.POST.get('viewButton') == None):
             username = request.POST.get('generateButton')
             form_class = SimulationForm() 
             form_class.fields['user'].initial = UserProfile.objects.get(name = username).id
-
+            # print(form_class.fields['user'].initial)
             return render(request, 'create_new_analysis_form.html', {'form' : form_class, 'county': username})
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))

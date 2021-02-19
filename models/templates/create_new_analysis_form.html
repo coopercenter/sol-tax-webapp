@@ -9,9 +9,20 @@
     </h1>
     
     <div class="form-group">
-        <form action = "/dash/" method="POST">
+        <form action = "/dash/" method="POST" value="{{county}}" name="generateButton">
             {% csrf_token %}
+            {% for message in messages %}
+                <div class="alert alert-danger">
+                    <a class="close" href="#" data-dismiss="alert">×</a>
+                    {{ message }}
+                </div>
+            {% endfor %}
             {{ form.as_p }}
+            <!-- {% if messages %}
+                {% for message in messages %}
+                    {{message}}
+                {% endfor %}
+            {% endif %} -->
             <br>
             <button class="btn btn-primary btn-lg"> Generate Model </button>
         </form>
