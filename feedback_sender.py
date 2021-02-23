@@ -30,7 +30,7 @@ def print_update():
     if test:
         message = ""
         for item in test:
-            message += "From: " + str(item.email) + "\n" + "Date/Time: " + str(item.date) + "\n" + item.message + "\n\n"
+            message += "From: " + str(item.email) + "\n" "Name: " + str(item.name) + "\n" + "Organization: " + str(item.name) + "\n" + "Date/Time: " + str(item.date) + "\n" + item.message + "\n\n"
 
         if not os.path.exists('hiddenVars'): # FOR use with Heroku
             email_1 = os.environ['STAKEHOLDER_EMAIL_1']

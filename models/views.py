@@ -97,11 +97,12 @@ def commentPage(request):
         form = FeedbackForm(request.POST)
         if form.is_valid():
             email = form.cleaned_data['email']
+            name = form.cleaned_data['name']
+            organization = form.cleaned_data['organization']
             message = form.cleaned_data['message']
 
-            feedback_instance = Feedback.objects.create(email = email, message = message, date= timezone.now())
+            feedback_instance = Feedback.objects.create(email = email, message = message, name = name, organization = organization, date= timezone.now())
             feedback_instance.save()
-            print(feedback_instance.__str__())
             return redirect("feedback-success")
     return render(request, "feedback.html", {'form': form})
 
@@ -531,6 +532,7 @@ def performCalculations(locality, simulation):
         effective_depreciation_schedule = scc_depreciation
 
     print(effective_depreciation_schedule)
+    print(effective_exemption_rate)
     '''
     Land Value Calculations
     '''
@@ -619,8 +621,8 @@ def performCalculations(locality, simulation):
     real_property_tax_revenue = [real_property_rate * land_value_increase[i]/100 for i in range(len(land_value_increase))]
 
     real_property_increase_in_revenue = net_total_revenue_from_project(real_property_tax_revenue, real_property_increase_in_local_contribution)
-    print(real_property_increase_in_revenue)
     revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year, project_length)
+    print("Land Revenue: " +  str([current_revenue_from_land[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]))
     revenue_share_total = [current_revenue_from_land[i] + revenue_share_income[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]
 
     cas_rs = []

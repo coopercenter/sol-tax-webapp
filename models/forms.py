@@ -31,8 +31,11 @@ class SignUpForm(UserCreationForm):
 
 # FeedbackForm is used for the feedback/questions page, needs an email and message to submit properly.
 class FeedbackForm(forms.Form):
+    name = forms.CharField(required=True, label="Full Name")
     email = forms.EmailField(required=True)
+    organization = forms.CharField(required=True, label="Organization/Affiliation")
     message = forms.CharField(widget=forms.Textarea, required=True)
+
 
 class SimulationForm(forms.ModelForm):
     # Form for creating a project analysis
