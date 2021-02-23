@@ -14,6 +14,8 @@ def get_scc_depreciation():
 class Feedback(models.Model):
     email = models.EmailField()
     message = models.CharField(max_length=5000)
+    name = models.CharField(max_length=200, default="")
+    organization = models.CharField(max_length=200, default="")
     date = models.DateTimeField(default=timezone.now())
 
     class Meta:

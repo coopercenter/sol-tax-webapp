@@ -30,7 +30,7 @@ def print_update():
     if test:
         message = ""
         for item in test:
-            message += "From: " + str(item.email) + "\n" + "Date/Time: " + str(item.date) + "\n" + item.message + "\n\n"
+            message += "From: " + str(item.email) + "\n" "Name: " + str(item.name) + "\n" + "Organization: " + str(item.name) + "\n" + "Date/Time: " + str(item.date) + "\n" + item.message + "\n\n"
 
         if not os.path.exists('hiddenVars'): # FOR use with Heroku
             email_1 = os.environ['STAKEHOLDER_EMAIL_1']
@@ -40,7 +40,7 @@ def print_update():
             send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', [email_1, email_2, email_3], fail_silently=False,)
         
         #For use on local server, enter your email in the brackets inside quotes
-        #send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['YOUR EMAIL HERE'], fail_silently=False,)
+        send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['tpc3yw@virginia.edu'], fail_silently=False,)
 
 scheduler.start()
 
