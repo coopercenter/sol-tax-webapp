@@ -40,7 +40,7 @@ def print_update():
             send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', [email_1, email_2, email_3], fail_silently=False,)
         
         #For use on local server, enter your email in the brackets inside quotes
-        send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['tpc3yw@virginia.edu'], fail_silently=False,)
+        #send_mail('Feedback from ' + str(date.today()), message, 'coopercentersoltax@gmail.com', ['YOUR EMAIL HERE'], fail_silently=False,)
 
 scheduler.start()
 
