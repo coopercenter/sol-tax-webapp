@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 
 def get_scc_depreciation():
     return list([.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10])
-
+    
 class Feedback(models.Model):
     email = models.EmailField()
     message = models.CharField(max_length=5000)
@@ -69,7 +69,7 @@ class Locality(models.Model):
     budget_escalator = models.FloatField(default = 0)
     years_between_assessment = models.IntegerField(default = 5)
     use_composite_index = models.BooleanField(default=True)
-    local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
+    local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True, size=35)
     scc_depreciation = ArrayField(models.FloatField(), default=list(get_scc_depreciation()))
     
     class Meta:
