@@ -34,7 +34,10 @@ import csv
 
 def create_csv_view(request):
     # Create the HttpResponse object with the appropriate CSV header.
-    user = UserProfile.objects.get(name= str(request.user))
+    if UserProfile.objects.filter(name= str(request.user)).exists():
+        user = UserProfile.objects.get(name= str(request.user))
+    else:
+        return render(request, '404.html')
     user_dict = user.__dict__
     user_simulation = Simulation.objects.filter(user = user)
     print(user_simulation)
@@ -47,15 +50,44 @@ def create_csv_view(request):
     writer.writerow([str(request.user) + " Solar Project Analyses"])
     #writer.writerow(['Test Parameters', UserProfile._meta.get_fields()])
     writer.writerow([''])
+
+    writer.writerow(['Project Revenue'])
+    writer.writerow([''])
+    writer.writerow(['Project', 'M&T Revenue', 'Revenue Share', 'Increase From Revenue Share'])
+    total_mt = 0
+    total_rs = 0
+    for sim in user_simulation:
+        calc = Calculations.objects.get(simulation = sim)
+        mt = round(sum(calc.tot_mt)*1000, -3)
+        total_mt += mt
+        rs = round(sum(calc.tot_rs)*1000, -3)
+        total_rs += rs
+        writer.writerow([sim.name, mt, rs, rs-mt])
+
+    writer.writerow(['Totals', total_mt, total_rs, total_rs-total_mt])
+    writer.writerow([''])
     writer.writerow(['Projects'])
+    writer.writerow([''])
 
     for sim in user_simulation:
         writer.writerow([sim.name])
         sim_dict = sim.__dict__
         print(sim_dict)
-        for field in sim_dict:
-            if field != "id" and field != "_state" and field != "user_id":
-                writer.writerow([field, sim_dict[field]])
+        writer.writerow([item for item in sim_dict if item not in ("id", "_state", "user_id")])
+        writer.writerow(sim_dict[item] for item in sim_dict if item not in ("id", "_state", "user_id"))
+
+        calc = Calculations.objects.get(simulation = sim)
+
+        writer.writerow([''])
+        writer.writerow(['Yearly Project Breakdown'])
+        writer.writerow([' '] + [i for i in range(sim.initial_year, sim.initial_year+sim.project_length)])
+        writer.writerow(['M&T Nominal Revenue'] + [round(value*1000, -3) for value in calc.cas_mt])
+        writer.writerow(['Revenue Share Nominal Revenue'] + [round(value*1000, -3) for value in calc.cas_rs])
+        writer.writerow(['M&T Discounted Revenue'] + [round(value*1000, -3) for value in calc.tot_mt])
+        writer.writerow(['Revenue Share Discounted Revenue'] + [round(value*1000, -3) for value in calc.tot_rs])
+        # for field in sim_dict:
+        #     if field != "id" and field != "_state" and field != "user_id":
+        #         writer.writerow([field, sim_dict[field]])
         writer.writerow([''])
     
     writer.writerow([''])
