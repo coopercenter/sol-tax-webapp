@@ -6,8 +6,9 @@ def depreciation_ext(depreciation_schedule):
     Extends list with final effective rate to be available for calculations out to 2050
     '''
     last_rate = depreciation_schedule[-1]
-    while len(depreciation_schedule) <= 35:
+    while len(depreciation_schedule) < 35:
         depreciation_schedule.append(last_rate)
+        print(len(depreciation_schedule))
 
 def effective_rate_ext (effective_rate_list, project_length):
     '''

@@ -29,6 +29,84 @@ from plotly.offline import plot
 import plotly.graph_objects as go
 import urllib, base64
 import PIL, PIL.Image, io
+import csv
+
+
+def create_csv_view(request):
+    # Create the HttpResponse object with the appropriate CSV header.
+    if UserProfile.objects.filter(name= str(request.user)).exists():
+        user = UserProfile.objects.get(name= str(request.user))
+    else:
+        return render(request, '404.html')
+    user_dict = user.__dict__
+    user_simulation = Simulation.objects.filter(user = user)
+    print(user_simulation)
+    response = HttpResponse(content_type='text/csv')
+    print(request.user)
+    # print(user[])
+    response['Content-Disposition'] = 'attachment; filename="' + str(request.user) +'"SolTax_Results.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow([str(request.user) + " Solar Project Analyses"])
+    #writer.writerow(['Test Parameters', UserProfile._meta.get_fields()])
+    writer.writerow([''])
+
+    writer.writerow(['Project Revenue'])
+    writer.writerow([''])
+    writer.writerow(['Project', 'M&T Revenue', 'Revenue Share', 'Increase From Revenue Share'])
+    total_mt = 0
+    total_rs = 0
+    for sim in user_simulation:
+        calc = Calculations.objects.get(simulation = sim)
+        mt = round(sum(calc.tot_mt)*1000, -3)
+        total_mt += mt
+        rs = round(sum(calc.tot_rs)*1000, -3)
+        total_rs += rs
+        writer.writerow([sim.name, mt, rs, rs-mt])
+
+    writer.writerow(['Totals', total_mt, total_rs, total_rs-total_mt])
+    writer.writerow([''])
+    writer.writerow(['Projects'])
+    writer.writerow([''])
+
+    for sim in user_simulation:
+        writer.writerow([sim.name])
+        sim_dict = sim.__dict__
+        print(sim_dict)
+        writer.writerow([item for item in sim_dict if item not in ("id", "_state", "user_id")])
+        writer.writerow(sim_dict[item] for item in sim_dict if item not in ("id", "_state", "user_id"))
+
+        calc = Calculations.objects.get(simulation = sim)
+
+        writer.writerow([''])
+        writer.writerow(['Yearly Project Breakdown'])
+        writer.writerow([' '] + [i for i in range(sim.initial_year, sim.initial_year+sim.project_length)])
+        writer.writerow(['M&T Nominal Revenue'] + [round(value*1000, -3) for value in calc.cas_mt])
+        writer.writerow(['Revenue Share Nominal Revenue'] + [round(value*1000, -3) for value in calc.cas_rs])
+        writer.writerow(['M&T Discounted Revenue'] + [round(value*1000, -3) for value in calc.tot_mt])
+        writer.writerow(['Revenue Share Discounted Revenue'] + [round(value*1000, -3) for value in calc.tot_rs])
+        # for field in sim_dict:
+        #     if field != "id" and field != "_state" and field != "user_id":
+        #         writer.writerow([field, sim_dict[field]])
+        writer.writerow([''])
+    
+    writer.writerow([''])
+    writer.writerow(['User Parameters'])
+    
+    print(user_dict)
+    for field in user_dict:
+        #f = field.name
+        print(field == "id")
+        if field != "id" and field != "_state" and ("depreciation" not in field):
+            print(field)
+            writer.writerow([field, user_dict[field]])
+
+    writer.writerow([''])
+    writer.writerow(['Depreciation Schedules'])
+    writer.writerow(["Year"] + [i+1 for i in range(len(user_dict["local_depreciation"]))])
+    writer.writerow(["Local Depreciation"] + [user_dict["local_depreciation"][i] for i in range(len(user_dict["local_depreciation"]))])
+    writer.writerow(["SCC Depreciation"] + [user_dict["scc_depreciation"][i] for i in range(len(user_dict["scc_depreciation"]))])
+    return response
 
 # Landing Page
 def index(request):
@@ -170,6 +248,8 @@ def user_home(request, username):
             user.use_composite_index = locality.use_composite_index
             user.local_depreciation = locality.local_depreciation
             user.scc_depreciation = locality.scc_depreciation
+            depreciation_ext(user.local_depreciation)
+            depreciation_ext(user.scc_depreciation)
             user.save()
 
     if user.mt_tax_rate == 0:
@@ -203,7 +283,9 @@ def user_home(request, username):
             if item[:5] == "local":
                 local.append(float(request.POST.get(item))/100)
         print(local)
-        user.local_depreciation = local
+
+        print(len(local))
+        user.local_depreciation = local[:35]
         user.save()
 
     if request.POST.get('scc-1'):
@@ -458,11 +540,14 @@ def depreciationUpdate(request, username):
     user = UserProfile.objects.get(name = username)
     scc = user.scc_depreciation
     depreciation_ext(scc)
-    scc=scc[:36]
+    scc=scc[:35]
     print("scc")
     print(scc)
     local = user.local_depreciation
+    
+    print(len(local))
     depreciation_ext(local)
+    print(len(local))
     return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': username})
 
 def performCalculations(locality, simulation):
