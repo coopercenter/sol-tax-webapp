@@ -40,9 +40,9 @@ def create_csv_view(request):
         return render(request, '404.html')
     user_dict = user.__dict__
     user_simulation = Simulation.objects.filter(user = user)
-    print(user_simulation)
+    #print(user_simulation)
     response = HttpResponse(content_type='text/csv')
-    print(request.user)
+    #print(request.user)
     # print(user[])
     response['Content-Disposition'] = 'attachment; filename="' + str(request.user) +'"SolTax_Results.csv"'
 
@@ -72,7 +72,7 @@ def create_csv_view(request):
     for sim in user_simulation:
         writer.writerow([sim.name])
         sim_dict = sim.__dict__
-        print(sim_dict)
+        #print(sim_dict)
         writer.writerow([item for item in sim_dict if item not in ("id", "_state", "user_id")])
         writer.writerow(sim_dict[item] for item in sim_dict if item not in ("id", "_state", "user_id"))
 
