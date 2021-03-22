@@ -38,6 +38,11 @@ url("./fonts/icofont.woff") format("woff");
   content: "\eb1e";
 }
 
+.icofont-file-excel:before
+{
+  content: "\eb10";
+}
+
 .icofont-xs
 {
   font-size: .5em;

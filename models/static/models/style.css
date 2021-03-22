@@ -344,7 +344,13 @@ li{
 .local-pdf-button{
     text-align: left;
     position: absolute;
-    margin: 1%;
+    margin: 1% 3%;
+} 
+
+.local-csv-button{
+    text-align: left;
+    position: absolute;
+    margin: 1% 7%;
 } 
 
 .card-body{
