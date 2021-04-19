@@ -9,7 +9,18 @@ h2, h3, h4{
 .model-description li{
     margin: -20px;
 }
-
+.footer-donate{
+    width: 150px;
+    border-radius: .25rem;
+    background-color: #dc3545;
+    height: 50px;
+    border: none;
+    font-size: 22px;
+    color: whitesmoke;
+    position: relative;
+    left: 45%;
+    margin-top: 20px;
+}
 .locality_name{
     margin: 5px;
 }
@@ -451,7 +462,7 @@ li{
 
 .logos{
     text-align: center;
-    padding: 15px 0;
+    padding: 5px 0;
 }
 .eti-logo{
     padding: 0 25px;
