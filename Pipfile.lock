@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5e49cabff34563dadc4f0a272554975779bd22e6b5f5acfbe81e0bb2f94afd69"
+            "sha256": "21bfc780fcd8cba22da38354fd1a98038ca7e8e1aebfb6824ff8840ac5029d0a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -58,11 +58,11 @@
         },
         "autobahn": {
             "hashes": [
-                "sha256:24ce276d313e84d68241c3aef30d484f352b90a40168981b3640312c821df77b",
-                "sha256:86bbce30cdd407137c57670993a8f9bfdfe3f8e994b889181d85e844d5aa8dfb"
+                "sha256:410a93e0e29882c8b5d5ab05d220b07609b886ef5f23c0b8d39153254ffd6895",
+                "sha256:52ee4236ff9a1fcbbd9500439dcf3284284b37f8a6b31ecc8a36e00cf9f95049"
             ],
             "index": "pypi",
-            "version": "==20.7.1"
+            "version": "==20.12.3"
         },
         "automat": {
             "hashes": [
