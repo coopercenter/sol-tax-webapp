@@ -144,7 +144,7 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 def update_user(request, username):
-    if request.method == 'POST':
+    # if request.method == 'POST':
         
     localities = Locality.objects.order_by('name')
     return render(request, 'select_locality.html', {'all_localities': localities, 'username':username})
@@ -208,7 +208,7 @@ def user_home(request, username):
         if locality_name != 'Choose Your Locality':
             locality = Locality.objects.get(name=locality_name)
             user.discount_rate = locality.discount_rate
-            user.revenue_share_rate = locality.revenue_share_rate
+            #user.revenue_share_rate = locality.revenue_share_rate
             user.real_property_rate = locality.real_property_rate
             user.mt_tax_rate = locality.mt_tax_rate
             user.assessment_ratio = locality.assessment_ratio
@@ -232,7 +232,7 @@ def user_home(request, username):
 
     if request.POST.get('discount_rate'):
         user.discount_rate = int(request.POST.get('discount_rate'))
-        user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
+        #user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
         user.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
         user.real_property_rate = float(request.POST.get('real_property_rate'))
         user.assessment_ratio = float(request.POST.get('assessment_ratio'))
@@ -265,6 +265,22 @@ def user_home(request, username):
             if item[:3] == "scc":
                 scc.append(float(request.POST.get(item))/100)
         user.scc_depreciation = scc
+        user.save()
+
+    if request.POST.get('rs-2021'):
+        new_rs = []
+        max_rs = [1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001]
+        for item in request.POST:
+            print(item)
+            print(request.POST.get(item))
+            if item != 'csrfmiddlewaretoken':
+                new_rs.append(float(request.POST.get(item)))
+        for i in range(len(new_rs)):
+            if(new_rs[i] > max_rs[i]):
+                years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+                data = zip(years, user.revenue_share_rate)
+                return render(request, 'revenue_share_update.html', {'current_values': data, 'locality': user.name, 'error': 'For the year ' +  str((2021 + i*5)) + ' you entered ' + str(new_rs[i]) + ', however the maximum value allowed is ' + str(max_rs[i]) + '. Please try again.'})
+        user.revenue_share_rate = new_rs
         user.save()
 
     total_mt = 0
@@ -433,7 +449,7 @@ class UpdateUserParameterView(CreateView):
         if(request.POST.get('viewButton') == None):
             form_class = UserProfileUpdateForm()
             user = UserProfile.objects.get(name = username) 
-            form_class.fields['revenue_share_rate'].initial = user.revenue_share_rate
+            #form_class.fields['revenue_share_rate'].initial = user.revenue_share_rate
             form_class.fields['discount_rate'].initial = user.discount_rate
             form_class.fields['mt_tax_rate'].initial = user.mt_tax_rate
             form_class.fields['real_property_rate'].initial = user.real_property_rate
@@ -502,6 +518,14 @@ def depreciationUpdate(request, username):
 
     return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': username})
 
+def revenueShareUpdate(request, username):
+    user = UserProfile.objects.get(name = username)
+    rs = user.revenue_share_rate
+    years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+    data = zip(years, rs)
+
+    return render(request, 'revenue_share_update.html', {'current_values': data, 'locality': username})
+
 def performCalculations(locality, simulation):
 
     '''
@@ -524,7 +548,23 @@ def performCalculations(locality, simulation):
     '''
     use_composite_index = locality.use_composite_index
     discount_rate = int(locality.discount_rate)/100
-    revenue_share_rate = int(locality.revenue_share_rate)
+    #revenue_share_rate = int(locality.revenue_share_rate)
+    # revenue_share_rate = 1400
+
+    revenue_share_rate = locality.revenue_share_rate
+    adjusted_rs_rate = []
+    for i in range(initial_year, initial_year + project_length):
+        2021 + i * 5
+        index = (i - 2021) // 5
+        adjusted_rs_rate.append(revenue_share_rate[index])
+    print(adjusted_rs_rate)
+    #     if(i % 5 == 1 and i != 1):
+    #         revenue_share_rate.append(revenue_share_rate[i-1] * 1.1)
+    #     else:
+    #         revenue_share_rate.append(revenue_share_rate[i-1])
+    # revenue_share_rate = [round(elem, 0) for elem in revenue_share_rate]
+
+
     mt_tax_rate = locality.mt_tax_rate
     real_property_rate = locality.real_property_rate
     assessment_ratio = locality.assessment_ratio/100
@@ -653,7 +693,7 @@ def performCalculations(locality, simulation):
     real_property_tax_revenue = [real_property_rate * land_value_increase[i]/100 for i in range(len(land_value_increase))]
 
     real_property_increase_in_revenue = net_total_revenue_from_project(real_property_tax_revenue, real_property_increase_in_local_contribution)
-    revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year, project_length)
+    revenue_share_income = total_cashflow_rs(adjusted_rs_rate, project_size, initial_year, project_length)
     revenue_share_total = [current_revenue_from_land[i] + revenue_share_income[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]
 
     cas_rs = []

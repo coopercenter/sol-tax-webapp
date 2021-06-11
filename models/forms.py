@@ -77,9 +77,9 @@ class UserProfileUpdateForm(forms.ModelForm):
     # Form for updating user parameters
     class Meta:
         model = UserProfile
-        fields = ('revenue_share_rate', 'discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment', 'use_composite_index')
+        fields = ('discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment', 'use_composite_index')
         labels = {
-            'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
+            #'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
             'discount_rate': ugettext_lazy("Discount Rate (%)"), 
             'mt_tax_rate': ugettext_lazy("M&T Tax Rate ($/ $100 Assessed Value)"), 
             'real_property_rate': ugettext_lazy("Real Property Rate ($/ $100 Assessed Value)"), 
@@ -98,7 +98,7 @@ class UserProfileUpdateForm(forms.ModelForm):
             'required_local_matching': ugettext_lazy("Enter the sum of locality's Required Local Effort (RLE) for Standards of Quality and Required Local Match (RLM) for Incentive and Lottery Accounts."),
         } # Defines a help text to be displayed under the form entry box to help define the variable for the user.
         widgets = {
-            'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
+            #'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
             'discount_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'mt_tax_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
             'real_property_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),

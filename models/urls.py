@@ -12,6 +12,7 @@ urlpatterns = [
     path('formtext/', views.request_page, name='test'),
     path('user-<str:username>/update-user-parameters/', UpdateUserParameterView.as_view(), name='update_user'),
     path('user-<str:username>/update-depreciation-schedules/', views.depreciationUpdate, name='update_depreciation'),
+    path('user-<str:username>/update-revenue-share/', views.revenueShareUpdate, name='update_revenue_share'),
     path('user-<str:username>/', views.user_home, name='locality_home'),
     path('user-<str:username>/<int:simulation_id>/', views.dash, name='simulation_dash'),
     path('localityName/', views.localityName, name='localityName'),

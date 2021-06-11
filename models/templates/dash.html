@@ -39,10 +39,10 @@ each year, and a table showing the breakdown for each year. -->
                                     <td>Discount Rate</td>
                                     <td class="value">{% get_discount_rate simulation %}%</td>
                                 </tr>
-                                <tr>
+                                <!-- <tr>
                                     <td>Revenue Share Rate</td>
-                                    <td class="value"><span class="dollar_value">{% get_rs_rate simulation %}</span> /MW</td>
-                                </tr>
+                                    <td class="value"><span class="dollar_value">{get_rs_rate simulation}</span> /MW</td>
+                                </tr> -->
                                 <tr>
                                     <td class="{% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">Real Property Rate per $100 of Assessed Value</td>
                                     <td class="value {% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_real_property_rate simulation %}</td>

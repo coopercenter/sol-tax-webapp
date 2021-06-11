@@ -172,14 +172,14 @@
                         <span>{{locality.use_composite_index}}</span>
                     </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                     <td>
                         Revenue Share Rate
                     </td>
                     <td class="value">
                         <span class="dollar_value">{{locality.revenue_share_rate}}</span> /MW
                     </td>
-                </tr>
+                </tr> -->
                 <tr>
                     <td>
                         Discount Rate
@@ -295,6 +295,11 @@
     <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
         {% csrf_token %}
         <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
+    </form>
+
+    <form method="POST" action="update-revenue-share/" class="update-form dontprint">
+        {% csrf_token %}
+        <input class="btn btn-success btn-lg" type="submit" value="Update Revenue Share Escalator">
     </form>
 
     <!-- <button class="btn btn-lg btn-danger pdf-button dontprint" type="submit" value="Create PDF" onclick="window.print()">Create PDF</button> -->
