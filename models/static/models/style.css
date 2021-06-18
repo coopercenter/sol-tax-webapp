@@ -432,6 +432,12 @@ li{
 .locality-info{
     padding-bottom: 2%;
 }
+.locality-rs{
+    padding-bottom: 2%;
+}
+.rs_year_header{
+    width: 100px;
+}
 .locality-info-table{
     margin: auto;
 }

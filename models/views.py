@@ -94,6 +94,12 @@ def create_csv_view(request):
     writer.writerow(["Year"] + [i+1 for i in range(len(user_dict["local_depreciation"]))])
     writer.writerow(["Local Depreciation"] + [user_dict["local_depreciation"][i] for i in range(len(user_dict["local_depreciation"]))])
     writer.writerow(["SCC Depreciation"] + [user_dict["scc_depreciation"][i] for i in range(len(user_dict["scc_depreciation"]))])
+
+    writer.writerow([''])
+    writer.writerow(['Revenue Share Rates'])
+    writer.writerow(["Year"] + [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061])
+    writer.writerow(["Revenue Share Rate"] + [user_dict["revenue_share_rate"][i] for i in range(len(user_dict["revenue_share_rate"]))])
+
     return response
 
 # Landing Page
@@ -295,8 +301,12 @@ def user_home(request, username):
     total_mt = round(total_mt, -3)
     total_rs = round(total_rs, -3)
     difference = total_rs - total_mt
+    
     user.save()
-    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference, 'gap':gap})
+
+    rs_years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+    rs_data = zip(user.revenue_share_rate, rs_years)
+    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference, 'gap':gap, 'rs_data':rs_data})
 
 
 # Creates Scatter Plot using plotly
