@@ -563,10 +563,12 @@ def performCalculations(locality, simulation):
 
     revenue_share_rate = locality.revenue_share_rate
     adjusted_rs_rate = []
-    for i in range(initial_year, initial_year + project_length):
-        2021 + i * 5
-        index = (i - 2021) // 5
-        adjusted_rs_rate.append(revenue_share_rate[index])
+    if initial_year >= 2021:
+        for i in range(initial_year, initial_year + project_length):
+            index = (i - 2021) // 5
+            adjusted_rs_rate.append(revenue_share_rate[index])
+    else:
+        adjusted_rs_rate = [1400 for i in range(project_length)]
     print(adjusted_rs_rate)
     #     if(i % 5 == 1 and i != 1):
     #         revenue_share_rate.append(revenue_share_rate[i-1] * 1.1)
