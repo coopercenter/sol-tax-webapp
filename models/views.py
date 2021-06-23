@@ -568,7 +568,7 @@ def performCalculations(locality, simulation):
             index = (i - 2021) // 5
             adjusted_rs_rate.append(revenue_share_rate[index])
     else:
-        adjusted_rs_rate = [1400 for i in range(project_length)]
+        adjusted_rs_rate = [revenue_share_rate[0] for i in range(project_length)]
     print(adjusted_rs_rate)
     #     if(i % 5 == 1 and i != 1):
     #         revenue_share_rate.append(revenue_share_rate[i-1] * 1.1)
