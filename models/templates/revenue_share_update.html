@@ -1,0 +1,79 @@
+<!-- Page to change local and SCC depreciation schedules -->
+
+{% extends 'base.html' %}
+
+{% block content %}
+    {% load custom_tags %}
+    <!-- <div class="row depreciation-row"> -->
+        <div class="rs-forms">
+            <div>  
+                <h2>Revenue Share Escalator</h2> 
+                {% if error %}
+                    <div class="rs-error alert alert-danger">
+                        {{ error }}
+                    </div>
+                {% endif %}
+                
+                <form action="/user-{{locality}}/" method="POST" name="testing">
+                    {% csrf_token %}
+                    <table class="rs-form">
+                        <thead>
+                            <tr>
+                                <td class="depreciation-form-year">
+                                    Year
+                                </td>
+                                <td class="depreciation-form-rate">
+                                    Revenue Share Rate ($/MW)
+                                </td>
+                            </tr>
+                        </thead>
+                    
+                        {% for years, item in current_values %}
+                            <tr>
+                                <td>
+                                    {{years}}
+                                </td>
+                                <td>
+                                    <input type=text value="{{ item }}" name="rs-{{years}}">
+                                </td>
+                            </tr>
+                        {% endfor %} 
+                    </table>
+                    
+                    <button type="submit" class="btn btn-lg btn-primary rs-submit" value=""> Change Revenue Share Rates </button>
+                </form>
+            </div>
+        </div>
+        <!-- <div class="col-xl-6 depreciation-forms">
+            <h2>SCC Depreciation Schedule</h2> 
+            <form action="/user-{{locality}}/" class="local-depreciation-form" method="POST">
+                {% csrf_token %}
+                <table>
+                    <thead>
+                        <tr>
+                            <td class="depreciation-form-year">
+                                Year
+                            </td>
+                            <td class="depreciation-form-rate">
+                                Depreciation Rate (%)
+                            </td>
+                        </tr>
+                    </thead>
+                
+                    {% for item in scc_depreciation %}
+                        <tr>
+                            <td>
+                                {{forloop.counter}}
+                            </td>
+                            <td>
+                                <input type=text value="{% change_to_percentage item %}" name="scc-{{forloop.counter}}">
+                            </td>
+                        </tr>
+                    {% endfor %} 
+                </table>
+                
+                <input type="submit" value="Change SCC Schedule" class="btn btn-lg btn-primary local-rate-submit">
+            </form>
+        </div> -->
+    <!-- </div> -->
+{% endblock %}

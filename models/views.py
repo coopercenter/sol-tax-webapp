@@ -40,15 +40,11 @@ def create_csv_view(request):
         return render(request, '404.html')
     user_dict = user.__dict__
     user_simulation = Simulation.objects.filter(user = user)
-    #print(user_simulation)
     response = HttpResponse(content_type='text/csv')
-    #print(request.user)
-    # print(user[])
     response['Content-Disposition'] = 'attachment; filename="' + str(request.user) +'"SolTax_Results.csv"'
 
     writer = csv.writer(response)
     writer.writerow([str(request.user) + " Solar Project Analyses"])
-    #writer.writerow(['Test Parameters', UserProfile._meta.get_fields()])
     writer.writerow([''])
 
     writer.writerow(['Project Revenue'])
@@ -72,7 +68,6 @@ def create_csv_view(request):
     for sim in user_simulation:
         writer.writerow([sim.name])
         sim_dict = sim.__dict__
-        #print(sim_dict)
         writer.writerow([item for item in sim_dict if item not in ("id", "_state", "user_id")])
         writer.writerow(sim_dict[item] for item in sim_dict if item not in ("id", "_state", "user_id"))
 
@@ -85,20 +80,13 @@ def create_csv_view(request):
         writer.writerow(['Revenue Share Nominal Revenue'] + [round(value*1000, -3) for value in calc.cas_rs])
         writer.writerow(['M&T Discounted Revenue'] + [round(value*1000, -3) for value in calc.tot_mt])
         writer.writerow(['Revenue Share Discounted Revenue'] + [round(value*1000, -3) for value in calc.tot_rs])
-        # for field in sim_dict:
-        #     if field != "id" and field != "_state" and field != "user_id":
-        #         writer.writerow([field, sim_dict[field]])
         writer.writerow([''])
     
     writer.writerow([''])
     writer.writerow(['User Parameters'])
     
-    print(user_dict)
     for field in user_dict:
-        #f = field.name
-        print(field == "id")
         if field != "id" and field != "_state" and ("depreciation" not in field):
-            print(field)
             writer.writerow([field, user_dict[field]])
 
     writer.writerow([''])
@@ -106,6 +94,12 @@ def create_csv_view(request):
     writer.writerow(["Year"] + [i+1 for i in range(len(user_dict["local_depreciation"]))])
     writer.writerow(["Local Depreciation"] + [user_dict["local_depreciation"][i] for i in range(len(user_dict["local_depreciation"]))])
     writer.writerow(["SCC Depreciation"] + [user_dict["scc_depreciation"][i] for i in range(len(user_dict["scc_depreciation"]))])
+
+    writer.writerow([''])
+    writer.writerow(['Revenue Share Rates'])
+    writer.writerow(["Year"] + [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061])
+    writer.writerow(["Revenue Share Rate"] + [user_dict["revenue_share_rate"][i] for i in range(len(user_dict["revenue_share_rate"]))])
+
     return response
 
 # Landing Page
@@ -115,9 +109,6 @@ def index(request):
 # 404 Error Page
 def custom_404_error(request, exception):
     return render(request, '404.html')
-
-# def custom_404_error2(request):
-#     return render(request, '404.html')
 
 # Login Page
 def loginView(request):
@@ -139,9 +130,6 @@ def logoutView(request):
     logout(request)
     return HttpResponseRedirect('/')
 
-# def update_user_profile(request, user_profile):
-#     return HttpResponse("TESTING")
-
 #SignUp
 def signup(request):
     if request.method == 'POST':
@@ -162,8 +150,7 @@ def signup(request):
     return render(request, 'signup.html', {'form': form})
 
 def update_user(request, username):
-    if request.method == 'POST':
-        print("testing")
+    # if request.method == 'POST':
         
     localities = Locality.objects.order_by('name')
     return render(request, 'select_locality.html', {'all_localities': localities, 'username':username})
@@ -183,10 +170,6 @@ def commentPage(request):
             feedback_instance.save()
             return redirect("feedback-success")
     return render(request, "feedback.html", {'form': form})
-
-# def cronjob():
-#     print("Cron job is running")
-#     print("Tick! the time is: %s" % datetime.now())
 
 def commentSuccessPage(request):
     return render(request, "feedback_success.html")
@@ -208,7 +191,6 @@ def change_password(request):
     })
 
 def localityName(request):
-    print(request.GET)
     if(request.POST.get('locality')):
         locality = (request.POST.get('locality'))
     return HttpResponseRedirect('/locality-'+locality+'/')
@@ -227,13 +209,12 @@ def user_home(request, username):
         gap = "True"
     else:
         gap = "False"
-    print(gap)
     if request.POST.get('locality'):
         locality_name = request.POST['locality']
         if locality_name != 'Choose Your Locality':
             locality = Locality.objects.get(name=locality_name)
             user.discount_rate = locality.discount_rate
-            user.revenue_share_rate = locality.revenue_share_rate
+            #user.revenue_share_rate = locality.revenue_share_rate
             user.real_property_rate = locality.real_property_rate
             user.mt_tax_rate = locality.mt_tax_rate
             user.assessment_ratio = locality.assessment_ratio
@@ -256,9 +237,8 @@ def user_home(request, username):
         return HttpResponseRedirect("/update-user-"+user.name+"/")
 
     if request.POST.get('discount_rate'):
-        print(request.POST.get)
         user.discount_rate = int(request.POST.get('discount_rate'))
-        user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
+        #user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
         user.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
         user.real_property_rate = float(request.POST.get('real_property_rate'))
         user.assessment_ratio = float(request.POST.get('assessment_ratio'))
@@ -282,9 +262,6 @@ def user_home(request, username):
         for item in request.POST:
             if item[:5] == "local":
                 local.append(float(request.POST.get(item))/100)
-        print(local)
-
-        print(len(local))
         user.local_depreciation = local[:35]
         user.save()
 
@@ -296,6 +273,22 @@ def user_home(request, username):
         user.scc_depreciation = scc
         user.save()
 
+    if request.POST.get('rs-2021'):
+        new_rs = []
+        max_rs = [1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001]
+        for item in request.POST:
+            print(item)
+            print(request.POST.get(item))
+            if item != 'csrfmiddlewaretoken':
+                new_rs.append(float(request.POST.get(item)))
+        for i in range(len(new_rs)):
+            if(new_rs[i] > max_rs[i]):
+                years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+                data = zip(years, user.revenue_share_rate)
+                return render(request, 'revenue_share_update.html', {'current_values': data, 'locality': user.name, 'error': 'For the year ' +  str((2021 + i*5)) + ' you entered ' + str(new_rs[i]) + ', however the maximum value allowed is ' + str(max_rs[i]) + '. Please try again.'})
+        user.revenue_share_rate = new_rs
+        user.save()
+
     total_mt = 0
     total_rs = 0
     for simulation in simulations:
@@ -305,13 +298,15 @@ def user_home(request, username):
         total_mt += sum(calc.tot_mt)*1000
         total_rs += sum(calc.tot_rs)*1000
         simulation.save()
-        print(sum(simulation.calculations.tot_rs) - sum(simulation.calculations.tot_mt))
     total_mt = round(total_mt, -3)
     total_rs = round(total_rs, -3)
     difference = total_rs - total_mt
+    
     user.save()
-    #simulation.save()
-    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference, 'gap':gap})
+
+    rs_years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+    rs_data = zip(user.revenue_share_rate, rs_years)
+    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference, 'gap':gap, 'rs_data':rs_data})
 
 
 # Creates Scatter Plot using plotly
@@ -345,24 +340,17 @@ def scatter(mt, rs, simulation):
 def form_dash(request):
     if request.method == 'POST':
         form = SimulationForm(request.POST)
-        print(form.has_error('NON_FIELD_ERRORS'))
-        # print(form.errors)
         if form.is_valid():
-            print("valid")
             simulation = form.save(commit = False)
             simulation.save()
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
-            #loc = Locality.objects.filter(name = simulation.locality)[0]
             loc = UserProfile.objects.filter(name = simulation.user)[0]
-            print(simulation.id)
             return HttpResponseRedirect("/user-" + loc.name + '/' + str(simulation.id) + '/')
         else:
             if form.has_error('NON_FIELD_ERRORS'):
                 return HttpResponse("Error this analysis has already been created, go back to the Locality page to view the analysis with these parameters")
             else:
-                print("error message")
                 form_class = SimulationForm()
-                print(form_class.fields)
                 username = UserProfile.objects.get(id = request.POST.get('user')).name
                 form_class.fields['user'].initial = request.POST.get('user')
                 form_class.fields['name'].initial = request.POST.get('name')
@@ -417,8 +405,6 @@ def dash(request, username, simulation_id):
     if request.method == 'POST':
         form = SimulationForm(request.POST)
         if form.is_valid():
-            print("form")
-            print("valus")
             simulation = form.save(commit = False)
             simulation.save()
             sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
@@ -459,12 +445,10 @@ class NewSimulationView(CreateView):
     # def get(self, request):
         
     def post(self, request):
-        # print(request.post.get('viewButton'))
         if(request.POST.get('viewButton') == None):
             username = request.POST.get('generateButton')
             form_class = SimulationForm() 
             form_class.fields['user'].initial = UserProfile.objects.get(name = username).id
-            # print(form_class.fields['user'].initial)
             return render(request, 'create_new_analysis_form.html', {'form' : form_class, 'county': username})
         else:
             return HttpResponseRedirect('/' + request.POST.get('viewButton'))
@@ -473,10 +457,9 @@ class UpdateUserParameterView(CreateView):
     
     def post(self, request, username):
         if(request.POST.get('viewButton') == None):
-            # loc_name = username
             form_class = UserProfileUpdateForm()
             user = UserProfile.objects.get(name = username) 
-            form_class.fields['revenue_share_rate'].initial = user.revenue_share_rate
+            #form_class.fields['revenue_share_rate'].initial = user.revenue_share_rate
             form_class.fields['discount_rate'].initial = user.discount_rate
             form_class.fields['mt_tax_rate'].initial = user.mt_tax_rate
             form_class.fields['real_property_rate'].initial = user.real_property_rate
@@ -493,7 +476,6 @@ class UpdateUserParameterView(CreateView):
             return render(request, 'update_form.html', {'form' : form_class, 'county': username})
         else:
             return HttpResponse("ERROR")
-            #return HttpResponseRedirect('/' + request.POST.get('viewButton'))
 
 class PasswordContextMixin:
     extra_context = None
@@ -541,14 +523,18 @@ def depreciationUpdate(request, username):
     scc = user.scc_depreciation
     depreciation_ext(scc)
     scc=scc[:35]
-    print("scc")
-    print(scc)
     local = user.local_depreciation
-    
-    print(len(local))
     depreciation_ext(local)
-    print(len(local))
+
     return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': username})
+
+def revenueShareUpdate(request, username):
+    user = UserProfile.objects.get(name = username)
+    rs = user.revenue_share_rate
+    years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+    data = zip(years, rs)
+
+    return render(request, 'revenue_share_update.html', {'current_values': data, 'locality': username})
 
 def performCalculations(locality, simulation):
 
@@ -572,7 +558,25 @@ def performCalculations(locality, simulation):
     '''
     use_composite_index = locality.use_composite_index
     discount_rate = int(locality.discount_rate)/100
-    revenue_share_rate = int(locality.revenue_share_rate)
+    #revenue_share_rate = int(locality.revenue_share_rate)
+    # revenue_share_rate = 1400
+
+    revenue_share_rate = locality.revenue_share_rate
+    adjusted_rs_rate = []
+    if initial_year >= 2021:
+        for i in range(initial_year, initial_year + project_length):
+            index = (i - 2021) // 5
+            adjusted_rs_rate.append(revenue_share_rate[index])
+    else:
+        adjusted_rs_rate = [revenue_share_rate[0] for i in range(project_length)]
+    print(adjusted_rs_rate)
+    #     if(i % 5 == 1 and i != 1):
+    #         revenue_share_rate.append(revenue_share_rate[i-1] * 1.1)
+    #     else:
+    #         revenue_share_rate.append(revenue_share_rate[i-1])
+    # revenue_share_rate = [round(elem, 0) for elem in revenue_share_rate]
+
+
     mt_tax_rate = locality.mt_tax_rate
     real_property_rate = locality.real_property_rate
     assessment_ratio = locality.assessment_ratio/100
@@ -585,9 +589,7 @@ def performCalculations(locality, simulation):
     budget_escalator = locality.budget_escalator/100
     years_between_assessment = locality.years_between_assessment
     local_depreciation = locality.local_depreciation
-    #scc_depreciation = [.9, .9, .9, .9, .8973, .8729, .85, .82, .79, .76, .73, .69, .66, .62, .58, .53, .49, .44, .38, .33, .27, .21, .14, .10, .10, .10, .10, .10, .10, .10, .10]
     scc_depreciation = locality.scc_depreciation
-    #print(scc_depreciation)
     effective_rate_ext(scc_depreciation, project_length)
     effective_rate_ext(local_depreciation, project_length)
 
@@ -615,9 +617,6 @@ def performCalculations(locality, simulation):
         effective_tax_rate = [real_property_rate for i in range(project_length)]
         effective_exemption_rate = [0 for i in range(project_length)]
         effective_depreciation_schedule = scc_depreciation
-
-    print(effective_depreciation_schedule)
-    print(effective_exemption_rate)
     '''
     Land Value Calculations
     '''
@@ -706,8 +705,7 @@ def performCalculations(locality, simulation):
     real_property_tax_revenue = [real_property_rate * land_value_increase[i]/100 for i in range(len(land_value_increase))]
 
     real_property_increase_in_revenue = net_total_revenue_from_project(real_property_tax_revenue, real_property_increase_in_local_contribution)
-    revenue_share_income = total_cashflow_rs(revenue_share_rate, project_size, initial_year, project_length)
-    print("Land Revenue: " +  str([current_revenue_from_land[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]))
+    revenue_share_income = total_cashflow_rs(adjusted_rs_rate, project_size, initial_year, project_length)
     revenue_share_total = [current_revenue_from_land[i] + revenue_share_income[i] + real_property_increase_in_revenue[i] for i in range(len(revenue_share_income))]
 
     cas_rs = []

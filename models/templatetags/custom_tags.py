@@ -24,10 +24,10 @@ def get_discount_rate(sim):
     locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
     return locality.discount_rate
 
-@register.simple_tag
-def get_rs_rate(sim):
-    locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
-    return locality.revenue_share_rate
+# @register.simple_tag
+# def get_rs_rate(sim):
+#     locality = UserProfile.objects.get(id = sim[0]["fields"]["user"])
+#     return locality.revenue_share_rate
 
 @register.simple_tag
 def get_mt_rate(sim):

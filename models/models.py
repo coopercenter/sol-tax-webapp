@@ -29,7 +29,7 @@ class Feedback(models.Model):
 class UserProfile(models.Model):
     name = models.CharField(max_length=200)
     discount_rate = models.IntegerField(default = 6)
-    revenue_share_rate = models.IntegerField(default = 1400)
+    #revenue_share_rate = models.IntegerField(default = 1400)
     real_property_rate = models.FloatField(default=0)
     mt_tax_rate = models.FloatField(default = 0)
     assessment_ratio = models.FloatField(default=100)
@@ -44,6 +44,7 @@ class UserProfile(models.Model):
     use_composite_index = models.BooleanField(default=True)
     local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
     scc_depreciation = ArrayField(models.FloatField(), default=list(get_scc_depreciation()))
+    revenue_share_rate = ArrayField(models.FloatField(), default=[1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001])
 
     class Meta:
         verbose_name_plural = "User Profiles"
@@ -56,7 +57,7 @@ class UserProfile(models.Model):
 class Locality(models.Model):
     name = models.CharField(max_length=200)
     discount_rate = models.IntegerField(default = 6)
-    revenue_share_rate = models.IntegerField(default = 1400)
+    #revenue_share_rate = models.IntegerField(default = 1400)
     real_property_rate = models.FloatField(default=0)
     mt_tax_rate = models.FloatField(default = 0)
     assessment_ratio = models.FloatField(default=100)

@@ -8,7 +8,7 @@ def depreciation_ext(depreciation_schedule):
     last_rate = depreciation_schedule[-1]
     while len(depreciation_schedule) < 35:
         depreciation_schedule.append(last_rate)
-        print(len(depreciation_schedule))
+        # print(len(depreciation_schedule))
 
 def effective_rate_ext (effective_rate_list, project_length):
     '''
@@ -278,18 +278,18 @@ def get_retail_sales_per_capita(local_taxable_retail_sales, local_pop, state_tax
 
 def total_cashflow_rs(revenue_share_rate, megawatts, year, project_length):
     '''
-        :revenue_share_rate: the rate a locality sets for its revenue share (max $1400/MW, though not capped by function)
+        :revenue_share_rate: array of revenue rates up to 2061, starts at $1400/MW increases 10% every 5 years
         :megawatts: Size of solar project
         :year: Starting year of the solar project
         :return: A list of reveneue share revenue generated during each year from 2020-2050, nominal $
     '''
     cashflow_rev = []
-    for i in range(0, project_length):
-        #if(i + 2020 >= year):
-        cashflow_rev.append((revenue_share_rate * megawatts)) # If the index is at or past the initial year of project
-        # else:
-        #     cashflow_rev.append(0) #If the index is before the initial year of project
+    
+    for i in range(project_length):
+        # print(revenue_share_rate[i])
+        cashflow_rev.append((revenue_share_rate[i] * megawatts))
     return cashflow_rev
+
 
 
 def total_adj_rev(cas, discount_rate, initial_year):

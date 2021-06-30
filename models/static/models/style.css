@@ -9,7 +9,18 @@ h2, h3, h4{
 .model-description li{
     margin: -20px;
 }
-
+.footer-donate{
+    width: 150px;
+    border-radius: .25rem;
+    background-color: #dc3545;
+    height: 50px;
+    border: none;
+    font-size: 22px;
+    color: whitesmoke;
+    position: relative;
+    left: 45%;
+    margin-top: 20px;
+}
 .locality_name{
     margin: 5px;
 }
@@ -421,6 +432,12 @@ li{
 .locality-info{
     padding-bottom: 2%;
 }
+.locality-rs{
+    padding-bottom: 2%;
+}
+.rs_year_header{
+    width: 100px;
+}
 .locality-info-table{
     margin: auto;
 }
@@ -441,6 +458,12 @@ li{
     display: block;
     margin: auto;
 }
+.rs-table{
+    height: 250px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+}
 #the-revenue-share-model{
     padding-top: 10px;
 }
@@ -451,7 +474,7 @@ li{
 
 .logos{
     text-align: center;
-    padding: 15px 0;
+    padding: 5px 0;
 }
 .eti-logo{
     padding: 0 25px;
@@ -484,6 +507,19 @@ li{
 }
 .depreciation-row{
     margin-right: 0px;
+}
+
+.rs-forms{
+    padding: 2% 0;
+    text-align: center;
+}
+.rs-submit{
+    margin-top: 1%;
+    width: 325px;
+}
+.rs-form{
+    margin: auto;
+    width: 320px;
 }
 
 /* .navbar-button{
