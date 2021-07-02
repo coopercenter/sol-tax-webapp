@@ -13,6 +13,11 @@
                         {{ error }}
                     </div>
                 {% endif %}
+
+                <div class="revenue-share-help-text">
+                <p>Please update your Locality's Revenue Share rate for every 5 year time period.</p>
+                <p>Updating one year's rate will not update the rates for the following five year time periods, this must be done manually.</p>
+                </div>
                 
                 <form action="/user-{{locality}}/" method="POST" name="testing">
                     {% csrf_token %}
