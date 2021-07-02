@@ -645,6 +645,13 @@ li{
     display: none;
 }
 
+.revenue-share-help-text{
+    margin: 1%;
+}
+.revenue-share-help-text p{
+    margin: 0;
+}
+
 /* .print-row{
     /* margin: 500px; 
 } */
