@@ -667,8 +667,9 @@ def performCalculations(locality, simulation):
     base_required_education_contribution = baseline_required_education_contribution(locality_education_budget, budget_escalator, base_composite_index)
     project_required_education_contribution = pv_required_education_contribution(locality_education_budget, budget_escalator, project_composite_index)
 
-
     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
+    print("composite indeces " + str(project_adm_composite) + str(project_local_composite))
+    print(str(land_value_increase))
 
     net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
 

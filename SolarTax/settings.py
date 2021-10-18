@@ -36,7 +36,7 @@ if os.path.exists('hiddenVars'):
     ALLOWED_HOSTS = []
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:800s0']
+    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000']
 #ALLOWED_HOSTS = []
 
 # Application definition
