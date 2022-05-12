@@ -39,7 +39,7 @@ def get_mt_exemption(size_mw, mt_exemption):
         return mt_exemption
 
 '''
-    Get the M&T tax rate for the project. If above 20 MW use the real estate rate for the project, otherwise use the mt_tax_rate
+    Get the M&T tax rate for the project. If above 25 MW use the real estate rate for the project, otherwise use the mt_tax_rate
 '''
 def get_mt_tax_rate(size_mw, mt_tax_rate, real_estate_rate):
     if size_mw > 25:
