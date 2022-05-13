@@ -7,9 +7,15 @@ on how the use the product.-->
 {% load static %}
 <div class="container-fluid">
     <div class="model-description">
-        <p><strong>Note:</strong> This tool was updated on July 1st, 2021 to reflect the new changes to Revenue Share calculations as described in 
-            <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a>
-        </p>
+        <p><strong>Changelog (Last Updated July 1, 2022)</strong></p>
+        <ul>
+            <li>This tool was updated on July 1st, 2021 to reflect the new changes to Revenue Share calculations as described in 
+                <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a></li>
+            <li><mark style="background-color: yellow;">This tool was updated July 1st, 2022 to reflect the new changes to both Revenue Share and M&T/Real Estate calculations to include projects less than 5 MW as described in 
+                <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a></mark>
+            </li>
+        </ul>
+        <br>
         <p>
             This tool was developed by the Weldon Cooper Center at UVA, Virginia Energy and others. 
             This tool is meant for use by localities to help them decide which taxation model to use for solar generating 
@@ -83,7 +89,7 @@ on how the use the product.-->
                     </li>
                     <li>
                         If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The real estate tax rate is applied to the project along with the SCC
-                        depreciation schedule, the M&T stepdown exemption rate, and uses local assessment ratios. <!-- Add local assessment ratios -->
+                        depreciation schedule, the M&T stepdown exemption rate, and uses local assessment ratios. <mark style="background-color: yellow;">Projects that are less than 5 MW and are owned by electric suppliers are taxed using these parameters. <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a></mark>
                     </li>
                     <li>
                         All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
@@ -126,7 +132,8 @@ on how the use the product.-->
                     allows a locality to assess a yearly flat rate through ordinance of up to $1400/MW on solar projects
                     built within the jurisdiction. In Spring 2021, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a> 
                     was passed, allowing localities to increase the revenue share rate by 10% every 5 years starting July 1, 2026. The new maximum revenue share rate per MW 
-                    for yearly intervals are described in the table below. Adopting this option grants a 100% tax exemption for solar projects in exchange for the revenue share.
+                    for yearly intervals are described in the table below. <mark style="background-color: yellow;">In Spring 2022, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a> was passed, permitting localities to apply revenue share rates to solar projects less than 5 MW.</mark>
+                    Adopting this option grants a 100% tax exemption for solar projects in exchange for the revenue share.
                 </p>
                 <img src="{% static "models/rs_rate_table.png" %}" alt="M&T Flowchart" class="rs-table">
             </div>
