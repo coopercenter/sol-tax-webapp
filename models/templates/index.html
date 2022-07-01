@@ -7,13 +7,19 @@ on how the use the product.-->
 {% load static %}
 <div class="container-fluid">
     <div class="model-description">
-        <p><strong>Note:</strong> This tool was updated on July 1st, 2021 to reflect the new changes to Revenue Share calculations as described in 
-            <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a>
-        </p>
+        <p><strong>Changelog (Last Updated July 1, 2022)</strong></p>
+        <ul>
+            <li>This tool was updated on July 1st, 2021 to reflect the new changes to Revenue Share calculations as described in 
+                <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a></li>
+            <li>This tool was updated July 1st, 2022 to reflect the new changes to both Revenue Share and M&T/Real Estate calculations to include projects less than 5 MW as described in 
+                <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
+            </li>
+        </ul>
+        <br>
         <p>
             This tool was developed by the Weldon Cooper Center at UVA, Virginia Energy and others. 
             This tool is meant for use by localities to help them decide which taxation model to use for solar generating 
-            facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. Each of these models has benefits 
+            facilities, either the new Revenue Share model, or the M&T/Real Estate tax model. Each of these models has benefits 
             and drawbacks depending on the types of solar facilities that are being developed and the various tax rates of the 
             localities where they are being built.
         </p>
@@ -24,25 +30,24 @@ on how the use the product.-->
             option is for localities to levy a <em>Machinery and Tools (M&amp;T)/Real Estate tax</em> on capital investments 
             in solar generation facilities. Alternatively, a locality may adopt an ordinance to replace the M&amp;T/Real Estate 
             tax with a <em>Revenue Share</em> arrangement. Under the Revenue Share model, localities receive income from solar facilities 
-            at a flat rate in dollars per megawatt of generation capacity per year. The revenues that a locality could realize 
+            at a flat rate in dollars per megawatt of nameplate generation capacity per year. The revenues that a locality could realize 
             under each of these two taxation arrangements involve calculations that are non-trivial in complexity.
         </p>
 
         <p>The Virginia SolTax Model is designed to assist Virginia localities to estimate the revenues they could realize under
-            these two distinct policy regimes. Its purpose is to provide local official with insights regarding which model
+            these two distinct policy regimes. Its purpose is to provide local officials with insights regarding which model
             will provide the greatest financial benefits for a locality.
         </p>
 
-        <p>This tool will permit adjustment of project specifications as well as the ability to consider new investments
+        <p>This tool permits the adjustment of project specifications as well as the ability to consider new investments
             in multiple years to allow examination of the revenue implications of alternative scenarios.
         </p>
         <br>    
 
         <div id="important-comments-and-cautions" class="section level3">
             <h2><strong>Login Instructions</strong></h2>
-            <!-- User Profile Usage-->
-            <p>To create a new profile, select the "Create New Profile" Button in the top right corner of the page. This will direct you to a page to enter a username, email and password. Once the account has been
-                created, you will be asked to select a locality on which to base your initial profile parameters. This can not be changed for your profile. In order to create new projects associated with
+            <p>To create a new profile, select the "Create New Account" Button in the top right corner of the page. This will direct you to a page where you enter a username, email and password. Once the account is
+                created, you will be asked to select a locality on which to base your initial profile parameters. Once selected, the locality cannot be changed on a given profile. In order to create new projects associated with
                 another locality's parameters, you should create a new profile.
             </p>
             <p>If you have already created an account, select "Login" above.</p>
@@ -78,12 +83,12 @@ on how the use the product.-->
                 </p>
                 <ul>
                     <li>
-                        If a project is 25 MW or less and is not owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The M&T tax rate is
+                        If a project is 25 MW or less and is not owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the M&T tax rate is
                         used along with the locality's depreciation schedule and the M&T stepdown exemption rate.
                     </li>
                     <li>
-                        If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative. The real estate tax rate is applied to the project along with the SCC
-                        depreciation schedule, the M&T stepdown exemption rate, and uses local assessment ratios. <!-- Add local assessment ratios -->
+                        If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the real estate tax rate is applied to the project along with the SCC
+                        depreciation schedule, the M&T stepdown exemption rate, and local assessment ratios. Projects that are less than 25 MW and are owned by electric suppliers are taxed using these parameters. <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
                     </li>
                     <li>
                         All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
@@ -119,14 +124,15 @@ on how the use the product.-->
             <div id="the-revenue-share-model" class="section level3">
                 <h3>The Revenue Share Model</h3>
                 <p>
-                    The Revenue Share is an alternative method for localities to extract value from solar projects
-                    that was established in <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a> 
+                    The Revenue Share is an alternative method for localities to extract value from solar projects;
+                    it was established in <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a> 
                     and <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+SB762">SB762</a>
                     after being passed during the Spring 2020 Virginia General Assembly session. The legislation
                     allows a locality to assess a yearly flat rate through ordinance of up to $1400/MW on solar projects
                     built within the jurisdiction. In Spring 2021, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a> 
                     was passed, allowing localities to increase the revenue share rate by 10% every 5 years starting July 1, 2026. The new maximum revenue share rate per MW 
-                    for yearly intervals are described in the table below. Adopting this option grants a 100% tax exemption for solar projects in exchange for the revenue share.
+                    for yearly intervals are described in the table below. In Spring 2022, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a> was passed, permitting localities to apply revenue share rates to solar projects less than 5 MW.
+                    Adopting this option grants a 100% tax exemption for solar projects in exchange for the revenue share.
                 </p>
                 <img src="{% static "models/rs_rate_table.png" %}" alt="M&T Flowchart" class="rs-table">
             </div>
