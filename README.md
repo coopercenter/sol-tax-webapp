@@ -117,7 +117,7 @@ To connect to the live server database you need to get the database credentials 
 For a local database follow the guide that was laid out in step 5 of "Project Setup" above.
 **Gmail**
 
-I have created a gmail account for use on this project. Contact Arthur Small at [asmall@virginia.edu](mailto:asmall@virginia.edu) for gmail login information.
+There is a gmail account for use on this project. 
 
 The sole purpose of this email is to send emails to users for password reset and to send Thomas, Carrie, and Elizabeth emails about feedback received.
 
