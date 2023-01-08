@@ -94,8 +94,6 @@ Other Files
 
 Login
 
-Contact Arthur Small at [asmall@virginia.edu](mailto:asmall@virginia.edu) for Heroku login information
-
 The SolTax project is the only project in the profile under the name solar-tax-webapp.
 
 To add new collaborators to the project click the &quot;manage access&quot; button on the project overview page and add the email address of the person to add to the project.
