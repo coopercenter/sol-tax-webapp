@@ -2,7 +2,8 @@ import unicodedata
 from django import forms
 from django.forms import ModelForm
 from .models import Simulation, Locality, UserProfile
-from django.utils.translation import ugettext_lazy
+# from django.utils.translation import ugettext_lazy (wee2wr: ugettext_lazy was deprecated in Django v2.2)
+from django.utils.translation import gettext_lazy # wee2wr: Fixed all ugettext_lazy to gettext_lazy
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import EmailMultiAlternatives
@@ -45,17 +46,17 @@ class SimulationForm(forms.ModelForm):
         fields = ('user', 'name','initial_year', 'project_length', 'initial_investment', 'project_size', 'total_acreage', 'inside_fence_acreage', 'baseline_land_value', 'inside_fence_land_value', 'outside_fence_land_value', 'dominion_or_apco')
         labels = {
             # Labels for each field of the form
-            'name': ugettext_lazy('Project Name'),
-            'initial_investment': ugettext_lazy('Total Capitalized Investment ($)'),
-            'initial_year': ugettext_lazy('Initial Year'),
-            'project_length': ugettext_lazy('Project Length (Years)'),
-            'project_size': ugettext_lazy('Project Size (MW)'),
-            'total_acreage': ugettext_lazy('Total Project acreage (Acres)'),
-            'inside_fence_acreage': ugettext_lazy('Solar Project Inside the Fence (Acres)'),
-            'baseline_land_value': ugettext_lazy('Baseline Value of Land ($)'),
-            'inside_fence_land_value': ugettext_lazy('Inside the Fence Value of Land ($)'),
-            'outside_fence_land_value': ugettext_lazy('Outside the Fence Value of Land ($)'),
-            'dominion_or_apco': ugettext_lazy('Is the project operated by either an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
+            'name': gettext_lazy('Project Name'),
+            'initial_investment': gettext_lazy('Total Capitalized Investment ($)'),
+            'initial_year': gettext_lazy('Initial Year'),
+            'project_length': gettext_lazy('Project Length (Years)'),
+            'project_size': gettext_lazy('Project Size (MW)'),
+            'total_acreage': gettext_lazy('Total Project acreage (Acres)'),
+            'inside_fence_acreage': gettext_lazy('Solar Project Inside the Fence (Acres)'),
+            'baseline_land_value': gettext_lazy('Baseline Value of Land ($)'),
+            'inside_fence_land_value': gettext_lazy('Inside the Fence Value of Land ($)'),
+            'outside_fence_land_value': gettext_lazy('Outside the Fence Value of Land ($)'),
+            'dominion_or_apco': gettext_lazy('Is the project operated by either an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
         }
         widgets = {
             # Defines the input expected for each field of the form and sets minimum and maximum values for the inputs.
@@ -80,22 +81,22 @@ class UserProfileUpdateForm(forms.ModelForm):
         fields = ('discount_rate', 'mt_tax_rate', 'real_property_rate', 'assessment_ratio', 'baseline_true_value', 'adj_gross_income', 'taxable_retail_sales', 'population', 'adm', 'required_local_matching', 'budget_escalator', 'years_between_assessment', 'use_composite_index')
         labels = {
             #'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
-            'discount_rate': ugettext_lazy("Discount Rate (%)"), 
-            'mt_tax_rate': ugettext_lazy("M&T Tax Rate ($/ $100 Assessed Value)"), 
-            'real_property_rate': ugettext_lazy("Real Property Rate ($/ $100 Assessed Value)"), 
-            'assessment_ratio': ugettext_lazy("Assessment Ratio (%)"), 
-            'baseline_true_value': ugettext_lazy("Baseline True Value ($)"), 
-            'adj_gross_income': ugettext_lazy("Adjusted Gross Income ($)"), 
-            'taxable_retail_sales': ugettext_lazy("Taxable Retail Sales ($)"), 
-            'population': ugettext_lazy("Population"), 
-            'adm': ugettext_lazy("Average Daily Student Membership (ADM)"), 
-            'required_local_matching': ugettext_lazy("Required Local Matching ($):"),
-            'budget_escalator': ugettext_lazy("Budget Escalator (%)"), 
-            'years_between_assessment': ugettext_lazy("Years Between Assessment"),
-            'use_composite_index': ugettext_lazy("Use Composite Index for Calculations?"),
+            'discount_rate': gettext_lazy("Discount Rate (%)"), 
+            'mt_tax_rate': gettext_lazy("M&T Tax Rate ($/ $100 Assessed Value)"), 
+            'real_property_rate': gettext_lazy("Real Property Rate ($/ $100 Assessed Value)"), 
+            'assessment_ratio': gettext_lazy("Assessment Ratio (%)"), 
+            'baseline_true_value': gettext_lazy("Baseline True Value ($)"), 
+            'adj_gross_income': gettext_lazy("Adjusted Gross Income ($)"), 
+            'taxable_retail_sales': gettext_lazy("Taxable Retail Sales ($)"), 
+            'population': gettext_lazy("Population"), 
+            'adm': gettext_lazy("Average Daily Student Membership (ADM)"), 
+            'required_local_matching': gettext_lazy("Required Local Matching ($):"),
+            'budget_escalator': gettext_lazy("Budget Escalator (%)"), 
+            'years_between_assessment': gettext_lazy("Years Between Assessment"),
+            'use_composite_index': gettext_lazy("Use Composite Index for Calculations?"),
         }
         help_texts = {
-            'required_local_matching': ugettext_lazy("Enter the sum of locality's Required Local Effort (RLE) for Standards of Quality and Required Local Match (RLM) for Incentive and Lottery Accounts."),
+            'required_local_matching': gettext_lazy("Enter the sum of locality's Required Local Effort (RLE) for Standards of Quality and Required Local Match (RLM) for Incentive and Lottery Accounts."),
         } # Defines a help text to be displayed under the form entry box to help define the variable for the user.
         widgets = {
             #'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
@@ -129,13 +130,13 @@ def _unicode_ci_compare(s1, s2):
 # an email will be sent to the email entered. 
 class PasswordResetUsernameForm(forms.Form):
     email = forms.EmailField(
-        label=ugettext_lazy("Email"),
+        label=gettext_lazy("Email"),
         max_length=254,
         widget=forms.EmailInput(attrs={'autocomplete': 'email'})
     )
 
     user = forms.CharField(
-        label=ugettext_lazy("Username"),
+        label=gettext_lazy("Username"),
         max_length = 150,
     )
 

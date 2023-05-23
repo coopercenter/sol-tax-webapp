@@ -117,7 +117,7 @@ def loginView(request):
         if form.is_valid(): # Form submitted
             user = form.get_user()
             login(request, user) # Check Login Information
-            return HttpResponseRedirect('/user-' + str(user)+'/') #redirect to locality's home page
+            return HttpResponseRedirect('/user-' + str(user)+'/') # Redirect to locality's home page
         else:
             messages.error(request, 'Username or Password is incorrect')
             return HttpResponseRedirect('/login/')
