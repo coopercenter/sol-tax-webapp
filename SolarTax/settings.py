@@ -22,14 +22,14 @@ import psycopg2
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: Keep the secret key used in production secret!
 if os.path.exists('hiddenVars/secret_key.txt'):
     with open('hiddenVars/secret_key.txt') as f:
         SECRET_KEY = f.read().strip()
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: Don't run with debug turned on in production!
 
 if os.path.exists('hiddenVars'):
     DEBUG = True
@@ -37,7 +37,7 @@ if os.path.exists('hiddenVars'):
 else:
     DEBUG = False
     ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000']
-#ALLOWED_HOSTS = []
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'channels',
     'channels_redis',
     'crispy_forms',
+    'crispy_bootstrap4', # wee2wr: Update to Django Crispy Package 2.0
 ]
 
 MIDDLEWARE = [
@@ -93,17 +94,55 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
+with open('hiddenVars/heroku_name.txt') as f:
+        HEROKU_NAME = str(f.read().strip())
+with open('hiddenVars/heroku_user.txt') as f:
+        HEROKU_USER = str(f.read().strip())
+with open('hiddenVars/heroku_password.txt') as f:
+        HEROKU_PASSWORD = str(f.read().strip())
+with open('hiddenVars/heroku_host.txt') as f:
+        HEROKU_HOST = str(f.read().strip())
+with open('hiddenVars/heroku_port.txt') as f:
+        HEROKU_PORT = str(f.read().strip())
+
+with open('hiddenVars/azure_name.txt') as f:
+        AZURE_NAME = str(f.read().strip())
+with open('hiddenVars/azure_user.txt') as f:
+        AZURE_USER = str(f.read().strip())
+with open('hiddenVars/azure_password.txt') as f:
+        AZURE_PASSWORD = str(f.read().strip())
+with open('hiddenVars/azure_host.txt') as f:
+        AZURE_HOST = str(f.read().strip())
+with open('hiddenVars/azure_port.txt') as f:
+        AZURE_PORT = str(f.read().strip())
 
 DATABASES = {
-    'default': { #Local Database
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':'soltax',
-        'USER': 'soltaxuser',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+     'default': {
+        # Local Database
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME':'soltax',
+        # 'USER': 'soltaxuser',
+        # 'PASSWORD': 'password',
+        # 'HOST': 'localhost',
+        # 'PORT': '',
+
+        # wee2wr: Azure Database
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': AZURE_NAME,
+        # 'USER': AZURE_USER,
+        # 'PASSWORD': AZURE_PASSWORD,
+        # 'HOST': AZURE_HOST,
+        # 'PORT': AZURE_PORT,
+
+        # wee2wr: Heroku Database
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': HEROKU_NAME,
+         'USER': HEROKU_USER,
+         'PASSWORD': HEROKU_PASSWORD,
+         'HOST': HEROKU_HOST,
+         'PORT': HEROKU_PORT,
+     }
+ }
 
 
 # Password validation
@@ -202,3 +241,5 @@ try:
 except ImportError:
     found = False
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"  # wee2wr: Update to Django Crispy Package 2.0
+CRISPY_TEMPLATE_PACK = 'bootstrap4' # wee2wr: Update to Django Crispy Package 2.0

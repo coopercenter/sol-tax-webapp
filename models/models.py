@@ -20,6 +20,8 @@ class Feedback(models.Model):
 
     class Meta:
         verbose_name_plural = "Feedback"
+        app_label = "models" # wee2wr: Fixed runtime error
+        # Runtime Error: Model class models.models.Feedback doesn't declare an explicit app_label and isn't in an application in INSTALLED_APPS.
     
     def __str__(self):
         return self.email + "- " + str(self.date)
@@ -48,6 +50,7 @@ class UserProfile(models.Model):
 
     class Meta:
         verbose_name_plural = "User Profiles"
+        app_label = "models" # wee2wr: Fixed runtime error
 
     def __str__(self):
         return self.name
@@ -75,6 +78,7 @@ class Locality(models.Model):
     
     class Meta:
         verbose_name_plural = "Localities"
+        app_label = "models" # wee2wr: Fixed runtime error
 
     def __str__(self):
         return self.name
@@ -110,6 +114,7 @@ class Simulation(models.Model):
         constraints = [
             models.UniqueConstraint(fields=["user", "name", "initial_investment", "initial_year", "project_length", "project_size", "total_acreage", "inside_fence_acreage", "baseline_land_value", "inside_fence_land_value", "outside_fence_land_value", "dominion_or_apco"], name="unique_locality_simulation")
         ]
+        app_label = "models" # wee2wr: Fixed runtime error
 
 # Calculation model is the class that holds the revenue generated for a specific
 # simulation. Contains both M&T and Revenue Share revenues.
@@ -125,3 +130,4 @@ class Calculations(models.Model):
     
     class Meta:
         verbose_name_plural = "Calculations"
+        app_label = "models" # wee2wr: Fixed runtime error
