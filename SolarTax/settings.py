@@ -119,14 +119,7 @@ with open('hiddenVars/azure_port.txt') as f:
 
 DATABASES = {
      'default': {
-        # Local Database
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME':'soltax',
-        # 'USER': 'soltaxuser',
-        # 'PASSWORD': 'password',
-        # 'HOST': 'localhost',
-        # 'PORT': '',
-
+        
         # Dev Azure Database
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': AZURE_DEV_NAME,
