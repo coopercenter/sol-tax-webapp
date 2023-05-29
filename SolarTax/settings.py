@@ -36,7 +36,8 @@ if os.path.exists('hiddenVars'):
     ALLOWED_HOSTS = []
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000']
+    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'soltax-model-dev.azurewebsites.net', 
+                     'localhost:8000', '127.0.0.1:8000']
 # ALLOWED_HOSTS = []
 
 # Application definition
@@ -53,7 +54,7 @@ INSTALLED_APPS = [
     'channels',
     'channels_redis',
     'crispy_forms',
-    'crispy_bootstrap4', # wee2wr: Update to Django Crispy Package 2.0
+    'crispy_bootstrap4', 
 ]
 
 MIDDLEWARE = [
@@ -126,7 +127,15 @@ DATABASES = {
         # 'HOST': 'localhost',
         # 'PORT': '',
 
-        # wee2wr: Azure Database
+        # Dev Azure Database
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': AZURE_NAME,
+         'USER': AZURE_USER,
+         'PASSWORD': AZURE_PASSWORD,
+         'HOST': AZURE_HOST,
+         'PORT': AZURE_PORT,
+
+        # SolTax Model Azure Database
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         # 'NAME': AZURE_NAME,
         # 'USER': AZURE_USER,
@@ -134,13 +143,13 @@ DATABASES = {
         # 'HOST': AZURE_HOST,
         # 'PORT': AZURE_PORT,
 
-        # wee2wr: Heroku Database
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': HEROKU_NAME,
-         'USER': HEROKU_USER,
-         'PASSWORD': HEROKU_PASSWORD,
-         'HOST': HEROKU_HOST,
-         'PORT': HEROKU_PORT,
+        # SolTax Model Heroku Database
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': HEROKU_NAME,
+        # 'USER': HEROKU_USER,
+        # 'PASSWORD': HEROKU_PASSWORD,
+        # 'HOST': HEROKU_HOST,
+        # 'PORT': HEROKU_PORT,
      }
  }
 
@@ -241,5 +250,5 @@ try:
 except ImportError:
     found = False
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"  # wee2wr: Update to Django Crispy Package 2.0
-CRISPY_TEMPLATE_PACK = 'bootstrap4' # wee2wr: Update to Django Crispy Package 2.0
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"  
+CRISPY_TEMPLATE_PACK = 'bootstrap4' 

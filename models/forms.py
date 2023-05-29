@@ -2,8 +2,7 @@ import unicodedata
 from django import forms
 from django.forms import ModelForm
 from .models import Simulation, Locality, UserProfile
-# from django.utils.translation import ugettext_lazy (wee2wr: ugettext_lazy was deprecated in Django v2.2)
-from django.utils.translation import gettext_lazy # wee2wr: Fixed all ugettext_lazy to gettext_lazy
+from django.utils.translation import gettext_lazy 
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.core.mail import EmailMultiAlternatives
