@@ -144,12 +144,12 @@ DATABASES = {
         # 'PORT': AZURE_PORT,
 
         # SolTax Model Heroku Database
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': HEROKU_NAME,
-        # 'USER': HEROKU_USER,
-        # 'PASSWORD': HEROKU_PASSWORD,
-        # 'HOST': HEROKU_HOST,
-        # 'PORT': HEROKU_PORT,
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': HEROKU_NAME,
+         'USER': HEROKU_USER,
+         'PASSWORD': HEROKU_PASSWORD,
+         'HOST': HEROKU_HOST,
+         'PORT': HEROKU_PORT,
      }
  }
 
