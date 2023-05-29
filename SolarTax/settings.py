@@ -128,12 +128,12 @@ DATABASES = {
         # 'PORT': '',
 
         # Dev Azure Database
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': AZURE_NAME,
-         'USER': AZURE_USER,
-         'PASSWORD': AZURE_PASSWORD,
-         'HOST': AZURE_HOST,
-         'PORT': AZURE_PORT,
+        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        # 'NAME': AZURE_DEV_NAME,
+        # 'USER': AZURE_DEV_USER,
+        # 'PASSWORD': AZURE_DEV_PASSWORD,
+        # 'HOST': AZURE_DEV_HOST,
+        # 'PORT': AZURE_DEV_PORT,
 
         # SolTax Model Azure Database
         # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
