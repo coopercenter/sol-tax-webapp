@@ -70,7 +70,7 @@ class Locality(models.Model):
     adm = models.FloatField(default=0)
     required_local_matching = models.IntegerField(default = 0)
     budget_escalator = models.FloatField(default = 0)
-    years_betn_assessment = models.IntegerField(default = 5)
+    years_between_assessment = models.IntegerField(default = 5)
     use_composite_index = models.BooleanField(default=True)
     local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True, size=35)
     scc_depreciation = ArrayField(models.FloatField(), default=list(get_scc_depreciation()))
