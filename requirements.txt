@@ -33,7 +33,7 @@ django-matplotlib==0.1
 django-plotly-dash==2.2.1
 django-redis==5.2.0
 dpd-components==0.1.0
-Flask==2.3.2
+Flask==2.2.3
 Flask-Compress==1.13
 fonttools==4.39.4
 future==0.18.3
