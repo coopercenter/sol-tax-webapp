@@ -34,7 +34,7 @@ django-matplotlib==0.1
 django-plotly-dash==1.4.2
 django-redis==5.2.0
 dpd-components==0.1.0
-Flask==2.2.2
+Flask==1.1.2
 Flask-Compress==1.13
 fonttools==4.39.4
 future==0.18.3
@@ -45,7 +45,7 @@ idna==3.4
 importlib-metadata==6.6.0
 incremental==22.10.0
 itsdangerous==2.1.2
-Jinja2==3.1.2
+jinja2==2.11.3
 kiwisolver==1.4.4
 MarkupSafe==2.1.2
 matplotlib==3.7.1
