@@ -95,54 +95,57 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-with open('hiddenVars/heroku_name.txt') as f:
-        HEROKU_NAME = str(f.read().strip())
-with open('hiddenVars/heroku_user.txt') as f:
-        HEROKU_USER = str(f.read().strip())
-with open('hiddenVars/heroku_password.txt') as f:
-        HEROKU_PASSWORD = str(f.read().strip())
-with open('hiddenVars/heroku_host.txt') as f:
-        HEROKU_HOST = str(f.read().strip())
-with open('hiddenVars/heroku_port.txt') as f:
-        HEROKU_PORT = str(f.read().strip())
+# with open('hiddenVars/heroku_name.txt') as f:
+        # NAME = str(f.read().strip())
+# with open('hiddenVars/heroku_user.txt') as f:
+        # USER = str(f.read().strip())
+# with open('hiddenVars/heroku_password.txt') as f:
+        # PASSWORD = str(f.read().strip())
+# with open('hiddenVars/heroku_host.txt') as f:
+        # HOST = str(f.read().strip())
+# with open('hiddenVars/heroku_port.txt') as f:
+        # PORT = str(f.read().strip())
 
-with open('hiddenVars/azure_name.txt') as f:
-        AZURE_NAME = str(f.read().strip())
-with open('hiddenVars/azure_user.txt') as f:
-        AZURE_USER = str(f.read().strip())
-with open('hiddenVars/azure_password.txt') as f:
-        AZURE_PASSWORD = str(f.read().strip())
-with open('hiddenVars/azure_host.txt') as f:
-        AZURE_HOST = str(f.read().strip())
-with open('hiddenVars/azure_port.txt') as f:
-        AZURE_PORT = str(f.read().strip())
+
+if os.path.exists('hiddenVars/azure_name.txt'):
+    with open('hiddenVars/azure_name.txt') as f:
+        NAME = str(f.read().strip())
+else:
+    NAME = os.environ['NAME']  
+
+if os.path.exists('hiddenVars/azure_user.txt'):
+    with open('hiddenVars/azure_user.txt') as f:
+        USER = str(f.read().strip())
+else:
+    USER = os.environ['USER']   
+
+if os.path.exists('hiddenVars/azure_password.txt'):
+    with open('hiddenVars/azure_password.txt') as f:
+        PASSWORD = str(f.read().strip())
+else:
+    PASSWORD = os.environ['PASSWORD']    
+
+if os.path.exists('hiddenVars/azure_host.txt'):
+    with open('hiddenVars/azure_host.txt') as f:
+        HOST = str(f.read().strip())
+else:
+    HOST = os.environ['HOST'] 
+
+if os.path.exists('hiddenVars/azure_port.txt'):
+    with open('hiddenVars/azure_port.txt') as f:
+        USER = str(f.read().strip())
+else:
+    PORT = os.environ['PORT'] 
 
 DATABASES = {
-     'default': {
-        
-        # Dev Azure Database
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': AZURE_DEV_NAME,
-        # 'USER': AZURE_DEV_USER,
-        # 'PASSWORD': AZURE_DEV_PASSWORD,
-        # 'HOST': AZURE_DEV_HOST,
-        # 'PORT': AZURE_DEV_PORT,
-
-        # SolTax Model Azure Database
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        # 'NAME': AZURE_NAME,
-        # 'USER': AZURE_USER,
-        # 'PASSWORD': AZURE_PASSWORD,
-        # 'HOST': AZURE_HOST,
-        # 'PORT': AZURE_PORT,
-
-        # SolTax Model Heroku Database
+     'default': { 
+           
          'ENGINE': 'django.db.backends.postgresql_psycopg2',
-         'NAME': HEROKU_NAME,
-         'USER': HEROKU_USER,
-         'PASSWORD': HEROKU_PASSWORD,
-         'HOST': HEROKU_HOST,
-         'PORT': HEROKU_PORT,
+         'NAME': NAME,
+         'USER': USER,
+         'PASSWORD': PASSWORD,
+         'HOST': HOST,
+         'PORT': PORT,
      }
  }
 
