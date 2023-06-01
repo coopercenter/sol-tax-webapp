@@ -44,7 +44,7 @@ hyperlink==21.0.0
 idna==3.4
 importlib-metadata==6.6.0
 incremental==22.10.0
-itsdangerous==2.1.2
+itsdangerous==2.0.1
 jinja2==2.11.3
 kiwisolver==1.4.4
 MarkupSafe==2.0.1
