@@ -95,47 +95,49 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-# with open('hiddenVars/heroku_name.txt') as f:
-        # NAME = str(f.read().strip())
-# with open('hiddenVars/heroku_user.txt') as f:
-        # USER = str(f.read().strip())
-# with open('hiddenVars/heroku_password.txt') as f:
-        # PASSWORD = str(f.read().strip())
-# with open('hiddenVars/heroku_host.txt') as f:
-        # HOST = str(f.read().strip())
-# with open('hiddenVars/heroku_port.txt') as f:
-        # PORT = str(f.read().strip())
+IS_HEROKU = True
 
-
-if os.path.exists('hiddenVars/azure_name.txt'):
-    with open('hiddenVars/azure_name.txt') as f:
-        NAME = str(f.read().strip())
+if IS_HEROKU:
+    with open('hiddenVars/heroku_name.txt') as f:
+         NAME = str(f.read().strip())
+    with open('hiddenVars/heroku_user.txt') as f:
+         USER = str(f.read().strip())
+    with open('hiddenVars/heroku_password.txt') as f:
+         PASSWORD = str(f.read().strip())
+    with open('hiddenVars/heroku_host.txt') as f:
+         HOST = str(f.read().strip())
+    with open('hiddenVars/heroku_port.txt') as f:
+         PORT = str(f.read().strip())
 else:
-    NAME = os.environ['NAME']  
+    if os.path.exists('hiddenVars/azure_name.txt') :
+        with open('hiddenVars/azure_name.txt') as f:
+            NAME = str(f.read().strip())
+    else:
+        NAME = os.environ['NAME']  
 
-if os.path.exists('hiddenVars/azure_user.txt'):
-    with open('hiddenVars/azure_user.txt') as f:
-        USER = str(f.read().strip())
-else:
-    USER = os.environ['USER']   
+    if os.path.exists('hiddenVars/azure_user.txt'):
+        with open('hiddenVars/azure_user.txt') as f:
+            USER = str(f.read().strip())
+    else:
+        USER = os.environ['USER']   
 
-if os.path.exists('hiddenVars/azure_password.txt'):
-    with open('hiddenVars/azure_password.txt') as f:
-        PASSWORD = str(f.read().strip())
-else:
-    PASSWORD = os.environ['PASSWORD']    
+    if os.path.exists('hiddenVars/azure_password.txt'):
+        with open('hiddenVars/azure_password.txt') as f:
+            PASSWORD = str(f.read().strip())
+    else:
+        PASSWORD = os.environ['PASSWORD']    
 
-if os.path.exists('hiddenVars/azure_host.txt'):
-    with open('hiddenVars/azure_host.txt') as f:
-        HOST = str(f.read().strip())
-else:
-    HOST = os.environ['HOST'] 
+    if os.path.exists('hiddenVars/azure_host.txt'):
+        with open('hiddenVars/azure_host.txt') as f:
+            HOST = str(f.read().strip())
+    else:
+        HOST = os.environ['HOST'] 
 
-if os.path.exists('hiddenVars/azure_port.txt'):
-    with open('hiddenVars/azure_port.txt') as f:
-        USER = str(f.read().strip())
-else:
-    PORT = os.environ['PORT'] 
+    if os.path.exists('hiddenVars/azure_port.txt'):
+        with open('hiddenVars/azure_port.txt') as f:
+            PORT = str(f.read().strip())
+    else:
+        PORT = os.environ['PORT'] 
 
 DATABASES = {
      'default': { 
