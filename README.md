@@ -75,6 +75,6 @@ Django application which follows the MVT framework. MVT framework stands for mod
 ## Development
   1. Clone the SolTax repository and create a new branch
 
-    __Working with Github in VS Code Tutorial__: [https://code.visualstudio.com/docs/sourcecontrol/github] (https://code.visualstudio.com/docs/sourcecontrol/github/)
+    __Working with Github in VS Code Tutorial__: [https://code.visualstudio.com/docs/sourcecontrol/github] (https://code.visualstudio.com/docs/sourcecontrol/github)
 
   2. In the terminal
