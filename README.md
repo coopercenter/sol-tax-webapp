@@ -26,15 +26,18 @@ __Installing Django__: [https://docs.djangoproject.com/en/3.1/topics/install/#in
 
 __Django Tutorial__: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
 
+### Azure
+SolTax and its PostgreSQL database are hosted on Azure which is a cloud computing platform run by Microsoft. When commit changes are pushed onto the master branch, it is deployed directly to Azure. The PostgreSQL database on be viewed through the admin site or Navicat. For Navicat login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
+
 ### Admin Site
-The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed. For the live server there is already a superuser created with credentials. Contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for admin site login information.
+The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed. For the live server there is already a superuser created with credentials. For admin site login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
 __SolTax WebApp Admin__: https://solar-tax-webapp.herokuapp.com/admin/ 
 
 The local server needs a username and password to access admin site. You will need to create a superuser. To do this type  `_python manage.py createsuperuser_ ` into the command line while in the project directory. Fill out the command line prompts and then to access the admin site run the application using  `_python manage.py runserver_ `, go to [http://localhost:8000/admin](http://localhost:8000/admin) or [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) and sign in. 
 
 ### PostgreSQL
-This project uses a PostgreSQL database. You will need access to a local database for development and testing and access to the database for the live server.
+This project uses a PostgreSQL database which holds information on localites and users. You will need access to the Azure database for development and testing. For Azure database credentials, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
 __PostgreSQL Download__: [https://www.postgresql.org/download/](https://www.postgresql.org/download/).
 
@@ -78,7 +81,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
     __Working with Github in VS Code Tutorial__: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
 
 2. In the command line, run `pip install -r requirements.txt` to download the necessary packages
-3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_.
+3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_. Otherwise, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for sensitive information.
 
     - azure_host
     - azure_name
