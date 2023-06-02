@@ -75,27 +75,6 @@ Django application which follows the MVT framework. MVT framework stands for mod
 ## Development
   1. Clone the SolTax repository and create a new branch
 
-     __Working with GitHub in VS Code Tutorial__:(https://code.visualstudio.com/docs/sourcecontrol/
-     github)[https://code.visualstudio.com/docs/sourcecontrol/github]
-     
-  2. In command line , run `pip install -r requirement.txt`
-  3. Create _.txt files_ containing the following name and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on the SolTax model Azure under the _Settings_ ➡ _Configuration_ ➡ _Application settings_.
-    - azure_host
-    - azure_name
-    - azure_pasword
-    - azure_port
-    - azure_user
-    - email
-    - email_password
-    - secret_key
-  4. Connect to _UVA Anywhere_ VPN
-  5. In the terminal, run `python manage.py runserver`
-    - If the command is successful, the SolTax model be running on your local server at (https://localhost:8000)[https://localhost:8000]
-    - Otherwise, address the runtime error as needed and run the command again. The error is likely the result of deprecated packages or the code the needed to be updated with newest iteration of Django.
-  6. Make the additional needed changes to the SolTax model while running the server periodically to ensure the changes made are successful.
-  7. Push your modification to your branch on Github. If using Git, in the terminal, run `git add file_name` to add the files that have been modified. Next, in the terminal, run `git commit ‘commit_name’` to name your commit and run `git push origin -u branch_name` to push your modification to your branch. 
-  8. Create a developer web app with a PostgreSQL database on Azure to test your modifications. 
-  __Deploy a Python web app with PostgreSQL in Azure__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app] (https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
-  9. Under the _Settings_ ➡ _Configuration_ ➡ _Application settings_ of the developer webapp, add the environmental variables as found in the _hiddenVars_ folder in your cloned repository by adding a new application setting  
-  10. Deploy the code, selecting the SolTax model as the repository and your branch as the branch
-    - After checking to ensure the developer Azure site is successful, merge your branch with the master branch
+  __Working with Github in VS Code Tutorial__: [https://code.visualstudio.com/docs/sourcecontrol/github] (https://code.visualstudio.com/docs/sourcecontrol/github)
+
+  2. In the terminal
