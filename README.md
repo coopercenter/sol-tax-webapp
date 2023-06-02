@@ -1,4 +1,4 @@
-### SolTax WebApp
+# SolTax WebApp
 This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
 
 SolTax WebApp: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-webapp.herokuapp.com/)
@@ -9,15 +9,15 @@ SolTax WebApp: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-webap
 3. [Development](#development)
 
 ## Getting Started
-# Github
+### Github
 Any changes made to the master branch are automatically pushed into the live server on Azure. Make sure changes are working properly before pushing to the master branch. Commit changes to branches other than master branch then merge when appropriate. Make sure you commit changes frequently to save changes to GitHub.
 
-# Python
+### Python
 Need Python 3 or later (Developed using Python 3.8.1)
 
 [https://www.python.org/downloads/](https://www.python.org/downloads/)
 
-# Django
+### Django
 Django is a Python web framework meant for rapid development. SolTax WebApp was developed using Django 3.1.
 
 [https://www.djangoproject.com/](https://www.djangoproject.com/)
@@ -26,17 +26,17 @@ Installing Django: [https://docs.djangoproject.com/en/3.1/topics/install/#instal
 
 Django Tutorial: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
 
-# Admin Site
+### Admin Site
 Both the local and live sites have access to an admin site. These sites need a username and password. For your local server you need to create a superuser that can access the admin site. To do this you need to type _python manage.py createsuperuser_ into the command line while in the project directory. Fill out the command line prompts and then to access the admin site run the application using _python manage.py runserver_, go to localhost:8000/admin or _http://127.0.0.1:8000/_admin and sign in. For the live server there is already a superuser created with credentials. Contact XXXXXXXX at [xxxxx@virginia.edu](mailto:xxxxx@virginia.edu) for admin site login information. To get to the live server admin site visit https://solar-tax-webapp.herokuapp.com/admin/ 
 
 The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed.
 
-# PostgreSQL
+### PostgreSQL
 This project uses a PostgreSQL database. You will need access to two databases, one for local development and testing, and access to the database for the live server.
 
 To download PostgreSQL visit their [page](https://www.postgresql.org/download/).
 
-# Gmail
+### Gmail
 There is a gmail account for use on this project. 
 
 The sole purpose of this email is to send emails to users for password reset and to send Thomas, Carrie, and Elizabeth emails about feedback received.
