@@ -81,3 +81,14 @@ Django application which follows the MVT framework. MVT framework stands for mod
 3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_.
 
   - azure_host
+  - azure_name
+  - azure_password
+  - azure_port
+  - azure_user
+  - email
+  - email_password
+  - secret_key
+
+4. Connect to _UVA Anywhere_ VPN
+5. In the command line, run `python manage.py runserver`
+  - If the command is successful, SolTax should be running on your local server at [https://localhost8000](https://localhost8000) or [http://127.0.0.1:8000](http://127.0.0.1:8000)
