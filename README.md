@@ -74,7 +74,10 @@ Django application which follows the MVT framework. MVT framework stands for mod
 
 ## Development
   1. Clone the SolTax repository and create a new branch
-     __Working with GitHub in VS Code Tutorial__:(https://code.visualstudio.com/docs/sourcecontrol/github)[https://code.visualstudio.com/docs/sourcecontrol/github]
+
+     __Working with GitHub in VS Code Tutorial__:(https://code.visualstudio.com/docs/sourcecontrol/
+     github)[https://code.visualstudio.com/docs/sourcecontrol/github]
+     
   2. In command line , run `pip install -r requirement.txt`
   3. Create _.txt files_ containing the following name and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on the SolTax model Azure under the _Settings_ ➡ _Configuration_ ➡ _Application settings_.
     - azure_host
