@@ -95,7 +95,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
 7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the files that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. 
 8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server. This step requires a subscription with Azure such as under the Cooper Center Azure subscription or a free subscription with _Microsoft Azure for Student Starters_. For more information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
-  __Deploy a Python web app with PostgreSQL in Azure Tutorial__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
+    __Deploy a Python web app with PostgreSQL in Azure Tutorial__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
 
 9. Under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_ of the developer webapp, add the environmental variables as found in the _hiddenVars_ folder in your cloned repository by adding a new application setting
 10. Deploy the code, selecting repository as _sol-tax-webapp_ and branch as your branch in the Deployment Center. After checking to ensure the developer Azure site is successful, merge your branch with the master branch.
