@@ -35,9 +35,9 @@ if os.path.exists('hiddenVars'):
     DEBUG = True
     ALLOWED_HOSTS = []
 else:
-    DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'soltax-model-dev.azurewebsites.net', 
-                     'localhost:8000', '127.0.0.1:8000']
+    # DEBUG = False
+    DEBUG = True
+    ALLOWED_HOSTS = ['soltax-model-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
 # ALLOWED_HOSTS = []
 
 # Application definition
@@ -141,7 +141,7 @@ else:
 
 DATABASES = {
      'default': { 
-         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'ENGINE': 'django.db.backends.postgresql',
          'NAME': NAME,
          'USER': USER,
          'PASSWORD': PASSWORD,
