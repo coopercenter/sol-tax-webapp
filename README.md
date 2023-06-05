@@ -1,5 +1,5 @@
 # SolTax WebApp
-This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
+This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
 
 __SolTax WebApp__: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-webapp.herokuapp.com/)
 
@@ -97,7 +97,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
     - If the command is successful, SolTax should be running on your local server at [https://localhost8000](https://localhost8000) or [http://127.0.0.1:8000](http://127.0.0.1:8000). 
     - Otherwise, address the runtime error as needed and run the command again. The error is likely the result of deprecated packages or the code needing to be updated with the newest iteration of Django.
 6. Make the additional needed changes to SolTax while running the server perodically to ensure the changes made are successful
-7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the files that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. 
+7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. 
 8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server. This step requires a subscription with Azure such as under the Cooper Center Azure subscription or a free subscription with _Microsoft Azure for Student Starters_. For more information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
     __Deploy a Python web app with PostgreSQL in Azure Tutorial__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
