@@ -95,7 +95,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-IS_HEROKU = False
+IS_HEROKU = True
 
 if IS_HEROKU:
     with open('hiddenVars/heroku_name.txt') as f:
@@ -248,6 +248,3 @@ except ImportError:
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"  
 CRISPY_TEMPLATE_PACK = 'bootstrap4' 
-
-# CSRF_TRUSTED_ORIGINS = ['https://soltax-model-dev.azurewebsites.net', 'localhost:8000']
-SECURE_PROXY_SSL_HEADER = ('soltax-model-dev.azurewebsites.net')

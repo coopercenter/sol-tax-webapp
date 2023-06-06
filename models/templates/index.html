@@ -7,14 +7,18 @@ on how the use the product.-->
 {% load static %}
 <div class="container-fluid">
     <div class="model-description">
-        <p><strong>Changelog (Last Updated July 1, 2022)</strong></p>
-        <ul>
-            <li>This tool was updated on July 1st, 2021 to reflect the new changes to Revenue Share calculations as described in 
-                <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a></li>
-            <li>This tool was updated July 1st, 2022 to reflect the new changes to both Revenue Share and M&T/Real Estate calculations to include projects less than 5 MW as described in 
-                <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
-            </li>
-        </ul>
+        <div class="card">
+            <h5 class="card-header font-weight-bold">Changelog (Last updated on July 1, 2022)</h5>
+            <div class="card-body">
+                <p class="text-left">
+                    July 1st, 2022: Reflect new changes to both Revenue Share and M&T/Real Estate calculations to include projects less than 5 MW as described in 
+                        <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
+                    <br>
+                    July 1st 2021: Reflect new changes to Revenue Share calculations as described in 
+                        <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a> 
+                </p>
+            </div>
+        </div>
         <br>
         <p>
             This tool was developed by the Weldon Cooper Center at UVA, Virginia Energy and others. 
@@ -57,10 +61,10 @@ on how the use the product.-->
         <br>
 
         <div id="the-decision-a-choice-between-two-revenue-model-options" class="section level2">
-            <h2><strong>The Decision: A Choice Between Two Revenue Model Options</strong></h2>
+            <h1><strong>The Decision: A Choice Between Two Revenue Models</strong></h1>
             <br>
             <div id="the-machinery-tools-tax-model" class="section level3">
-                <h3>The Machinery &amp; Tools/Real Estate Tax Model</h3>
+                <h2><strong>The Machinery &amp; Tools/Real Estate Tax Model</strong></h2>
                 <p>The Machinery &amp; Tools (M&amp;T)/Real Estate Tax is the default mechanism for localities to realize
                     revenues from utility-scale solar projects. The tax is calculated as a percentage of the assessed value of
                     certain capital investments made within a locality. In the case of utility-scale solar projects, the
@@ -122,7 +126,7 @@ on how the use the product.-->
             <br>
 
             <div id="the-revenue-share-model" class="section level3">
-                <h3>The Revenue Share Model</h3>
+                <h2><strong>The Revenue Share Model</strong></h2>
                 <p>
                     The Revenue Share is an alternative method for localities to extract value from solar projects;
                     it was established in <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a> 
@@ -139,7 +143,7 @@ on how the use the product.-->
         </div>
 
         <div id="procedures-for-computing-cash-flows-under-the-two-models" class="section level1">
-            <h1>Procedures for Computing Cash Flows under the Two Models</h1>
+            <h2><strong>Procedures for Computing Cash Flows under the Two Models</strong></h2>
             <p>The tool will prompt the user for seven pieces of information:</p>
             <ul>
 
@@ -170,7 +174,7 @@ on how the use the product.-->
             <p>Based on this data, the tool will calculate the expected tax revenue for a locality for each of the
                 two tax models. Results will be presented side by side, allowing for comparison.</p>
             <div id="the-mt-model" class="section level2">
-                <h2>The M&amp;T Model</h2>
+                <h2><strong>The M&amp;T Model</strong></h2>
                 <p>
                     To calculate the expected tax revenue from the M&amp;T system, the model will take each year’s
                     expected solar investments from the schedule provided by the user and break their lifetime into three
@@ -183,7 +187,7 @@ on how the use the product.-->
                 </p>
             </div>
             <div id="the-revenue-share-model-1" class="section level2">
-                <h2>The Revenue Share Model</h2>
+                <h2><strong>The Revenue Share Model</strong></h2>
                 <p>
                     To calculate the value of tax revenue in an individual year from solar projects larger than 5 MW
                     built in
@@ -194,8 +198,8 @@ on how the use the product.-->
             </div>
         </div>
 
-        <div class="section level3" id="composite-index">
-            <h2>Composite Index</h2>
+        <div class="section level2" id="composite-index">
+            <h2><strong> Composite Index </strong></h2>
             <p>
                 Both the M&T tax and Revenue Share models will increase a locality's Composite Index value. 
                 As stated previously the Composite Index is used to determine how much money a locality must
@@ -223,8 +227,8 @@ on how the use the product.-->
             <br>
         </div>
 
-        <div id="converting-future-cash-flows-to-net-present-value" class="section level1">
-            <h1>Converting Future Cash Flows to Net Present Value</h1>
+        <div id="converting-future-cash-flows-to-net-present-value" class="section level2">
+            <h2><strong>Future Cash Flows to Net Present Value</strong></h2>
             <p>Under either taxation model, a stream of future revenue flows can be converted to present-value
                 equivalents
                 by discounting at an appropriate discount rate. Let <span class="math inline">\(t = 0, 1, \ldots,
@@ -253,14 +257,14 @@ on how the use the product.-->
                 discount rates, allowing for the performance of a sensitivity analysis.</p>
         </div>
 
-        <div id="auxiliary-assumptions" class="section level1">
-            <h1>Auxiliary Assumptions</h1>
+        <div id="auxiliary-assumptions" class="section level2">
+            <h2><strong>Auxiliary Assumptions</strong></h2>
             <ul>
-                <li>The policy environment will remain stable (i.e. the M&amp;T tax program will not sunset in 2030,
+                <li>The policy environment will remain stable (i.e. The M&amp;T tax program will not sunset in 2030,
                     and
                     the
                     revenue sharing model remains in its current form in perpetuity).</li>
-                <li>All new builds filed their interconnection request form after January 1, 2019 (the maximum MW
+                <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
                     level is higher for earlier dates).</li>
                 <li>
                     A locality's education budget will increase by 1 percent every year. Every other value used for the 
@@ -271,15 +275,15 @@ on how the use the product.-->
 
         <br>
 
-        <div id="uncertainties-and-risks" class="section level1">
-            <h1>Uncertainties and Risks</h1>
+        <div id="uncertainties-and-risks" class="section level2">
+            <h2><strong>Uncertainties and Risks</strong></h2>
             <ul>
                 <li>This calculation ignores any revenue that might come from already existing solar projects. If a
                     revenue share is adopted, a locality cannot mandate that a preexisting project pay a revenue
                     share rather than the traditional M&amp;T.</li>
                 <li>Increases in revenue from new solar builds may trigger reductions in state education funding,
                     which may not be fully offset by solar revenue.</li>
-                <li>Competition from neighboring counties on revenue share rates may lead to over- or underestimates
+                <li>Competition from neighboring counties on revenue share rates may lead to over or underestimates
                     of the extent of solar development in a locality.</li>
             </ul>
         </div>
@@ -288,7 +292,7 @@ on how the use the product.-->
 
         <!-- Acknowledgements -->
         <div>
-            <h1>Acknowledgements</h1>
+            <h2><strong>Acknowledgements</strong></h2>
             <p>A special thanks is extended to the following people for the guidance and feedback they provided throughout the development process of the SolTax application.</p>
             <ul>
                 <li>Robert Crockett, Advantus Strategies</li>
@@ -307,8 +311,9 @@ on how the use the product.-->
 
         <!-- Disclaimer -->
         <div>
-            <p>Disclaimer</p>
-            <p><em>This is not a forecasting tool. This is a tool is to be used as a consulting tool for localities. The suggestions from models does not constitute legal advice.</em></p>
+            <p><strong>Disclaimer</strong>
+            <br>
+            <em>This is not a forecasting tool. This is a tool is to be used as a consulting tool for localities. The suggestions from models does not constitute legal advice.</em></p>
         </div>
     </div>
 </div>
