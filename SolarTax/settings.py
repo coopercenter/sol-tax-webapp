@@ -95,7 +95,7 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-IS_HEROKU = True
+IS_HEROKU = False
 
 if IS_HEROKU:
     with open('hiddenVars/heroku_name.txt') as f:
