@@ -9,11 +9,12 @@ off of.-->
 <div class="update-locality-all">
     <div class="update-locality-header">
         <h2><strong>Select Your Locality</strong></h2>
-        <p>A locality must be selected to initalize profile parameters</p>
-        <p>All parameters can be changed after your account is initalized</p>
-        <p>Your locality cannot be changed after selection</p>
-    </div>
 
+        A locality must be selected to initalize profile parameters <br>
+        All parameters can be changed after your account is initalized <br>
+        Your locality cannot be changed after selection
+        
+    </div>
     <form method="POST" action="/user-{{username}}/">
         {% csrf_token %}
 
@@ -26,5 +27,6 @@ off of.-->
         <br>
         <button class="btn btn-lg btn-info update-locality-submit" type="submit">Continue</button>
     </form>
+    
 </div>
 {% endblock %}
