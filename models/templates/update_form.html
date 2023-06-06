@@ -4,10 +4,10 @@
 
 {% block content %}
 <div class="container-fluid">
-    <h1 class="selected-locality">
+    <h2 class="selected-locality">
         <!-- Update Locality Parameters -->
-        Update Locality Parameters for <span class="locality_name">{{ county }}</span>
-    </h1>
+        <strong>Update Locality Parameters for <span class="locality_name">{{ county }}</strong></span>
+    </h2>
     
     <div class="form-group">
         <form action = "/user-{{county}}/" method="POST">
