@@ -249,4 +249,5 @@ except ImportError:
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"  
 CRISPY_TEMPLATE_PACK = 'bootstrap4' 
 
-SECURE_PROXY_SSL_HEADER = ('soltax-model-dev.azurewebsites.net', 'https')
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_TRUSTED_ORIGIN = ['https://soltax-model-dev.azurewebsites.net']
