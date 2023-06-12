@@ -7,10 +7,9 @@ each year, and a table showing the breakdown for each year. -->
 
 <button class="btn btn-lg btn-outline-danger local-pdf-button dontprint" type="submit" value="Create PDF" onclick="window.print()" title="Create PDF"><i class="icofont-file-pdf"></i></button>
 <div id="solar-tool-prototype" class="section level1">
-    <h1 class="data-header">Local Solar Revenue and Tax Analysis</h1>
 
-    <h2 class="simulation-name">Project Name: {{simulation.0.fields.name}}</h2> <!-- Get name of simulation -->
-
+    <h1 class="simulation-name"><strong> {{simulation.0.fields.name}} </strong></h1> <!-- Get name of simulation -->
+    <h2 class="data-header"> Solar Revenue and Tax Analysis </h2>
     <!-- <button class="btn btn-danger btn-lg pdf-button dontprint" onclick="window.print()">Create PDF</button> -->
     
     <div class="row">
@@ -96,14 +95,14 @@ each year, and a table showing the breakdown for each year. -->
                     {% endfor %}
                 </tbody>
             </table>
-            <p class="parameter-note">Note: The tax rate highlighted in green is used for M&T/Real Estate tax calculations.</p>
+            <p class="parameter-note"> Highlighted in green is the tax rate is used for M&T/Real Estate tax calculations.</p>
         </div>
         
         <div class="col-sm-6 right-col">
             <div class="result-top-text">
                 <div class="result-title">
-                    <h3>Total expected lifetime revenue</h3>
-                    <p> (In 2020 $, discounted at {% get_discount_rate simulation %}% per year): </p>
+                    <h3><strong>Total Expected Lifetime Revenue</strong></h3>
+                    <p> Discounted at {% get_discount_rate simulation %}% per year (2020 dollars) </p>
                 </div>
                 <div class="result-text">
                     <table class = "table table-striped result-table">
@@ -136,7 +135,7 @@ each year, and a table showing the breakdown for each year. -->
             </div>
 
             <div class="chart dontprint">
-                <h3 class="chart-title">Lineplot of Nominal Cashflows</h3>
+                <h2 class="chart-title"><strong>Lineplot of Nominal Cashflows</strong></h2>
                 
                 {% load static %}
                 {% load plotly_dash %}
@@ -157,9 +156,9 @@ each year, and a table showing the breakdown for each year. -->
 
     <div id="side-by-side-comparison" class="side-by-side-comparison">
         <div class="table-title">
-            <h3>Annual Cashflows Under the 2 Different Revenue Models</h3>
+            <h3><strong>Annual Cashflows Under the Two Different Revenue Models </strong> </h3>
             <p>(Rounded to the nearest thousand)</p>
-            <p>Please Note: These cashflows include revenue from the applied M&T/Real Estate tax or Revenue Share, increase in land value, and increased Composite Index requirements (if necessary).</p>
+            <p>The cashflows include revenue from the applied M&T/Real Estate tax or Revenue Share, increase in land value, and increased Composite Index requirements (If applicable).</p>
         </div>
         
         <table class="table table-striped side-table">

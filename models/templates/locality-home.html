@@ -21,7 +21,7 @@
 
         <form action="/form/" method="POST" class="generateButton-form dontprint">
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{user.username}}" name="generateButton">Generate New Project Analysis</button>
+            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{user.username}}" name="generateButton">Create New Project </button>
         </form>
         
 
@@ -30,28 +30,29 @@
                 <table class="locality-summary-table">
                     <tr>
                         <td>
-                            <h4>Total Revenue Share Revenue</h4>
-                        </td>
-                        <td>
-                            <h4><span class="dollar_value">{{total_rs_revenue}}</span></h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4>Total M&T/Real Estate Tax Revenue</h4>
-                        </td>
-                        <td>
-                            <h4><span class="dollar_value">{{total_mt_revenue}}</span></h4>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <h4>Increase in Revenue from Revenue Share</h4>
+                            <h4><strong>Increase in Revenue from Revenue Share</strong></h4>
                         </td>
                         <td>
                             <h4><span class="dollar_value difference">{{difference}}</span></h4>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <h5><strong>Total Revenue Share Revenue</strong></h5>
+                        </td>
+                        <td>
+                            <h5><span class="dollar_value">{{total_rs_revenue}}</span></h5>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h5><strong>Total M&T/Real Estate Tax Revenue</strong></h5>
+                        </td>
+                        <td>
+                            <h5><span class="dollar_value">{{total_mt_revenue}}</span></h5>
+                        </td>
+                    </tr>
+                
                 
                 </table>
             </div>
@@ -67,7 +68,7 @@
                         <div class="card-body">
                             
                             <table class="card-table table-striped">
-                                <h2>{{simulation.name}}</h2>
+                                <h5> <strong> {{simulation.name}} </strong></h5>
                                 <tr class="card-table-row">
                                     <td>
                                         <strong>Years</strong>
@@ -152,7 +153,7 @@
         {% endif %}
 
         <div class="locality-info {% if gap == 'True' %} parameter-panel {% endif %}">
-            <h2 class="locality-home-header"> Parameters for Calculations</h2>
+            <h2 class="locality-home-header"> <strong> Calculation Parameters </strong> </h2>
             <table class="table-striped locality-info-table">
                 <thead>
                     <tr>
@@ -287,20 +288,24 @@
         </div>
     </div>
 
-    <form method="POST" action="update-user-parameters/" class="update-form dontprint">
-        {% csrf_token %}
-        <input class="btn btn-primary btn-lg" type="submit" value="Update User Parameters">
-    </form>
+    <div class="d-flex justify-content-center">
+    
+                <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
+                    {% csrf_token %}
+                    <input class="btn btn-lg btn-info mr-4" type="submit" value="Update Depreciation Schedules">
+                </form>
 
-    <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
-        {% csrf_token %}
-        <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
-    </form>
+                <form method="POST" action="update-user-parameters/" class="update-form dontprint">
+                    {% csrf_token %}
+                    <input class="btn btn-primary btn-lg mr-4" type="submit" value="Update User Parameters">
+                </form>
 
-    <form method="POST" action="update-revenue-share/" class="update-form dontprint">
-        {% csrf_token %}
-        <input class="btn btn-success btn-lg" type="submit" value="Update Revenue Share Escalator">
-    </form>
+                <form method="POST" action="update-revenue-share/" class="update-form dontprint">
+                    {% csrf_token %}
+                    <input class="btn btn-success btn-lg mr-4" type="submit" value="Update Revenue Share Escalator">
+                </form>
+        
+    </div>
 
     <div class="dontshow locality-rs {% if gap == 'True' %} parameter-panel {% endif %}">
         <h2 class="locality-home-header">Revenue Share Rates</h2>
@@ -328,9 +333,9 @@
     
     {% else %}
         <div class="locality-error-message">
-            <h2>Your are not logged in as <span class="locality_name">{{locality.name}}</span></h2>
+            <h2>You are not logged in as <span class="locality_name">{{locality.name}}</span></h2>
             <br>
-            <h2>Please Login to <span class="locality_name">{{locality.name}}</span>'s Account</h2>
+            <h2>Please login to <span class="locality_name">{{locality.name}}</span>'s account</h2>
         </div>
     {% endif %}
 {% endblock %}
