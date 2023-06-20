@@ -109,16 +109,25 @@ Django application which follows the MVT framework. MVT framework stands for mod
 10. In _settings.py_, add your developer web app domain to `ALLOWED_HOSTS = ['domain_name.azurewebsites.net']` and `CSRF_TRUSTED_ORIGIN = ['https://domain_name.azurewebsites.net']`
 11. Deploy the code, selecting repository as _sol-tax-webapp_ and branch as your branch in the Deployment Center. 
     - After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax Azure server. 
-    - Otherwise, if the deployment failed or the server failed to load, address the error as needed and deploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
+    - Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
 
 ## Debugging Tips
 
+
+
 ### Deprecated Packages
+1. Deprecated packages are outdated past the newest version and should be updated as it may pose both a security risk and result in runtime errors as packages are updated in their newest iteration. The runtime error displayed will likely point to the package that is needing to be updated. 
+2. Updating deprecated packages may require updating `import` statements, adding new lines of code in accordance with the documentation of the newest iteration, or changing the version in _requirements.txt_ as indicated after the `==`.
 
 ### Package Dependecies
+1. As packages are updated due to their security risk or resulting runtime errors, this often results in runtime errors as a result of package depedencies as packages often call on each other and therefore rely on certain versions of a particular package. Therefore, _requirement.txt_ must outline packages that include their correct version of their dependecies in order to be successfully deployed.The runtime error displayed will likely outline the package's missing dependencies and required versions.
+2. Changing package dependecies is a process of repeated trial and error, either involving deprecating as needed after the `==` and changing the order of packages in  _requirement.txt_ to be successful. While the packages may run successfully on your computer, there will likely be errors when deploying on Azure as operating systems differ. 
 
 ### Deployment Failure
+1. The error can be found by checking the deployment logs and clicking on the commit ID that was deployed or on the repoistory under actions in the respective workflow.
+2. As your computer's operating system likely differs from Azure, the error is likely from the result of a failure in [Package Dependecies](#package-dependecies) or [Deprecated Packages](#deprecated-packages) that can be addressed. 
+3. If package dependencies cannot be reconciled, a potential solution is to dockerize the web app by placing it with your computer's operation system but the current iteration of the web app is not dockerized. 
 
-### Runtime Errors
-
-The error can be found by checking the deployment logs by clicking on the commit ID that was deployed. As your computer's OS differs from Azure, the error is likely the result of a failure in package dependancies or missing packages which can likely be resolved by changing _requirements.txt_ by adding or changing a package and its version (May require deprecating packages). Other errors may be resolved by setting `DEBUG = TRUE` in _settings.py_ but must set back to `DEBUG = FALSE` before merging your branch with the master branch. The error is likely the result of deprecated packages or the code needing to be updated with the newest iteration of Django.
+ ### Runtime Errors
+ 1. If the developer web app or local server displays an error, additional information can be found by setting `DEBUG = TRUE` in _settings.py_ but __must__ set back to `DEBUG = FALSE` before merging your branch with the master branch.
+ 2. The error is likely the result of [Deprecated Packages](#deprecataed-packages) or updating the code as needed to with the newest iteration of Django.
