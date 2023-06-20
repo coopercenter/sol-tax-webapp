@@ -116,16 +116,16 @@ Django application which follows the MVT framework. MVT framework stands for mod
 
 
 ### Deprecated Packages
-1. Deprecated packages are outdated past the newest version and should be updated as it may pose both a security risk and result in runtime errors as packages are updated in their newest iteration. The runtime error displayed will likely point to the package that is needing to be updated. 
-2. Updating deprecated packages may require updating `import` statements, adding new lines of code in accordance with the documentation of the newest iteration, or changing the version in _requirements.txt_ as indicated after the `==`.
+1. Deprecated packages are outdated past their newest version and should be updated as it may pose both a security risk and result in runtime errors. The runtime error displayed will likely point to the packages that are needing to be updated. 
+2. Updating deprecated packages may require changing `import` statements, adding new lines of code in accordance with the documentation of the newest iteration often made in _settings.py_, or changing the version in _requirements.txt_ as indicated after the `==`.
 
-### Package Dependecies
-1. As packages are updated due to their security risk or resulting runtime errors, this often results in runtime errors as a result of package depedencies as packages often call on each other and therefore rely on certain versions of a particular package. Therefore, _requirement.txt_ must outline packages that include their correct version of their dependecies in order to be successfully deployed.The runtime error displayed will likely outline the package's missing dependencies and required versions.
-2. Changing package dependecies is a process of repeated trial and error, either involving deprecating as needed after the `==` and changing the order of packages in  _requirement.txt_ to be successful. While the packages may run successfully on your computer, there will likely be errors when deploying on Azure as operating systems differ. 
+### Package Dependencies
+1. As packages are updated, this often results in runtime errors as packages often call on each other and therefore rely on certain versions of a particular package. Therefore, _requirement.txt_ must outline packages that include the correct version of each package's dependencies in order to be successfully deployed.The runtime error displayed will likely outline the package's missing dependencies and their necessary versions.
+2. Changing package dependencies is a process of repeated trial and error, involving deprecating as needed after the `==` or changing the order of packages in  _requirement.txt_ to be successful. While the packages may run successfully on your computer, there will likely be errors when deploying on Azure as their operating systems differ. 
 
 ### Deployment Failure
 1. The error can be found by checking the deployment logs and clicking on the commit ID that was deployed or on the repoistory under actions in the respective workflow.
-2. As your computer's operating system likely differs from Azure, the error is likely from the result of a failure in [Package Dependecies](#package-dependecies) or [Deprecated Packages](#deprecated-packages) that can be addressed. 
+2. As your computer's operating system likely differs from Azure, the error is likely from the result of a failure in [Package Dependencies](#package-dependencies). 
 3. If package dependencies cannot be reconciled, a potential solution is to dockerize the web app by placing it with your computer's operation system but the current iteration of the web app is not dockerized. 
 
  ### Runtime Errors
