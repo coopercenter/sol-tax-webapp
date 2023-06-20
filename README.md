@@ -7,6 +7,7 @@ __SolTax WebApp__: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-w
 1. [Getting Started](#getting-started)
 2. [Structure](#structure)
 3. [Development](#development)
+3. [Debugging Tips](#debugging-tips)
 
 ## Getting Started
 ### Github
@@ -95,15 +96,29 @@ Django application which follows the MVT framework. MVT framework stands for mod
 4. Connect to _UVA Anywhere_ VPN
 5. In the command line, run `python manage.py runserver`. Ensure that your command line is in the same directory as _manage.py_. 
     - If the command is successful, SolTax should be running on your local server at [https://localhost8000](https://localhost8000) or [http://127.0.0.1:8000](http://127.0.0.1:8000). 
-    - Otherwise, address the runtime error as needed and run the command again. The error is likely the result of deprecated packages or the code needing to be updated with the newest iteration of Django.
+    - Otherwise, address the runtime error as needed and run the command again. For additional help, see [Debugging Tips](#debugging-tips). 
 6. Make the additional needed changes to SolTax while running the server perodically to ensure the changes made are successful
 7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. 
-8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server. This step requires a subscription with Azure such as under the Cooper Center Azure subscription or a free subscription with _Microsoft Azure for Student Starters_. For more information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
+8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server.The tutorial specifies the runtime stack for the web app and in its current iteration, the SolTax web app is hosted on Python 3.11.
 
     __Deploy a Python web app with PostgreSQL in Azure Tutorial__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
+
+    This step requires a subscription with Azure such as under the Cooper Center Azure subscription or a free subscription with _Microsoft Azure for Student Starters_. For more information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
 9. Under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_ of the developer webapp, add the environmental variables as found in the _hiddenVars_ folder in your cloned repository by adding a new application setting. 
 10. In _settings.py_, add your developer web app domain to `ALLOWED_HOSTS = ['domain_name.azurewebsites.net']` and `CSRF_TRUSTED_ORIGIN = ['https://domain_name.azurewebsites.net']`
 11. Deploy the code, selecting repository as _sol-tax-webapp_ and branch as your branch in the Deployment Center. 
     - After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax Azure server. 
-    - Otherwise, if the deployment failed or the server failed to load, address the error as needed and deploy the code. The error can be found by checking the deployment logs by clicking on the commit ID that was deployed. As your computer's OS differs from Azure, the error is likely the result of a failure in package dependancies or missing packages which can likely be resolved by changing _requirements.txt_ by adding or changing a package and its version (May require deprecating packages). Other errors may be resolved by setting `DEBUG = TRUE` in _settings.py_ but must set back to `DEBUG = FALSE` before merging your branch with the master branch. 
+    - Otherwise, if the deployment failed or the server failed to load, address the error as needed and deploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
+
+## Debugging Tips
+
+### Deprecated Packages
+
+### Package Dependecies
+
+### Deployment Failure
+
+### Runtime Errors
+
+The error can be found by checking the deployment logs by clicking on the commit ID that was deployed. As your computer's OS differs from Azure, the error is likely the result of a failure in package dependancies or missing packages which can likely be resolved by changing _requirements.txt_ by adding or changing a package and its version (May require deprecating packages). Other errors may be resolved by setting `DEBUG = TRUE` in _settings.py_ but must set back to `DEBUG = FALSE` before merging your branch with the master branch. The error is likely the result of deprecated packages or the code needing to be updated with the newest iteration of Django.
