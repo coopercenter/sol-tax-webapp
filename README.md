@@ -107,7 +107,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
 
 9. Under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_ of the developer webapp, add the environmental variables as found in the _hiddenVars_ folder in your cloned repository by adding a new application setting. 
 10. In _settings.py_, add your developer web app domain to `ALLOWED_HOSTS = ['domain_name.azurewebsites.net']` and `CSRF_TRUSTED_ORIGIN = ['https://domain_name.azurewebsites.net']`
-11. Deploy the code, selecting repository as _sol-tax-webapp_ and branch as your branch in the Deployment Center. 
+11. Deploy the code, selecting repository as _sol-tax-webapp_ and branch as your branch in the Deployment Center. When the code is deployed, under _Configurations_ turn _Always On_ on to keep the app loaded even when there is no traffic otherwise the site will take a while to load. 
     - After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax Azure server. 
     - Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
 
