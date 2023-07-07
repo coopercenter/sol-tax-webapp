@@ -1,7 +1,7 @@
 # SolTax WebApp
 This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
 
-__SolTax WebApp__: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-webapp.herokuapp.com/)
+__SolTax WebApp__: [https://solar-tax-webapp.azurewebsites.net/](https://solar-tax-webapp.azurewebsites.net/)
 
 ## Sections
 1. [Getting Started](#getting-started)
@@ -33,7 +33,7 @@ SolTax and its PostgreSQL database are hosted on Azure which is a cloud computin
 ### Admin Site
 The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed. For the live server there is already a superuser created with credentials. For admin site login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
-__SolTax WebApp Admin__: https://solar-tax-webapp.herokuapp.com/admin/ 
+__SolTax WebApp Admin__: https://solar-tax-webapp.azurewebsites.net/admin/ 
 
 The local server needs a username and password to access admin site. You will need to create a superuser. To do this type  `_python manage.py createsuperuser_ ` into the command line while in the project directory. Fill out the command line prompts and then to access the admin site run the application using  `_python manage.py runserver_ `, go to [http://localhost:8000/admin](http://localhost:8000/admin) or [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) and sign in. 
 
