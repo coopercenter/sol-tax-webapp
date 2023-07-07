@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
+
 """
 import django_heroku
 import os
@@ -37,7 +38,7 @@ if os.path.exists('hiddenVars'):
 else:
     # DEBUG = False
     DEBUG = True
-    ALLOWED_HOSTS = ['soltax-model-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
+    ALLOWED_HOSTS = ['soltax-model-dev.azurewebsites.net', 'solar-tax-webapp.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
 # ALLOWED_HOSTS = []
 
 # Application definition
@@ -237,4 +238,4 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4' 
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-CSRF_TRUSTED_ORIGIN = ['https://soltax-model-dev.azurewebsites.net']
+CSRF_TRUSTED_ORIGIN = ['https://soltax-model-dev.azurewebsites.net', 'https://solar-tax-webapp.azurewebsites.net']

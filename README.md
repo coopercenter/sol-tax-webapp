@@ -99,7 +99,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
     - Otherwise, address the runtime error as needed and run the command again. For additional help, see [Debugging Tips](#debugging-tips). 
 6. Make the additional needed changes to SolTax while running the server perodically to ensure the changes made are successful
 7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. 
-8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server.The tutorial specifies the runtime stack for the web app and in its current iteration, the SolTax web app is hosted on Python 3.11.
+8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server. The tutorial specifies the runtime stack for the web app and in its current iteration, the SolTax web app is hosted on Python 3.11.
 
     __Deploy a Python web app with PostgreSQL in Azure Tutorial__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
 
