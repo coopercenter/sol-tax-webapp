@@ -84,16 +84,16 @@ Django application which follows the MVT framework. MVT framework stands for mod
 2. In the command line, run `pip install -r requirements.txt` to download the necessary packages
 3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_. Otherwise, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for sensitive information.
  
-        | Variable | Description | Example |
-        | ------------- | ------------- | ------------- |
-        | azure_host | URL of the database | soltax.postgres.database.azure.com |
-        | azure_name | Name of the database | SolTax |
-        | azure_password | Account Password to access database | password123 |
-        | azure_port | Port of database | 4321 |
-        | azure_user  | Account Username to access database | soltaxuser |
-        | email | Email Username used for SolTax feedback | soltax@gmail.com |
-        | email_password | Email Password used for SolTax feedback | password123 |
-        | secret_key | Key used to encrypt sensitive information | asdfh(#*faks(#4nkd)32n3*#nj |
+| Variable | Description | Example |
+| ------------- | ------------- | ------------- |
+| azure_host | URL of the database | soltax.postgres.database.azure.com |
+| azure_name | Name of the database | SolTax |
+| azure_password | Account Password to access database | password123 |
+| azure_port | Port of database | 4321 |
+| azure_user  | Account Username to access database | soltaxuser |
+| email | Email Username used for SolTax feedback | soltax@gmail.com |
+| email_password | Email Password used for SolTax feedback | password123 |
+| secret_key | Key used to encrypt sensitive information | asdfh(#*faks(#4nkd)32n3*#nj |
 
 4. Connect to _UVA Anywhere_ VPN
 5. In the command line, run `python manage.py runserver`. Ensure that your command line is in the same directory as _manage.py_. 
