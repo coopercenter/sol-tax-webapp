@@ -86,14 +86,14 @@ Django application which follows the MVT framework. MVT framework stands for mod
  
 | Variable | Description | Example |
 | ------------- | ------------- | ------------- |
-| azure_host | URL of the Azure PostgreSQL database | soltax.postgres.database.azure.com |
-| azure_name | Name of the Azure PostgreSQL database | SolTax |
-| azure_password | Account Password to access Azure PostgreSQL database | password123 |
-| azure_port | Port of Azure PostgreSQL database | 4321 |
-| azure_user  | Account Username to access Azure PostgreSQL database | soltaxuser |
+| azure_host | URL of the database | soltax.postgres.database.azure.com |
+| azure_name | Name of the database | SolTax |
+| azure_password | Account Password to access database | password123 |
+| azure_port | Port of database | 4321 |
+| azure_user  | Account Username to access database | soltaxuser |
 | email | Email Username used for SolTax feedback | soltax@gmail.com |
 | email_password | Email Password used for SolTax feedback | password123 |
-| secret_key | Azure Key used to encrypt and secure sensitive information | asdfh(#*faks(#4nkd)32n3*#nj |
+| secret_key | Key used to encrypt sensitive information | asdfh(#*faks(#4nkd)32n3*#nj |
 
 4. Connect to _UVA Anywhere_ VPN
 5. In the command line, run `python manage.py runserver`. Ensure that your command line is in the same directory as _manage.py_. 
