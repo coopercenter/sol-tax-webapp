@@ -86,8 +86,8 @@ Django application which follows the MVT framework. MVT framework stands for mod
  
 | Variable | Description | Example |
 | ------------- | ------------- | ------------- |
-| azure_host | URL of the database | soltax.postgres.database.azure.com |
-| azure_name | Name of the database | SolTax |
+| azure_host | URL of database | soltax.postgres.database.azure.com |
+| azure_name | Name of database | SolTax |
 | azure_password | Account Password to access database | password123 |
 | azure_port | Port of database | 4321 |
 | azure_user  | Account Username to access database | soltaxuser |
