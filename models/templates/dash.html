@@ -9,7 +9,7 @@ each year, and a table showing the breakdown for each year. -->
 <div id="solar-tool-prototype" class="section level1">
 
     <h2 class="simulation-name"><strong> {{simulation.0.fields.name}} </strong></h2> <!-- Get name of simulation -->
-    <h3 class="data-header"> Solar Revenue and Tax Analysis </h3>
+    <h5 class="data-header"> Solar Revenue and Tax Analysis </h5>
     <!-- <button class="btn btn-danger btn-lg pdf-button dontprint" onclick="window.print()">Create PDF</button> -->
     
     <div class="row">
@@ -166,9 +166,9 @@ each year, and a table showing the breakdown for each year. -->
                 <tr class="header">
                     <th scope="col">Year</th>
                     <th scope="col">Nominal M&T/Real Estate Tax</th>
-                    <th scope="col">Nominal Revenue Share Nominal</th>
-                    <th scope="col">M&T/Real Estate Tax in 2020 (Discounted at {% get_discount_rate simulation %}%)</th>
-                    <th class="last-data" scope="col">Revenue Share in 2020 (Discounted at {% get_discount_rate simulation %}%)</th>
+                    <th scope="col">Nominal Revenue Share </th>
+                    <th scope="col">M&T/Real Estate Tax in 2020 $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
+                    <th class="last-data" scope="col">Revenue Share in 2020 $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
                 </tr>
             </thead>
             <tbody>

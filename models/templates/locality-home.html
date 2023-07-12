@@ -289,7 +289,7 @@
     </div>
 
     <div class="d-flex justify-content-center">
-    
+                <br><br><br><br>
                 <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
                     {% csrf_token %}
                     <input class="btn btn-lg btn-info mr-4" type="submit" value="Update Depreciation Schedules">
@@ -304,7 +304,7 @@
                     {% csrf_token %}
                     <input class="btn btn-success btn-lg mr-4" type="submit" value="Update Revenue Share Escalator">
                 </form>
-        
+                <br><br><br><br><br>
     </div>
 
     <div class="dontshow locality-rs {% if gap == 'True' %} parameter-panel {% endif %}">
@@ -335,7 +335,7 @@
         <div class="locality-error-message">
             <h2>You are not logged in as <span class="locality_name">{{locality.name}}</span></h2>
             <br>
-            <h2>Please login to <span class="locality_name">{{locality.name}}</span>'s account</h2>
+            <h2>Login to <span class="locality_name">{{locality.name}}</span>'s account</h2>
         </div>
     {% endif %}
 {% endblock %}
