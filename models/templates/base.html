@@ -31,16 +31,16 @@ include 'extends 'base.html'' at the top of the file to include the base html el
                     {% if user.is_authenticated %}
                         <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
                             {% csrf_token %}
-                            <input class="btn btn-outline-primary log-button" type="submit" value="Update User Parameters">
+                            <input class="btn btn-primary log-button" type="submit" value="User Parameters">
                         </form>
 
                         <form method="POST" action="/user-{{user.username}}/">
                             {% csrf_token %}
-                            <input class="btn btn-outline-success log-button" type="submit" value="{{user.username}} Profile">
+                            <input class="btn btn-success log-button" type="submit" value="{{user.username}} Profile">
                         </form>
 
-                        <button class="btn btn-outline-info log-button"><a href="/feedback/" class="log-button">Questions/Feedback</a></button>
-                        <button class="btn btn-outline-warning log-button"><a href="/logout/" class="log-button">Logout</a></button>
+                        <button class="btn btn-info log-button"><a href="/feedback/" class="log-button">Questions/Feedback</a></button>
+                        <button class="btn btn-warning log-button"><a href="/logout/" class="log-button">Logout</a></button>
                     {% else %}
                         <button class="btn btn-success not-log-button"><a href="/signup/" class="not-log-button">Create New Account</a></button>
                         <button class="btn btn-info log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button>
@@ -72,8 +72,8 @@ include 'extends 'base.html'' at the top of the file to include the base html el
             <img src="{% static "models/VAEnergyLogo.png" %}"" alt="DMME LOGO" class="va-energy-logo">
         </div>
         <p class="subtitle footer-text">A tool to assist Virginia localities</p>
-        <p class="subtitle footer-text">Updated May 18th, 2023</p>
-        <p class="author footer-text">Created by Arthur Small, Thomas Callen, Ethan Novak, Elizabeth Marshall, Jaden Wang, and Carrie Hearne from the <a href="https://ceps.coopercenter.org/">UVA Weldon Cooper Center for Public Service</a> and <a href="https://www.energy.virginia.gov/">Virginia Energy</a></p>
+        <p class="subtitle footer-text">Updated July 12th, 2023</p>
+        <p class="author footer-text">Created by Arthur Small, Thomas Callen, Ethan Novak, Elizabeth Marshall, Jaden Wang, and Carrie Hearne</a></p>
     </div>
 
 
