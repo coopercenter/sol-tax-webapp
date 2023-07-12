@@ -7,14 +7,15 @@ on how the use the product.-->
 {% load static %}
 <div class="container-fluid">
     <div class="model-description">
+
         <div class="card">
-            <h5 class="card-header font-weight-bold">Changelog (Last updated on July 1, 2022)</h5>
+            <h5 class="card-header font-weight-bold">Changelog (Last updated on July 1st, 2022)</h5>
             <div class="card-body">
                 <p class="text-left">
-                    July 1st, 2022: Reflect new changes to both Revenue Share and M&T/Real Estate calculations to include projects less than 5 MW as described in 
+                    <strong> July 1st, 2022</strong>: Reflect new changes to both Revenue Share and M&T/Real Estate calculations to include projects less than 5 MW as described in 
                         <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
                     <br>
-                    July 1st 2021: Reflect new changes to Revenue Share calculations as described in 
+                    <strong> July 1st, 2021</strong>: Reflect new changes to Revenue Share calculations as described in 
                         <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a> 
                 </p>
             </div>
@@ -46,114 +47,142 @@ on how the use the product.-->
         <p>This tool permits the adjustment of project specifications as well as the ability to consider new investments
             in multiple years to allow examination of the revenue implications of alternative scenarios.
         </p>
-        <br>    
+        <br>
 
-        <div id="important-comments-and-cautions" class="section level3">
-            <h2><strong>Login Instructions</strong></h2>
-            <p>To create a new profile, select the "Create New Account" Button in the top right corner of the page. This will direct you to a page where you enter a username, email and password. Once the account is
+        <div class="card">
+            <div class="card-body">
+              <h5 class="card-title" align="left"><strong>Login Instructions</strong></h5>
+              <p class="card-text" align="left">To create a new profile, select the "Create New Account" Button in the top right corner of the page. This will direct you to a page where you enter a username, email and password. Once the account is
                 created, you will be asked to select a locality on which to base your initial profile parameters. Once selected, the locality cannot be changed on a given profile. In order to create new projects associated with
                 another locality's parameters, you should create a new profile.
-            </p>
-            <p>If you have already created an account, select "Login" above.</p>
+                <br><br>If you have already created an account, select "Login" above.
+                </p>
+            </div>
         </div>
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 
         <br>
         <br>
 
         <div id="the-decision-a-choice-between-two-revenue-model-options" class="section level2">
-            <h1><strong>The Decision: A Choice Between Two Revenue Models</strong></h1>
+            <h2><strong>A Choice Between Two Revenue Models</strong></h2>
             <br>
-            <div id="the-machinery-tools-tax-model" class="section level3">
-                <h2><strong>The Machinery &amp; Tools/Real Estate Tax Model</strong></h2>
-                <p>The Machinery &amp; Tools (M&amp;T)/Real Estate Tax is the default mechanism for localities to realize
-                    revenues from utility-scale solar projects. The tax is calculated as a percentage of the assessed value of
-                    certain capital investments made within a locality. In the case of utility-scale solar projects, the
-                    annual amount of the tax levy depends on several parameters:
-                </p>
 
-                <ul>
-                    <li>The notional dollar value of the initial capital investment made by project developers.</li>
-                    <li>The schedule of exemptions that apply specifically to utility-scale solar projects per <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter36/section58.1-3660/">§ 58.1-3660</a> of state law.</li>
-                    <li>The depreciation schedule applied to capital investments, whether applied by the State Corporation Commission (SCC) or the locality (whichever is applicable).</li>
-                    <li>The size of the solar project in MW.</li>
-                    <li>The local M&amp;T tax rate and real estate rate, which may vary by locality.</li>
-                </ul>
-                <br>
+            <div class="btn-group">
+                <label class="btn btn-secondary">
+                  <input type="button" class="btn-secondary" style="border: none"  id="model-1-btn" autocomplete="off" checked value="The M&amp;T Model">
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="button" class="btn-secondary" style="border: none" id="model-2-btn" autocomplete="off" value="The Revenue Share Model">
+                </label>
+            </div>
+            
+            <br><br>
 
-                <p>
-                    For the M&T/Real Estate tax model, the tax rate, depreciation schedule, and exemption rate applied to projects can vary based on the 
-                    size of the solar project and who is operating the project. There are three possible ways the M&T/Real Estate tax model can be applied to
-                    a project based on these parameters:
-                </p>
-                <ul>
-                    <li>
-                        If a project is 25 MW or less and is not owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the M&T tax rate is
-                        used along with the locality's depreciation schedule and the M&T stepdown exemption rate.
-                    </li>
-                    <li>
-                        If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the real estate tax rate is applied to the project along with the SCC
-                        depreciation schedule, the M&T stepdown exemption rate, and local assessment ratios. Projects that are less than 25 MW and are owned by electric suppliers are taxed using these parameters. <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
-                    </li>
-                    <li>
-                        All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
-                    </li>
-                </ul>
-                <br>
-                <p>
-                    The 25 MW limit for projects comes from Virginia's definition of an electric supplier as defined in <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter26/section58.1-2600/">Virginia Code 58.1-2600</a> and 
-                    the local taxation of electric suppliers defined in <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter26/section58.1-2606/">Virginia Code 58.1-2606 (Paragraph C)</a>. These two pieces of legislation state any 
-                    electric supplier can not be taxed at a higher rate than the real property rate, and that an electric supplier is any person operating a facility that generates more than 25 MW of energy.
-                </p>
-                <p>
-                    A breakdown of these categories of projects and their implications can be viewed in the image below.
-                </p>
-                <p>
-                    In addition to these direct factors, the use of the M&amp;T tax may cause an additional indirect
-                    effect on local revenues, through its influence on state funding for education. Under Virginia law, the
-                    costs of supporting public schools is effectively shared between state and local governments. The
-                    state’s per-pupil contribution varies by locality: it is lower for wealthier counties that are better
-                    positioned to fund schools on their own, and greater for poorer counties. The exact amount of the state’s
-                    contribution is based on the value of the <a
-                        href="https://www.solunesco.com/2018/12/20/revisiting-the-composite-index-of-virginia/#:~:text=What%20is%20the%20Composite%20Index%20and%20how%20is%20it%20related%20to%20solar%3F&amp;text=The%20Composite%20Index%20of%20Local,paid%20by%20the%20local%20government.">Composite
-                        Index of Local Ability-to-Pay</a> 
-                    (CI), an estimate of each locality’s taxable wealth. To
-                    put the issue briefly: a new solar project may increase a locality’s CI, triggering a decrease in
-                    education funding from the state.
-                </p>
-                <img src="{% static "models/Flowchart.png" %}" alt="M&T Flowchart" class="mt-flowchart">
+            <div id="model-1">
+                <div style="line-height:50%;">
+                    <br>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title" align="left"><strong>The Machinery &amp; Tools/Real Estate Tax Model</strong></h5>
+                        <p class="card-text" align="left">The Machinery &amp; Tools (M&amp;T)/Real Estate Tax is the default mechanism for localities to realize
+                            revenues from utility-scale solar projects. The tax is calculated as a percentage of the assessed value of
+                            certain capital investments made within a locality. In the case of utility-scale solar projects, the
+                            annual amount of the tax levy depends on several parameters:
+                                
+                                <div> 
+                                    <ul align="left">
+                                        <li>Notional dollar value of the initial capital investment made by project developers</li>
+                                        <li>Schedule of exemptions that apply specifically to utility-scale solar projects per <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter36/section58.1-3660/">§ 58.1-3660</a> of state law</li>
+                                        <li>Depreciation schedule applied to capital investments, whether applied by the State Corporation Commission (SCC) or the locality (whichever is applicable)</li>
+                                        <li>Size of the solar project in MW</li>
+                                        <li>Local M&amp;T tax rate and real estate rate, which may vary by locality</li>
+                                    </ul>
+                                </div>
+                        </p>
+                        <p class="card-text" align="left">
+                            <br>For the M&T/Real Estate tax model, the tax rate, depreciation schedule, and exemption rate applied to projects can vary based on the 
+                            size of the solar project and who is operating the project. There are three possible ways the M&T/Real Estate tax model can be applied to
+                            a project based on these parameters:
+                        </p>
+
+                        <ul align="left">
+                            <li>
+                                If a project is 25 MW or less and is not owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the M&T tax rate is
+                                used along with the locality's depreciation schedule and the M&T stepdown exemption rate.
+                            </li>
+                            <li>
+                                If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the real estate tax rate is applied to the project along with the SCC
+                                depreciation schedule, the M&T stepdown exemption rate, and local assessment ratios. Projects that are less than 25 MW and are owned by electric suppliers are taxed using these parameters. <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>
+                            </li>
+                            <li>
+                                All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
+                            </li>
+                        </ul>
+
+                        <p align="left">
+                            <br>The 25 MW limit for projects comes from Virginia's definition of an electric supplier as defined in <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter26/section58.1-2600/">Virginia Code 58.1-2600</a> and 
+                            the local taxation of electric suppliers defined in <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter26/section58.1-2606/">Virginia Code 58.1-2606 (Paragraph C)</a>. These two pieces of legislation state any 
+                            electric supplier can not be taxed at a higher rate than the real property rate, and that an electric supplier is any person operating a facility that generates more than 25 MW of energy.
+                            <br><br>A breakdown of these categories of projects and their implications can be viewed in the image below. <br><br>
+                            In addition to these direct factors, the use of the M&amp;T tax may cause an additional indirect
+                            effect on local revenues, through its influence on state funding for education. Under Virginia law, the
+                            costs of supporting public schools is effectively shared between state and local governments. The
+                            state’s per-pupil contribution varies by locality: it is lower for wealthier counties that are better
+                            positioned to fund schools on their own, and greater for poorer counties. The exact amount of the state’s
+                            contribution is based on the value of the <a
+                                href="https://www.solunesco.com/2018/12/20/revisiting-the-composite-index-of-virginia/#:~:text=What%20is%20the%20Composite%20Index%20and%20how%20is%20it%20related%20to%20solar%3F&amp;text=The%20Composite%20Index%20of%20Local,paid%20by%20the%20local%20government.">Composite
+                                Index of Local Ability-to-Pay</a> 
+                            (CI), an estimate of each locality’s taxable wealth. To
+                            put the issue briefly: a new solar project may increase a locality’s CI, triggering a decrease in
+                            education funding from the state.
+                            <br><br>
+                            <img src="{% static "models/Flowchart.png" %}" alt="M&T Flowchart" class="mt-flowchart">
+                        </p>
+                    </div>
+                </div>
             </div>
 
-            <br>
-
             <div id="the-revenue-share-model" class="section level3">
-                <h2><strong>The Revenue Share Model</strong></h2>
-                <p>
-                    The Revenue Share is an alternative method for localities to extract value from solar projects;
-                    it was established in <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a> 
-                    and <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+SB762">SB762</a>
-                    after being passed during the Spring 2020 Virginia General Assembly session. The legislation
-                    allows a locality to assess a yearly flat rate through ordinance of up to $1400/MW on solar projects
-                    built within the jurisdiction. In Spring 2021, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a> 
-                    was passed, allowing localities to increase the revenue share rate by 10% every 5 years starting July 1, 2026. The new maximum revenue share rate per MW 
-                    for yearly intervals are described in the table below. In Spring 2022, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a> was passed, permitting localities to apply revenue share rates to solar projects less than 5 MW.
-                    Adopting this option grants a 100% tax exemption for solar projects in exchange for the revenue share.
-                </p>
-                <img src="{% static "models/rs_rate_table.png" %}" alt="M&T Flowchart" class="rs-table">
+                <div class="card" id="model-2" style="display: none">
+                    <div class="card-body">
+                      <h5 class="card-title" align="left"><strong>The Revenue Share Model</strong></h5>
+                      <p class="card-text" align="left">The Revenue Share is an alternative method for localities to extract value from solar projects;
+                        it was established in <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a> 
+                        and <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+SB762">SB762</a>
+                        after being passed during the Spring 2020 Virginia General Assembly session. The legislation
+                        allows a locality to assess a yearly flat rate through ordinance of up to $1400/MW on solar projects
+                        built within the jurisdiction. In Spring 2021, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?ses=212&typ=bil&val=hb2269">HB2269</a> 
+                        was passed, allowing localities to increase the revenue share rate by 10% every 5 years starting July 1, 2026. The new maximum revenue share rate per MW 
+                        for yearly intervals are described in the table below. In Spring 2022, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a> was passed, permitting localities to apply revenue share rates to solar projects less than 5 MW.
+                        Adopting this option grants a 100% tax exemption for solar projects in exchange for the revenue share.
+                        </p>
+                        <img src="{% static "models/rs_rate_table.png" %}" alt="M&T Flowchart" class="rs-table">
+                        <br>
+                    </div>
+                </div>
             </div>
         </div>
 
+        <br>
+
         <div id="procedures-for-computing-cash-flows-under-the-two-models" class="section level1">
             <h2><strong>Computing Cash Flows under the Two Models</strong></h2>
-            <p>The tool will prompt the user for seven pieces of information:</p>
+            <br>
+            <p>The tool will prompt the user for variables. These variables can be changed by a user to make their analyses more accurate. Based on this data, the tool will calculate the expected tax revenue for a locality for each of the
+                two tax models. Results will be presented side by side, allowing for comparison.</p>
             <ul>
 
-                <li>The initial year the solar project will operate in.</li>
-                <li>The total capitalized investment into the solar project.</li>
-                <li>The size of the project in megawatts.</li>
-                <li>The total acreage of the project.</li>
-                <li>The total acreage of the project that is "inside the fence".</li>
-                <li>The value of the land, both baseline value, and the value of land "inside the fence".</li>
-                <li>Whether the project is operated by an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative.</li>
+                <li>Initial year the solar project will operate in</li>
+                <li>Total capitalized investment into the solar project</li>
+                <li>Size of the project in megawatts</li>
+                <li>Total acreage of the project</li>
+                <li>Total acreage of the project that is "inside the fence"</li>
+                <li>Value of the land, both baseline value, and the value of land "inside the fence"</li>
+                <li>Operation by an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative</li>
             </ul>
             <br>
             <p>
@@ -161,22 +190,43 @@ on how the use the product.-->
                 parameters including:
             </p>
             <ul>
-                <li>The revenue share rate (max. $1400/MW).</li>
-                <li>M&T Tax Rate.</li>
-                <li>Real Estate Tax Rate.</li>
-                <li>Assessment Ratio.</li>
-                <li>The locality's depreciation schedule.</li>
-                <li>SCC's depreciation schedule.</li>
-                <li>The discount rate to be applied to all projects.</li>
+                <li>Revenue share rate (Max. $1400/MW)</li>
+                <li>M&T Tax Rate</li>
+                <li>Real Estate Tax Rate</li>
+                <li>Assessment Ratio</li>
+                <li>Locality's depreciation schedule</li>
+                <li>SCC's depreciation schedule</li>
+                <li>Discount rate to be applied to all projects</li>
             </ul>
             <br>
-            <p>These variables can be changed by a user to make their analyses more accurate.</p>
-            <p>Based on this data, the tool will calculate the expected tax revenue for a locality for each of the
-                two tax models. Results will be presented side by side, allowing for comparison.</p>
-            <div id="the-mt-model" class="section level2">
-                <h2><strong>The M&amp;T Model</strong></h2>
-                <p>
-                    To calculate the expected tax revenue from the M&amp;T system, the model will take each year’s
+
+            <div class="btn-group">
+                <label class="btn btn-secondary">
+                  <input type="button" class="btn-secondary" style="border: none" id="flow-1-btn" autocomplete="off" checked value="The M&amp;T Model">
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="button" class="btn-secondary" style="border: none" id="flow-2-btn" autocomplete="off" value="The Revenue Share Model">
+                </label>
+                <label class="btn btn-secondary">
+                  <input type="button" class="btn-secondary" style="border: none" id="flow-3-btn" autocomplete="off" value="Composite Index">
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="button" class="btn-secondary" style="border: none" id="flow-4-btn" autocomplete="off" value="Future Cash Flows">
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="button" class="btn-secondary" style="border: none" id="flow-5-btn" autocomplete="off" value="Auxiliary Assumptions">
+                </label>
+                <label class="btn btn-secondary">
+                    <input type="button" class="btn-secondary" style="border: none" id="flow-6-btn" autocomplete="off" value="Uncertainties &amp; Risks">
+                </label>
+            </div>
+
+            <br><br>
+
+            <div class="card" id="flow-1">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>The M&amp;T Model</strong></h5>
+                  <p class="card-text" align="left">To calculate the expected tax revenue from the M&amp;T system, the model will take each year’s
                     expected solar investments from the schedule provided by the user and break their lifetime into three
                     periods that represent each stepdown in the M&amp;T tax exemption. Within each period, the yearly
                     expected tax revenue will be calculated by multiplying the project’s assessed value with the exemption level
@@ -184,116 +234,195 @@ on how the use the product.-->
                     the project’s life) and the effective M&amp;T tax rate for the indicated locality. The effective
                     M&amp;T tax rate is derived by multiplying a locality’s statutory rate per $100 by its depreciation
                     schedule, should it have one.
-                </p>
+                    </p>
+                </div>
             </div>
-            <div id="the-revenue-share-model-1" class="section level2">
-                <h2><strong>The Revenue Share Model</strong></h2>
-                <p>
-                    To calculate the value of tax revenue in an individual year from solar projects larger than 5 MW
+
+            <div class="card" id="flow-2" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>The Revenue Share Model</strong></h5>
+                  <p class="card-text" align="left">To calculate the value of tax revenue in an individual year from solar projects larger than 5 MW
                     built in
                     year <span class="math inline">\(t\)</span>, the revenue share rate is multiplied by the total
                     number of
                     qualifying megawatts built in year <span class="math inline">\(t\)</span>.
-                </p>
+                    </p>
+                </div>
             </div>
-        </div>
 
-        <div class="section level2" id="composite-index">
-            <h2><strong> Composite Index </strong></h2>
-            <p>
-                Both the M&T tax and Revenue Share models will increase a locality's Composite Index value. 
-                As stated previously the Composite Index is used to determine how much money a locality must
-                contribute to its education funding. 
-            </p>
-            <p>
-                For the M&T tax, the increase in the Composite Index comes from the increase in taxable land value
-                as a result of the new project and the value of the equipment for the project. However, for the revenue
-                share model, the increase for the Composite Index is only due to the increase in taxable land value.
-            </p>
-            <p>
-                Important values are needed for the Composite Index calculations. These values will be assigned to 
-                a locality's profile and a user can change them across the locality's profile. The values that are needed
-                for the Composite Index calculations are:
-            </p>
-            <ul>
-                <li>Locality Baseline True Value.</li>
-                <li>Adjusted Gross Income.</li>
-                <li>Taxable Retail Sales.</li>
-                <li>Population.</li>
-                <li>Average Daily Student Membership (ADM).</li>
-                <li>Required Local Matching - Current data is from FY 2019 and can be viewed <a href="https://rga.lis.virginia.gov/Published/2019/RD42/PDF">here</a>. Value entered into the field is the 
-                sum of RLE for the Standards of Quality and RLM for Incentive and Lottery Accounts.</li>
-            </ul>
-            <br>
-        </div>
+            <div class="card" id="flow-3" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Composite Index</strong></h5>
+                  <p class="card-text" align="left">TBoth the M&T tax and Revenue Share models will increase a locality's Composite Index value. 
+                    As stated previously the Composite Index is used to determine how much money a locality must
+                    contribute to its education funding. <br><br>
+                    For the M&T tax, the increase in the Composite Index comes from the increase in taxable land value
+                    as a result of the new project and the value of the equipment for the project. However, for the revenue
+                    share model, the increase for the Composite Index is only due to the increase in taxable land value. <br><br>
+                    Important values are needed for the Composite Index calculations. These values will be assigned to 
+                    a locality's profile and a user can change them across the locality's profile. The values that are needed
+                    for the Composite Index calculations are: <br>
+                    <ul align="left">
+                        <li>Locality Baseline True Value</li>
+                        <li>Adjusted Gross Income</li>
+                        <li>Taxable Retail Sales</li>
+                        <li>Population</li>
+                        <li>Average Daily Student Membership (ADM)</li>
+                        <li>Required Local Matching*</li>
+                    </ul>
+                    </p>
 
-        <div id="converting-future-cash-flows-to-net-present-value" class="section level2">
-            <h2><strong>Future Cash Flows to Net Present Value</strong></h2>
-            <p>Under either taxation model, a stream of future revenue flows can be converted to present-value
-                equivalents
-                by discounting at an appropriate discount rate. Let <span class="math inline">\(t = 0, 1, \ldots,
-                    T\)</span>
-                index the several years over the planning period, where <span class="math inline">\(t=0\)</span>
-                corresponds
-                to the present year (here, 2020), and <span class="math inline">\(T\)</span> denotes the number of
-                years
-                until the limit of the planning horizon (say, <span class="math inline">\(T = 30\)</span>). For each
-                year
-                <span class="math inline">\(t\)</span>, let <span class="math inline">\(c_t\)</span> denote the cash
-                flow
-                received by the locality as revenue. The Net Present Value of this stream of cash flows is given by
-                the
-                well-known <span class="math inline">\(NPV\)</span> formula</p>
-            <p><span class="math display">\[ NPV = \sum_{t=0}^T \frac{c_t}{(1+r)^t} \]</span> where <span
-                    class="math inline">\(r\)</span> denotes the discount rate the locality uses for its capital
-                budgeting.
-                The appropriate choice of the discount rate <span class="math inline">\(r\)</span> is not obvious,
-                and
-                can
-                have a significant effect on the NPV calculation. For our base case, we will assume a six-percent
-                discount
-                rate (<span class="math inline">\(r = 0.06\)</span>). The tool will also allow users to enter
-                alternative
-                discount rates, allowing for the performance of a sensitivity analysis.</p>
-        </div>
+                    <p class="card-text" align="left"> <br> *<i>Current data is from <a href="https://rga.lis.virginia.gov/Published/2019/RD42/PDF">FY 2019</a>. Value entered into the field is the 
+                        sum of RLE for the Standards of Quality and RLM for Incentive and Lottery Accounts</i>
+                        </p>
+                </div>
+            </div>
 
-        <div id="auxiliary-assumptions" class="section level2">
-            <h2><strong>Auxiliary Assumptions</strong></h2>
-            <ul>
-                <li>The policy environment will remain stable (i.e. The M&amp;T tax program will not sunset in 2030,
-                    and
+            <div class="card" id="flow-4" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Future Cash Flows to Net Present Value</strong></h5>
+                  <p class="card-text" align="left">Under either taxation model, a stream of future revenue flows can be converted to present-value
+                    equivalents
+                    by discounting at an appropriate discount rate. Let <span class="math inline">\(t = 0, 1, \ldots,
+                        T\)</span>
+                    index the several years over the planning period, where <span class="math inline">\(t=0\)</span>
+                    corresponds
+                    to the present year (here, 2020), and <span class="math inline">\(T\)</span> denotes the number of
+                    years
+                    until the limit of the planning horizon (say, <span class="math inline">\(T = 30\)</span>). For each
+                    year
+                    <span class="math inline">\(t\)</span>, let <span class="math inline">\(c_t\)</span> denote the cash
+                    flow
+                    received by the locality as revenue. The Net Present Value of this stream of cash flows is given by
                     the
-                    revenue sharing model remains in its current form in perpetuity).</li>
-                <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
-                    level is higher for earlier dates).</li>
-                <li>
-                    A locality's education budget will increase by 1 percent every year. Every other value used for the 
-                    composite index calculations will remain constant over time.
-                </li>
-            </ul>
-        </div>
+                    well-known <span class="math inline">\(NPV\)</span> formula where <span
+                    class="math inline">\(r\)</span> denotes the discount rate the locality uses for its capital
+                    budgeting.
+                    </p>
+                    <p align="left"><span class="math display">\[ NPV = \sum_{t=0}^T \frac{c_t}{(1+r)^t} \]</span>
+                    The appropriate choice of the discount rate <span class="math inline">\(r\)</span> is not obvious,
+                    and
+                    can
+                    have a significant effect on the NPV calculation. For our base case, we will assume a six-percent
+                    discount
+                    rate (<span class="math inline">\(r = 0.06\)</span>). The tool will also allow users to enter
+                    alternative
+                    discount rates, allowing for the performance of a sensitivity analysis.</p>
+                </div>
+            </div>
 
-        <br>
+            <div class="card" id="flow-5" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Auxiliary Assumptions</strong></h5>
+                  <p class="card-text" align="left">
+                    <ul align="left">
+                        <li>The policy environment will remain stable (i.e. The M&amp;T tax program will not sunset in 2030,
+                            and
+                            the
+                            revenue sharing model remains in its current form in perpetuity)</li>
+                        <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
+                            level is higher for earlier dates)</li>
+                        <li>
+                            A locality's education budget will increase by 1 percent every year and every other value used for the 
+                            composite index calculations will remain constant over time
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
 
-        <div id="uncertainties-and-risks" class="section level2">
-            <h2><strong>Uncertainties and Risks</strong></h2>
-            <ul>
-                <li>This calculation ignores any revenue that might come from already existing solar projects. If a
-                    revenue share is adopted, a locality cannot mandate that a preexisting project pay a revenue
-                    share rather than the traditional M&amp;T.</li>
-                <li>Increases in revenue from new solar builds may trigger reductions in state education funding,
-                    which may not be fully offset by solar revenue.</li>
-                <li>Competition from neighboring counties on revenue share rates may lead to over or underestimates
-                    of the extent of solar development in a locality.</li>
-            </ul>
-        </div>
+            <div class="card" id="flow-6" style="display: none">
+                <div class="card-body">
+                <h5 class="card-title" align="left"><strong>Uncertainties and Risks</strong></h5>
+                <p class="card-text" align="left">
+                    <ul align="left">
+                        <li>The calculation ignores any revenue that might come from already existing solar projects. If a
+                            revenue share is adopted, a locality cannot mandate that a preexisting project pay a revenue
+                            share rather than the traditional M&amp;T</li>
+                        <li>Increases in revenue from new solar builds may trigger reductions in state education funding,
+                            which may not be fully offset by solar revenue</li>
+                        <li>Competition from neighboring counties on revenue share rates may lead to over or underestimates
+                            of the extent of solar development in a locality</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
 
-        <br>
+            <br>
+
+            <script type="text/javascript"> 
+                $("#model-1-btn").click(function(){
+                    $("#model-2").hide();
+                    $("#model-1").show();
+                });
+    
+                $("#model-2-btn").click(function(){
+                    $("#model-1").hide();
+                    $("#model-2").show();
+                });
+
+                $("#flow-1-btn").click(function(){
+                    $("#flow-1").show();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+                });
+
+                $("#flow-2-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").show();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+                });
+
+                $("#flow-3-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").show();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+                });
+
+                $("#flow-4-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").show();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+                });
+
+                $("#flow-5-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").show();
+                    $("#flow-6").hide();
+                });
+
+                $("#flow-6-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").show();
+                });
+                
+            </script>
+
+            <br>
 
         <!-- Acknowledgements -->
         <div>
             <h2><strong>Acknowledgements</strong></h2>
-            <p>A special thanks is extended to the following people for the guidance and feedback they provided throughout the development process of the SolTax application.</p>
+            <br><p>A special thanks is extended to the following people for the guidance and feedback provided throughout the development process of the SolTax application.</p>
             <ul>
                 <li>Robert Crockett, Advantus Strategies</li>
                 <li>Francis Hodsell, SolUnesco</li>
@@ -309,11 +438,13 @@ on how the use the product.-->
         <br>
         <br>
 
-        <!-- Disclaimer -->
-        <div>
-            <p><strong>Disclaimer</strong>
-            <br>
-            <em>This is not a forecasting tool. This is a tool is to be used as a consulting tool for localities. The suggestions from models does not constitute legal advice.</em></p>
+        <div class="card">
+            <p class="card-header font-weight-bold">Disclaimer</p>
+            <div class="card-body">
+                <p class="text-left">
+                    This is not a forecasting tool. This is a tool is to be used as a consulting tool for localities. The suggestions from models does not constitute legal advice.
+                </p>
+            </div>
         </div>
     </div>
 </div>

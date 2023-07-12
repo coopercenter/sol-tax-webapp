@@ -15,7 +15,7 @@ each year, and a table showing the breakdown for each year. -->
     <div class="row">
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters print-col" id="dash-outline">
-            <h2 class="entered-data-title"><strong>Project Parameters</strong></h2>
+            <h5 class="entered-data-title"><strong>Project Parameters</strong></h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -101,7 +101,7 @@ each year, and a table showing the breakdown for each year. -->
         <div class="col-sm-6 right-col">
             <div class="result-top-text">
                 <div class="result-title">
-                    <h3><strong>Total Expected Lifetime Revenue</strong></h3>
+                    <h5><strong>Total Expected Lifetime Revenue</strong></h5>
                     <p> Discounted at {% get_discount_rate simulation %}% per year (2020 dollars) </p>
                 </div>
                 <div class="result-text">
@@ -135,7 +135,7 @@ each year, and a table showing the breakdown for each year. -->
             </div>
 
             <div class="chart dontprint">
-                <h2 class="chart-title"><strong>Lineplot of Nominal Cashflows</strong></h2>
+                <h5 class="chart-title"><strong>Lineplot of Nominal Cashflows</strong></h5>
                 
                 {% load static %}
                 {% load plotly_dash %}
@@ -156,7 +156,7 @@ each year, and a table showing the breakdown for each year. -->
 
     <div id="side-by-side-comparison" class="side-by-side-comparison">
         <div class="table-title">
-            <h3><strong>Annual Cashflows Under the Two Different Revenue Models </strong> </h3>
+            <h5><strong>Annual Cashflows Under the Two Different Revenue Models </strong> </h5>
             <p>(Rounded to the nearest thousand)</p>
             <p>The cashflows include revenue from the applied M&T/Real Estate tax or Revenue Share, increase in land value, and increased Composite Index requirements (If applicable).</p>
         </div>

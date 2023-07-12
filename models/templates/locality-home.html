@@ -30,15 +30,21 @@
                 <table class="locality-summary-table">
                     <tr>
                         <td>
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
                             <h4><strong>Increase in Revenue from Revenue Share</strong></h4>
                         </td>
                         <td>
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
                             <h4><span class="dollar_value difference">{{difference}}</span></h4>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h5><strong>Total Revenue Share Revenue</strong></h5>
+                            <h5>Total Revenue Share Revenue</h5>
                         </td>
                         <td>
                             <h5><span class="dollar_value">{{total_rs_revenue}}</span></h5>
@@ -46,10 +52,18 @@
                     </tr>
                     <tr>
                         <td>
-                            <h5><strong>Total M&T/Real Estate Tax Revenue</strong></h5>
+                            <h5>Total M&T/Real Estate Tax Revenue</h5>
+
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
                         </td>
                         <td>
                             <h5><span class="dollar_value">{{total_mt_revenue}}</span></h5>
+
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
                         </td>
                     </tr>
                 
@@ -153,7 +167,7 @@
         {% endif %}
 
         <div class="locality-info {% if gap == 'True' %} parameter-panel {% endif %}">
-            <h2 class="locality-home-header"> <strong> Calculation Parameters </strong> </h2>
+            <h5 class="locality-home-header"> <strong> Calculation Parameters </strong></h5>
             <table class="table-striped locality-info-table">
                 <thead>
                     <tr>
