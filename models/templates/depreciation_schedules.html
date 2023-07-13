@@ -8,6 +8,9 @@
         <div class="col-xl-6 depreciation-forms">
             <div>  
                 <h2><strong>Local Depreciation Schedule</strong></h2> 
+                <div style="line-height:50%;">
+                    <br>
+                </div>
                 <form action="/user-{{locality}}/" class="local-depreciation-form" method="POST" name="testing">
                     {% csrf_token %}
                     <table>
@@ -33,6 +36,7 @@
                             </tr>
                         {% endfor %} 
                     </table>
+                    <br>
                     
                     <button type="submit" class="btn btn-lg btn-primary local-rate-submit" value=""> Change Local Schedule </button>
                 </form>
@@ -40,6 +44,9 @@
         </div>
         <div class="col-xl-6 depreciation-forms">
             <h2><strong>SCC Depreciation Schedule</strong></h2> 
+            <div style="line-height:50%;">
+                <br>
+            </div>
             <form action="/user-{{locality}}/" class="local-depreciation-form" method="POST">
                 {% csrf_token %}
                 <table>
@@ -65,7 +72,7 @@
                         </tr>
                     {% endfor %} 
                 </table>
-                
+                <br>
                 <input type="submit" value="Change SCC Schedule" class="btn btn-lg btn-primary local-rate-submit">
             </form>
         </div>

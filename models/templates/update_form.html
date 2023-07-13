@@ -5,11 +5,11 @@
 {% block content %}
 <div class="container-fluid">
     <h2 class="selected-locality">
-        <!-- Update Locality Parameters -->
+        <!-- Update Parameters -->
         <div style="line-height:50%;">
             <br>
         </div>
-        <strong>Locality Parameters</strong></span>
+        <strong>Preloaded Parameters</strong></span>
     </h2>
     
     <div class="form-group">
@@ -17,7 +17,7 @@
             {% csrf_token %}
             {{ form.as_p }}
             <br>
-            <button class="btn btn-primary btn-lg"> Update Locality Parameters</button>
+            <button class="btn btn-primary btn-lg"> Update Preloaded Parameters</button>
         </form>
     </div>
     <br><br>

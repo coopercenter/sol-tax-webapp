@@ -33,13 +33,13 @@
                             <div style="line-height:50%;">
                                 <br>
                             </div>
-                            <h4><strong>Increase in Revenue from Revenue Share</strong></h4>
+                            <h5><strong>Increase in Revenue from Revenue Share</strong></h5>
                         </td>
                         <td>
                             <div style="line-height:50%;">
                                 <br>
                             </div>
-                            <h4><span class="dollar_value difference">{{difference}}</span></h4>
+                            <h5><span class="dollar_value difference">{{difference}}</span></h5>
                         </td>
                     </tr>
                     <tr>
@@ -306,19 +306,19 @@
                 <br><br><br><br>
                 <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
                     {% csrf_token %}
-                    <input class="btn btn-lg btn-info mr-4" type="submit" value="Update Depreciation Schedules">
+                    <input class="btn btn btn-info mr-5" type="submit" value="Update Depreciation Schedules">
                 </form>
 
                 <form method="POST" action="update-user-parameters/" class="update-form dontprint">
                     {% csrf_token %}
-                    <input class="btn btn-primary btn-lg mr-4" type="submit" value="Update User Parameters">
+                    <input class="btn btn-primary btn mr-5" type="submit" value="Update Preloaded Parameters">
                 </form>
 
                 <form method="POST" action="update-revenue-share/" class="update-form dontprint">
                     {% csrf_token %}
-                    <input class="btn btn-success btn-lg mr-4" type="submit" value="Update Revenue Share Escalator">
+                    <input class="btn btn-success btn mr-5" type="submit" value="Update Revenue Share Escalator">
                 </form>
-                <br><br><br><br><br>
+                <br><br><br><br>
     </div>
 
     <div class="dontshow locality-rs {% if gap == 'True' %} parameter-panel {% endif %}">
