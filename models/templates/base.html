@@ -21,7 +21,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
 <body>
     <div class="header">
         <div class="navbar navbar-expand-lg navbar-light bg-light">
-            <h1> <a href="/" class="site-name"> <strong> The Virginia SolTax Model </strong></a></h1>
+            <h1> <a href="/" class="site-name"> <strong> The Virginia SolTax Tool </strong></a></h1>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -31,7 +31,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
                     {% if user.is_authenticated %}
                         <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
                             {% csrf_token %}
-                            <input class="btn btn-primary not-log-button" type="submit" value="User Parameters">
+                            <input class="btn btn-primary not-log-button" type="submit" value="Preloaded Parameters">
                         </form>
 
                         <form method="POST" action="/user-{{user.username}}/">
@@ -55,7 +55,7 @@ include 'extends 'base.html'' at the top of the file to include the base html el
 
     <div class="header">
         <div class="navbar navbar-expand-lg navbar-light bg-light d-none d-print-inline print-header">
-            <h1 class="dontprint"> The Virginia SolTax Model </h1>
+            <h1 class="dontprint"> The Virginia SolTax Tool </h1>
         </div>
     </div>
 
@@ -73,7 +73,8 @@ include 'extends 'base.html'' at the top of the file to include the base html el
         </div>
         <p class="subtitle footer-text">A tool to assist Virginia localities</p>
         <p class="subtitle footer-text">Updated July 12th, 2023</p>
-        <p class="author footer-text">Created by Arthur Small, Thomas Callen, Ethan Novak, Elizabeth Marshall, Jaden Wang, and Carrie Hearne</a></p>
+        <p class="author footer-text">Created by Arthur Small, Thomas Callen, Ethan Novak, Elizabeth Marshall and Carrie Hearne</a></p>
+        <p class="author footer-text">Updated and redesigned by Jaden Wang</a></p>
     </div>
 
 
