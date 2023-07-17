@@ -105,8 +105,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
 
     __SolTax Developer WebApp__: [https://solar-tax-webapp-dev.azurewebsites.net](https://solar-tax-webapp-dev.azurewebsites.net)
 
-    - After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax webapp. 
-    - Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
+9. After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax webapp. Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
 
 ## Debugging Tips
 
