@@ -1,5 +1,5 @@
 # SolTax WebApp
-This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
+This tool is meant for use by Virginia localities to help them decide which taxation strategy to use for solar generating facilities, either the new Revenue Share ordinance or the old M&T/Real Estate tax strategy. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax options as well as a total summary of the revenues for all projects under both tax options. 
 
 __SolTax WebApp__: [https://solar-tax-webapp.azurewebsites.net/](https://solar-tax-webapp.azurewebsites.net/)
 
@@ -100,22 +100,15 @@ Django application which follows the MVT framework. MVT framework stands for mod
     - If the command is successful, SolTax should be running on your local server at [https://localhost8000](https://localhost8000) or [http://127.0.0.1:8000](http://127.0.0.1:8000). 
     - Otherwise, address the runtime error as needed and run the command again. For additional help, see [Debugging Tips](#debugging-tips). 
 6. Make the additional needed changes to SolTax while running the server perodically to ensure the changes made are successful
-7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. 
-8. Create a developer web app with a PostgreSQL database on Azure to test your changes on the Azure server. The tutorial specifies the runtime stack for the web app and in its current iteration, the SolTax web app is hosted on Python 3.11.
+7. Push your changes to your branch on Github. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u branch_name` to push your changes to your branch. When all needed changes have been made and the local server runs successfully, merge your branch with the _dev_ branch. 
+8. The _dev_ branch deploys to a SolTax Developer webapp which includes the preloaded configurations used by SolTax to test your changes on the Azure server. If changes are needed for the preloaded configurations, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for access. Changes pushed to the _dev_ branch will automatically be deployed to the developer webapp and can be tracked in the _Actions_ tab on Github.
 
-    __Deploy a Python web app with PostgreSQL in Azure Tutorial__: [https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app](https://learn.microsoft.com/en-us/azure/app-service/tutorial-python-postgresql-app?tabs=flask%2Cwindows&pivots=deploy-portal)
+    __SolTax Developer WebApp__: [https://solar-tax-webapp-dev.azurewebsites.net](https://solar-tax-webapp-dev.azurewebsites.net)
 
-    This step requires a subscription with Azure such as under the Cooper Center Azure subscription or a free subscription with _Microsoft Azure for Student Starters_. For more information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
-
-9. Under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_ of the developer webapp, add the environmental variables as found in the _hiddenVars_ folder in your cloned repository by adding a new application setting. 
-10. In _settings.py_, add your developer web app domain to `ALLOWED_HOSTS = ['domain_name.azurewebsites.net']` and `CSRF_TRUSTED_ORIGIN = ['https://domain_name.azurewebsites.net']`
-11. Deploy the code, selecting repository as _sol-tax-webapp_ and branch as your branch in the Deployment Center. When the code is deployed, under _Configurations_ turn _Always On_ on to keep the app loaded even when there is no traffic otherwise the site will take a while to load. 
-    - After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax Azure server. 
+    - After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax webapp. 
     - Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
 
 ## Debugging Tips
-
-
 
 ### Deprecated Packages
 1. Deprecated packages are outdated past their newest version and should be updated as it may pose both a security risk and result in runtime errors. The runtime error displayed will likely point to the packages that are needing to be updated. 

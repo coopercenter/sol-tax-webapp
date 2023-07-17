@@ -37,7 +37,7 @@ if os.path.exists('hiddenVars'):
     ALLOWED_HOSTS = []
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
+    ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
 # ALLOWED_HOSTS = []
 
 # Application definition
@@ -237,4 +237,4 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"
 CRISPY_TEMPLATE_PACK = 'bootstrap4' 
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-CSRF_TRUSTED_ORIGIN = ['https://solar-tax-webapp.azurewebsites.net']
+CSRF_TRUSTED_ORIGIN = ['https://solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net']
