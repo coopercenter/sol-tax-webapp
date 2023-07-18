@@ -7,7 +7,7 @@ name: Build and deploy Python app to Azure Web App - solar-tax-webapp
 on:
   push:
     branches:
-      - wee2wr
+      - dev
   workflow_dispatch:
 
 jobs:
@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'solar-tax-webapp'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DC631D0C59714826939F94D87F9ABA4F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A8F67DF9FFB4907BAB3E0147A1E19FE }}
