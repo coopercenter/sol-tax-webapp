@@ -43,7 +43,7 @@ This project uses a PostgreSQL database which holds information on localites and
 __PostgreSQL Download__: [https://www.postgresql.org/download/](https://www.postgresql.org/download/).
 
 ### Email
-There is a Gmail account for use on this project. The purpose of this email is to send emails to users for password reset and to send emails of the feedback received. The emails that recieve the feedback are listed in the variables (_STAKEHOLDER&#95;EMAIL&#95;1_, _STAKEHOLDER&#95;EMAIL&#95;2_) in the _feedback&#95;sender.py_ file found in Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_.
+There is a Gmail account for use on this project. The purpose of this email is to send emails to users for password reset and to send emails of the feedback received. The emails that recieve the feedback are listed in _STAKEHOLDER&#95;EMAIL&#95;1_, _STAKEHOLDER&#95;EMAIL&#95;2_... in the _feedback&#95;sender.py_ file found in Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_.
 
 ## Structure
 
