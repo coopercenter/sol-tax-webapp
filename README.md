@@ -42,9 +42,6 @@ This project uses a PostgreSQL database which holds information on localites and
 
 __PostgreSQL Download__: [https://www.postgresql.org/download/](https://www.postgresql.org/download/).
 
-### Email
-There is a Gmail account for use on this project. The purpose of this email is to send emails to users for password reset and to send emails of the feedback received. The emails that recieve the feedback are listed in _STAKEHOLDER&#95;EMAIL&#95;1_, _STAKEHOLDER&#95;EMAIL&#95;2_ and _STAKEHOLDER&#95;EMAIL&#95;3_ in the _feedback&#95;sender.py_ file found in Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_.
-
 ## Structure
 
 ### SolarTax
@@ -69,7 +66,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
   10. __templatetags__ - The _custom\_tags.py_ file defines tags that can be used in the HTML templates to manipulate data if necessary from variables that are passed into the templates.
 
 ### Other Files
-  1. __feedback\_sender.py__ - File is used to send an email to Elizabeth, Carrie, and Thomas at 3 PM each weekday, if someone submitted feedback through the web application. This also pings the website 3 times an hour each weekday from 9 AM - 5 PM so the dyno is constantly up in this time period. This means loading times should be faster.
+  1. __feedback\_sender.py__ - _(Function has been phased out)_ File is used to send an email to the listed stakeholders at 3 PM each weekday, if someone submitted feedback through the web app. It pings the website 3 times an hour each weekday from 9 AM - 5 PM so it is constantly up in this time period.
   2. __manage.py__ - Django file that boots the application up when called. Don&#39;t touch unless absolutely necessary.
   3. __Pipfile & Pipfile.lock__ - Files are for the virtual environment and list all the dependencies of the project and the versions used.
   4. __Procfile__ - File that gets the web application running. It runs python manage.py migrate to make any migrations necessary to the database. It then runs the application with the _wsgi.py file_ and finally creates a cron job to run _feedback\_sender.py_

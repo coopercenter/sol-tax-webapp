@@ -39,11 +39,11 @@ include 'extends 'base.html'' at the top of the file to include the base html el
                             <input class="btn btn-success not-log-button" type="submit" value="{{user.username}} Profile">
                         </form>
 
-                        <button class="btn btn-info not-log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button>
+                        <!-- <button class="btn btn-info not-log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button> -->
                         <button class="btn btn-secondary not-log-button"><a href="/logout/" class="not-log-button">Logout</a></button>
                     {% else %}
                         <button class="btn btn-success not-log-button"><a href="/signup/" class="not-log-button">Create Account</a></button>
-                        <button class="btn btn-info not-log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button>
+                        <!-- <button class="btn btn-info not-log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button> -->
                         <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></button>
 
                     {% endif %}
@@ -71,7 +71,8 @@ include 'extends 'base.html'' at the top of the file to include the base html el
             <img src="{% static "models/ETI_Logo.png" %}" alt="ETI LOGO" class="eti-logo">
             <img src="{% static "models/VAEnergyLogo.png" %}"" alt="DMME LOGO" class="va-energy-logo">
         </div>
-        <p class="subtitle footer-text">A tool to assist Virginia localities</p>
+        <br>
+        <p class="subtitle footer-text">Question or Feedback? Contact <a href="https://energytransition.coopercenter.org/profile/elizabeth-marshall">Elizabeth Marshall</a> at the Virginia Solar Intiative</p>
         <p class="subtitle footer-text">Updated July 17th, 2023</p>
         <p class="author footer-text">Created by Arthur Small, Thomas Callen, Ethan Novak, Elizabeth Marshall and Carrie Hearne</a></p>
         <p class="author footer-text">Updated and redesigned by Jaden Wang and Emily Lien</a></p>
