@@ -1,7 +1,7 @@
-# SolTax WebApp
+# SolTax Web App
 This tool is meant for use by Virginia localities to help them decide which taxation strategy to use for solar generating facilities, either the new Revenue Share ordinance or the old M&T/Real Estate tax strategy. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax options as well as a total summary of the revenues for all projects under both tax options. 
 
-__SolTax WebApp__: [https://solar-tax-webapp.azurewebsites.net/](https://solar-tax-webapp.azurewebsites.net/)
+__SolTax Web App__: [https://solar-tax-webapp.azurewebsites.net/](https://solar-tax-webapp.azurewebsites.net/)
 
 ## Sections
 1. [Getting Started](#getting-started)
@@ -19,7 +19,7 @@ Need Python 3 or later (Developed using Python 3.8.1)
 __Python Documentation__: [https://www.python.org/downloads/](https://www.python.org/downloads/)
 
 ### Django
-Django is a Python web framework meant for rapid development. SolTax WebApp was developed using Django 3.1.
+Django is a Python web framework meant for rapid development. SolTax Web App was developed using Django 3.1.
 
 __Django Documentation__: [https://www.djangoproject.com/](https://www.djangoproject.com/)
 
@@ -28,14 +28,14 @@ __Installing Django__: [https://docs.djangoproject.com/en/3.1/topics/install/#in
 __Django Tutorial__: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
 
 ### Azure
-SolTax and its PostgreSQL database are hosted on Azure which is a cloud computing platform run by Microsoft. When commit changes are pushed onto the master branch, it is deployed directly to Azure. The PostgreSQL database on be viewed through the admin site or Navicat. For Navicat login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
+SolTax and its PostgreSQL database are hosted on Azure which is a cloud computing platform run by Microsoft. When commit changes are pushed onto the master branch, it is deployed directly to Azure. The PostgreSQL database can be viewed through the admin site or Navicat. For Navicat login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
 ### Admin Site
 The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed. For the live server there is already a superuser created with credentials. For admin site login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
-__SolTax WebApp Admin__: https://solar-tax-webapp.azurewebsites.net/admin/ 
+__SolTax Web App Admin__: https://solar-tax-webapp.azurewebsites.net/admin/ 
 
-The local server needs a username and password to access admin site. You will need to create a superuser. To do this type  `_python manage.py createsuperuser_ ` into the command line while in the project directory. Fill out the command line prompts and then to access the admin site run the application using  `_python manage.py runserver_ `, go to [http://localhost:8000/admin](http://localhost:8000/admin) or [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) and sign in. 
+The local server needs a username and password to access admin site. You will need to create a superuser. To do this type  `_python manage.py createsuperuser_ ` into the command line while in the project directory and fill out the command line prompts. To access the local admin site, run the application using  `_python manage.py runserver_ `, go to [http://localhost:8000/admin](http://localhost:8000/admin) or [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) and sign in with the credentials set when creating the superuser. 
 
 ### PostgreSQL
 This project uses a PostgreSQL database which holds information on localites and users. You will need access to the Azure database for development and testing. For Azure database credentials information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
@@ -53,7 +53,7 @@ The folder holds the Django project. (Only urls.py and settings.py should be cha
   4. __urls.py__ - Defines the admin URL, URLs that authenticate users which are defined by Django, a URL that makes it possible to display a graph for each project analysis, and then any URL that is defined in the models app.
 
 ### Models 
-Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the HTML that defines how to display the information received by the views, although it has a bit more functionality compared to straight HTML as you can pass variables in and use for loops.
+The SolTax tool is a Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the HTML that defines how to display the information received by the views, although it has a bit more functionality compared to straight HTML as you can pass variables in and use for loops.
   1. __admin.py__ - Tells the admin site to include information about all the models in the project. The admin site allows us to view all data of the project.
   2. __apps.py__ - Defines this app to be named models
   3. __forms.py__ - Defines any forms that are used throughout the project. Most are tied to a model so they can create an instance of a model through a submission of a form.
@@ -67,7 +67,7 @@ Django application which follows the MVT framework. MVT framework stands for mod
 
 ### Other Files
   1. __feedback\_sender.py__ - _(Function has been phased out)_ File is used to send an email to the listed stakeholders at 3 PM each weekday, if someone submitted feedback through the web app. It pings the website 3 times an hour each weekday from 9 AM - 5 PM so it is constantly up in this time period.
-  2. __manage.py__ - Django file that boots the application up when called. Don&#39;t touch unless absolutely necessary.
+  2. __manage.py__ - Default Django file that boots the application up when called __(Do not touch unless necessary)__
   3. __Pipfile & Pipfile.lock__ - Files are for the virtual environment and list all the dependencies of the project and the versions used.
   4. __Procfile__ - File that gets the web application running. It runs python manage.py migrate to make any migrations necessary to the database. It then runs the application with the _wsgi.py file_ and finally creates a cron job to run _feedback\_sender.py_
   5. __requirements.txt__ - File that lists all dependencies is to be used to automatically install all dependencies at once. Keep updated with any new dependencies that are added.
@@ -81,16 +81,16 @@ Django application which follows the MVT framework. MVT framework stands for mod
 2. In the command line, run `pip install -r requirements.txt` to download the necessary packages
 3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_. Otherwise, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for sensitive information.
  
-| Variable | Description | Example |
-| ------------- | ------------- | ------------- |
-| azure_host | URL of database | soltax.postgres.database.azure.com |
-| azure_name | Name of database | SolTax |
-| azure_password | Account Password to access database | password123 |
-| azure_port | Port of database | 4321 |
-| azure_user  | Account Username to access database | soltaxuser |
-| email | Email Username used for SolTax feedback | soltax@gmail.com |
-| email_password | Email Password used for SolTax feedback | password123 |
-| secret_key | Key used to encrypt sensitive information | asdfh(#*faks(#4nkd)32n3*#nj |
+| Variable | Description |
+| ------------- | ------------- |
+| azure_host | URL of database |
+| azure_name | Name of database |
+| azure_password | Account Password to access database |
+| azure_port | Port of database |
+| azure_user  | Account Username to access database |
+| email | Email Username used for SolTax feedback |
+| email_password | Email Password used for SolTax feedback |
+| secret_key | Key used to encrypt sensitive information |
 
 4. Connect to _UVA Anywhere_ VPN
 5. In the command line, run `python manage.py runserver`. Ensure that your command line is in the same directory as _manage.py_. 
@@ -98,11 +98,11 @@ Django application which follows the MVT framework. MVT framework stands for mod
     - Otherwise, address the runtime error as needed and run the command again. For additional help, see [Debugging Tips](#debugging-tips). 
 6. Make the additional needed changes to SolTax while running the server perodically to ensure the changes made are successful
 7. When all needed changes have been made and the local server runs successfully, push all your changes to the _dev_ branch. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u dev` to push your changes to the _dev_ branch.
-8. The _dev_ branch deploys to a SolTax Developer webapp which includes the preloaded configurations used by SolTax to test your changes on the Azure server. If changes are needed for the preloaded configurations, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for access. Changes pushed to the _dev_ branch will automatically be deployed to the developer webapp and can be tracked in the _Actions_ tab on Github.
+8. The _dev_ branch deploys to a SolTax Developer web app which includes the preloaded configurations used by SolTax to test your changes on the Azure server. If changes are needed for the preloaded configurations, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for access. Changes pushed to the _dev_ branch will automatically be deployed to the developer web app and can be tracked in the _Actions_ tab on Github.
 
-    __SolTax Developer WebApp__: [https://solar-tax-webapp-dev.azurewebsites.net](https://solar-tax-webapp-dev.azurewebsites.net)
+    __SolTax Developer Web App__: [https://solar-tax-webapp-dev.azurewebsites.net](https://solar-tax-webapp-dev.azurewebsites.net)
 
-9. After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax webapp. Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
+9. After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax web app. Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
 
 ## Debugging Tips
 
