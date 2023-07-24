@@ -1,5 +1,5 @@
 # SolTax Web App
-This tool is meant for use by Virginia localities to help them decide which taxation strategy to use for solar generating facilities, either the new Revenue Share ordinance or the old M&T/Real Estate tax strategy. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax options as well as a total summary of the revenues for all projects under both tax options. 
+The tool is meant for use by Virginia localities to help them decide which taxation strategy to use for solar generating facilities, either the new Revenue Share ordinance or the old M&T/Real Estate tax strategy. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax options as well as a total summary of the revenues for all projects under both tax options. 
 
 __SolTax Web App__: [https://solar-tax-webapp.azurewebsites.net/](https://solar-tax-webapp.azurewebsites.net/)
 
@@ -38,7 +38,7 @@ __SolTax Web App Admin__: https://solar-tax-webapp.azurewebsites.net/admin/
 The local server needs a username and password to access admin site. You will need to create a superuser. To do this type  `_python manage.py createsuperuser_ ` into the command line while in the project directory and fill out the command line prompts. To access the local admin site, run the application using  `_python manage.py runserver_ `, go to [http://localhost:8000/admin](http://localhost:8000/admin) or [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) and sign in with the credentials set when creating the superuser. 
 
 ### PostgreSQL
-This project uses a PostgreSQL database which holds information on localites and users. You will need access to the Azure database for development and testing. For Azure database credentials information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
+The tool uses a PostgreSQL database which holds information on localites and users. You will need access to the Azure database for development and testing. For Azure database credentials information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
 __PostgreSQL Download__: [https://www.postgresql.org/download/](https://www.postgresql.org/download/).
 
@@ -53,9 +53,9 @@ The folder holds the Django project. (Only urls.py and settings.py should be cha
   4. __urls.py__ - Defines the admin URL, URLs that authenticate users which are defined by Django, a URL that makes it possible to display a graph for each project analysis, and then any URL that is defined in the models app.
 
 ### Models 
-The SolTax tool is a Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the HTML that defines how to display the information received by the views, although it has a bit more functionality compared to straight HTML as you can pass variables in and use for loops.
+The SolTax tool is a Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with the information. They then pass information to a template. The template is the HTML that defines how to display the information received by the views, although it has a bit more functionality compared to straight HTML as you can pass variables in and use for loops.
   1. __admin.py__ - Tells the admin site to include information about all the models in the project. The admin site allows us to view all data of the project.
-  2. __apps.py__ - Defines this app to be named models
+  2. __apps.py__ - Defines the app to be named models
   3. __forms.py__ - Defines any forms that are used throughout the project. Most are tied to a model so they can create an instance of a model through a submission of a form.
   4. __models.py__ - Defines the UserProfile, Locality, Simulation, and Calculation models. A UserProfile is tied to one Locality, and has many simulations. A Locality can be tied to any number of UserProfiles. A Simulation is only tied to one UserProfile and only has one Calculation model associated with it. A Calculation instance is tied to one Simulation instance. Feedback is a model that holds an email and a text field containing feedback or a question. It is not tied to any other model.
   5. __revenue\_calculations.py__ - Python file that has functions to calculate the revenue for projects based on the input parameters.
@@ -66,7 +66,7 @@ The SolTax tool is a Django application which follows the MVT framework. MVT fra
   10. __templatetags__ - The _custom\_tags.py_ file defines tags that can be used in the HTML templates to manipulate data if necessary from variables that are passed into the templates.
 
 ### Other Files
-  1. __feedback\_sender.py__ - _(Function has been phased out)_ File is used to send an email to the listed stakeholders at 3 PM each weekday, if someone submitted feedback through the web app. It pings the website 3 times an hour each weekday from 9 AM - 5 PM so it is constantly up in this time period.
+  1. __feedback\_sender.py__ - _(Function has been phased out)_ File is used to send an email to the listed stakeholders at 3 PM each weekday, if someone submitted feedback through the web app. It pings the website 3 times an hour each weekday from 9 AM - 5 PM so it is constantly up in the time period.
   2. __manage.py__ - Default Django file that boots the application up when called __(Do not touch unless necessary)__
   3. __Pipfile & Pipfile.lock__ - Files are for the virtual environment and list all the dependencies of the project and the versions used.
   4. __Procfile__ - File that gets the web application running. It runs python manage.py migrate to make any migrations necessary to the database. It then runs the application with the _wsgi.py file_ and finally creates a cron job to run _feedback\_sender.py_
