@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'solar-tax-webapp-dev'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D53C93205528410CBEF787A1D3DA5FCA }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5894A08B40964A7CA167B4316B90173C }}
