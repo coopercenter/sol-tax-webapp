@@ -8,6 +8,7 @@ https://docs.djangoproject.com/en/3.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
+
 """
 import django_heroku
 import os
@@ -22,22 +23,22 @@ import psycopg2
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: Keep the secret key used in production secret!
 if os.path.exists('hiddenVars/secret_key.txt'):
     with open('hiddenVars/secret_key.txt') as f:
         SECRET_KEY = f.read().strip()
 else:
     SECRET_KEY = os.environ['SECRET_KEY']
 
-# SECURITY WARNING: don't run with debug turned on in production!
+# SECURITY WARNING: Don't run with debug turned on in production!
 
 if os.path.exists('hiddenVars'):
     DEBUG = True
     ALLOWED_HOSTS = []
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000']
-#ALLOWED_HOSTS = []
+    ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
+# ALLOWED_HOSTS = []
 
 # Application definition
 
@@ -53,6 +54,7 @@ INSTALLED_APPS = [
     'channels',
     'channels_redis',
     'crispy_forms',
+    'crispy_bootstrap4', 
 ]
 
 MIDDLEWARE = [
@@ -94,17 +96,46 @@ X_FRAME_OPTIONS = 'SAMEORIGIN'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 
-DATABASES = {
-    'default': { #Local Database
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME':'soltax',
-        'USER': 'soltaxuser',
-        'PASSWORD': 'password',
-        'HOST': 'localhost',
-        'PORT': '',
-    }
-}
+if os.path.exists('hiddenVars/azure_name.txt') :
+    with open('hiddenVars/azure_name.txt') as f:
+        NAME = str(f.read().strip())
+else:
+    NAME = os.environ['NAME']  
 
+if os.path.exists('hiddenVars/azure_user.txt'):
+    with open('hiddenVars/azure_user.txt') as f:
+        USER = str(f.read().strip())
+else:
+    USER = os.environ['USER']   
+
+if os.path.exists('hiddenVars/azure_password.txt'):
+    with open('hiddenVars/azure_password.txt') as f:
+        PASSWORD = str(f.read().strip())
+else:
+    PASSWORD = os.environ['PASSWORD']    
+
+if os.path.exists('hiddenVars/azure_host.txt'):
+    with open('hiddenVars/azure_host.txt') as f:
+        HOST = str(f.read().strip())
+else:
+    HOST = os.environ['HOST'] 
+
+if os.path.exists('hiddenVars/azure_port.txt'):
+    with open('hiddenVars/azure_port.txt') as f:
+        PORT = str(f.read().strip())
+else:
+    PORT = os.environ['PORT'] 
+
+DATABASES = {
+     'default': { 
+         'ENGINE': 'django.db.backends.postgresql',
+         'NAME': NAME,
+         'USER': USER,
+         'PASSWORD': PASSWORD,
+         'HOST': HOST,
+         'PORT': PORT,
+     }
+ }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -202,3 +233,8 @@ try:
 except ImportError:
     found = False
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap4"  
+CRISPY_TEMPLATE_PACK = 'bootstrap4' 
+
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+CSRF_TRUSTED_ORIGIN = ['https://solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net']

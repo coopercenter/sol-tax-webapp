@@ -1,134 +1,124 @@
-# sol-tax-webapp
+# SolTax Web App
+The tool is meant for use by Virginia localities to help them decide which taxation strategy to use for solar generating facilities, either the new Revenue Share ordinance or the old M&T/Real Estate tax strategy. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax options as well as a total summary of the revenues for all projects under both tax options. 
 
-This tool is meant for use by Virginia localities to help them decide which taxation model to use for solar generating facilities, either the new Revenue Share model, or the old M&T/Real Estate tax model. The tool allows users to create different analyses of solar projects of various electric capacities and land sizes. It provides a user a detailed analysis of the expected revenues of a solar project under both tax models as well as a total summary of the revenues for all projects under both tax models. 
+__SolTax Web App__: [https://solar-tax-webapp.azurewebsites.net/](https://solar-tax-webapp.azurewebsites.net/)
 
-Link to Live Site: [https://solar-tax-webapp.herokuapp.com/](https://solar-tax-webapp.herokuapp.com/)
+## Sections
+1. [Getting Started](#getting-started)
+2. [Structure](#structure)
+3. [Development](#development)
+3. [Debugging Tips](#debugging-tips)
 
-**Sections**
+## Getting Started
+### Github
+Any changes made to the master branch are automatically pushed into the live server on Azure. Make sure changes are working properly before pushing to the master branch. Commit changes to branches other than master branch then merge when appropriate. Make sure you commit changes frequently to save changes to GitHub.
 
-1. [Github](#2ga15kwy16nx)
-2. [Python](#scoqj6sek23g)
-3. [Django](#i6x9imrr2t08)
-  - Setup including virtual environment
-  - How it works/ File Structure
-4. [Heroku](#zho0313diu0q)
-5. [PostgreSQL](#q5yts6g2ir2u)
-6. [Gmail](#o16f2efg332b)
-7. [Admin Site](#ixt6gngx859q)
-8. [Local Development](#h22fw0m05rg4)
+### Python
+Need Python 3 or later (Developed using Python 3.8.1)
 
-**Github**
-Any changes made to the master branch are automatically pushed into the live server through Heroku. Make sure changes are working properly before pushing to the master branch. Commit changes to branches other than master branch then merge when appropriate. Make sure you commit changes frequently to save changes to GitHub.
+__Python Documentation__: [https://www.python.org/downloads/](https://www.python.org/downloads/)
 
-**Python**
+### Django
+Django is a Python web framework meant for rapid development. SolTax Web App was developed using Django 3.1.
 
-Need Python 3 or later, developed using Python 3.8.1
+__Django Documentation__: [https://www.djangoproject.com/](https://www.djangoproject.com/)
 
-[https://www.python.org/downloads/](https://www.python.org/downloads/)
+__Installing Django__: [https://docs.djangoproject.com/en/3.1/topics/install/#installing-official-release](https://docs.djangoproject.com/en/3.1/topics/install/#installing-official-release)
 
-**Django**
+__Django Tutorial__: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
 
-[https://www.djangoproject.com/](https://www.djangoproject.com/)
+### Azure
+SolTax and its PostgreSQL database are hosted on Azure which is a cloud computing platform run by Microsoft. When commit changes are pushed onto the master branch, it is deployed directly to Azure. The PostgreSQL database can be viewed through the admin site or Navicat. For Navicat login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
-Django is a Python web framework meant for rapid development.
+### Admin Site
+The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed. For the live server there is already a superuser created with credentials. For admin site login information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
-SolTax was developed using Django 3.1
+__SolTax Web App Admin__: https://solar-tax-webapp.azurewebsites.net/admin/ 
 
-Installing Django: [https://docs.djangoproject.com/en/3.1/topics/install/#installing-official-release](https://docs.djangoproject.com/en/3.1/topics/install/#installing-official-release)
+The local server needs a username and password to access admin site. You will need to create a superuser. To do this type  `_python manage.py createsuperuser_ ` into the command line while in the project directory and fill out the command line prompts. To access the local admin site, run the application using  `_python manage.py runserver_ `, go to [http://localhost:8000/admin](http://localhost:8000/admin) or [http://127.0.0.1:8000/admin](http://127.0.0.1:8000/admin) and sign in with the credentials set when creating the superuser. 
 
-Django Tutorial: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
+### PostgreSQL
+The tool uses a PostgreSQL database which holds information on localites and users. You will need access to the Azure database for development and testing. For Azure database credentials information, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu).
 
-A. Project Setup
+__PostgreSQL Download__: [https://www.postgresql.org/download/](https://www.postgresql.org/download/).
 
-1. Create a virtual environment. This means the local soltax project is in a dedicated directory with specific versions of all libraries needed for the application.
-2. Project was created using the pipenv virtual environment which can be found [here](https://pypi.org/project/pipenv/). Pipenv should be used again as the repository has a Pipfile and Pipfile.lock which contains information about the libraries needed for the project.
-  - To activate the virtual environment when setup enter pipenv shell into the terminal
-  - To exit the virtual environment, type exit.
-3. When the virtual environment is activated you can then install Django.
-4. To install all libraries needed for the project, use _pip install -r requirements.txt_, if you are using pip. This will install all packages that are listed in the requirements file.
-5. You will need to set up a local PostgreSQL database to use for local development. Follow [this](https://djangocentral.com/using-postgresql-with-django/) guide and you should be good.
-  1. These are the parameters used for local database and are located in settings.py. Use these to set up your local database. They are found in _settings.py_.
-  - &#39;ENGINE&#39;: &#39;django.db.backends.postgresql\_psycopg2&#39;,
-  - &#39;NAME&#39;:&#39;soltax&#39;,
-  - &#39;USER&#39;: &#39;soltaxuser&#39;,
-  - &#39;PASSWORD&#39;: &#39;password&#39;,
-  - &#39;HOST&#39;: &#39;localhost&#39;,
-  - &#39;PORT&#39;: &#39;&#39;,
-6. To test that the project has been set up properly on your local machine, type _python manage.py runserver_ to run the web application locally. If no errors appear in the terminal visit _localhost:8000_ or [_http://127.0.0.1:8000/_](http://127.0.0.1:8000/) to view the site.
+## Structure
 
-B. File Structure
+### SolarTax
+The folder holds the Django project. (Only urls.py and settings.py should be changed)
 
-The project has three main components
+  1. __settings.py__ - Defines all the Django settings needed for the project. If you install a new dependency, you may have to add it to INSTALLED\_APPS.
+  2. __asgi.py__ - Spins up an instance of the application and uses the settings as defined in the settings.py file.
+  3. __wsgi.py__ - Spins up an instance of the application and uses the settings as defined in the settings.py file. 
+  4. __urls.py__ - Defines the admin URL, URLs that authenticate users which are defined by Django, a URL that makes it possible to display a graph for each project analysis, and then any URL that is defined in the models app.
 
-1. The Django Project, which is contained in the SolarTax folder.
-2. An app which contains the code for what the web application should do, this is the models folder.
-3. Other files needed for Heroku, Github, and the virtual environment.
+### Models 
+The SolTax tool is a Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with the information. They then pass information to a template. The template is the HTML that defines how to display the information received by the views, although it has a bit more functionality compared to straight HTML as you can pass variables in and use for loops.
+  1. __admin.py__ - Tells the admin site to include information about all the models in the project. The admin site allows us to view all data of the project.
+  2. __apps.py__ - Defines the app to be named models
+  3. __forms.py__ - Defines any forms that are used throughout the project. Most are tied to a model so they can create an instance of a model through a submission of a form.
+  4. __models.py__ - Defines the UserProfile, Locality, Simulation, and Calculation models. A UserProfile is tied to one Locality, and has many simulations. A Locality can be tied to any number of UserProfiles. A Simulation is only tied to one UserProfile and only has one Calculation model associated with it. A Calculation instance is tied to one Simulation instance. Feedback is a model that holds an email and a text field containing feedback or a question. It is not tied to any other model.
+  5. __revenue\_calculations.py__ - Python file that has functions to calculate the revenue for projects based on the input parameters.
+  6. __urls.py__ - Defines the URLs that are valid for the web application and which view corresponds to the URL entered.
+  7. __views.py__ - Defines the different views needed for the web application. This is the business logic that is needed to get parameters from instances of models or forms and then transform the data if necessary to pass onto the HTML templates to display the web page correctly.
+  8. __templates__ - Folder contains the HTML template files that are used when a view calls for a template to display with the necessary parameters. _base.html_ is a HTML file that contains code that is to be used as a base for the site so all pages have the same basic design. The registration sub-folder contains the templates that are used for the password reset functionality of the web application.
+  9. __static__ - Folder contains any images that are displayed on the site and the CSS and JS files used to further design the pages of the web application. Add any new images into this folder and continue to edit the CSS and JS files in this folder if needed.
+  10. __templatetags__ - The _custom\_tags.py_ file defines tags that can be used in the HTML templates to manipulate data if necessary from variables that are passed into the templates.
 
-SolarTax Folder - Only these three files should be changed.
-  1. Settings.py - Defines all the Django settings needed for the project. If you install a new dependency, you may have to add it to INSTALLED\_APPS.
-  2. Asgi.py - Spins up an instance of the application and uses the settings as defined in the settings.py file.
-  3. Wsgi.py - Spins up an instance of the application and uses the settings as defined in the settings.py file. Used for the Heroku site
-  4. Urls.py - Defines the admin url, urls that authenticate users which are defined by Django, a url that makes it possible to display a graph for each project analysis, and then any url that is defined in the models app.
+### Other Files
+  1. __feedback\_sender.py__ - _(Function has been phased out)_ File is used to send an email to the listed stakeholders at 3 PM each weekday, if someone submitted feedback through the web app. It pings the website 3 times an hour each weekday from 9 AM - 5 PM so it is constantly up in the time period.
+  2. __manage.py__ - Default Django file that boots the application up when called __(Do not touch unless necessary)__
+  3. __Pipfile & Pipfile.lock__ - Files are for the virtual environment and list all the dependencies of the project and the versions used.
+  4. __Procfile__ - File that gets the web application running. It runs python manage.py migrate to make any migrations necessary to the database. It then runs the application with the _wsgi.py file_ and finally creates a cron job to run _feedback\_sender.py_
+  5. __requirements.txt__ - File that lists all dependencies is to be used to automatically install all dependencies at once. Keep updated with any new dependencies that are added.
+  6. __.gitignore__ - File that tells Git to intentional ignore files that in this case contain sensitive information such as login creditionals which should not be pushed to the repository
 
-Models - Django application which follows the MVT framework. MVT framework stands for model-view-template. Models are effectively classes that you would find in Java, Python, or C++. Models require certain variables to be defined about them when instantiated. The views take in information from models and request data (&quot;GET&quot; or &quot;POST&quot; methods) and determine what to do with this information. They then pass information to a template. The template is the html that defines how to display the information received by the views, although it has a bit more functionality compared to straight html as you can pass variables in and use for loops.
-  1. Admin.py - tells the admin site to include information about all the models in the project. The admin site allows us to view all data of the project.
-  2. Apps.py - defines this app to be named models
-  3. Forms.py - defines any forms that are used throughout the project. Most are tied to a model so they can create an instance of a model through a submission of a form. [https://docs.djangoproject.com/en/3.1/topics/forms/](https://docs.djangoproject.com/en/3.1/topics/forms/)
-  4. Models.py - Defines the UserProfile, Locality, Simulation, and Calculation models. A UserProfile is tied to one Localily, and has many simulations. A Locality can be tied to any number of UserProfiles. A Simulation is only tied to one UserProfile and only has one Calculation model associated with it. A Calculation instance is tied to one Simulation instance. Feedback is a model that holds an email and a text field containing feedback or a question. It is not tied to any other model.
-  5. Revenue\_calculations.py - Python file that has functions to calculate the revenue for projects based on the input parameters.
-  6. Urls.py - Defines the URLs that are valid for the web application and which view corresponds to the URL entered.
-  7. Views.py - Defines the different views needed for the web application. This is the business logic that is needed to get parameters from instances of models or forms and then transform the data if necessary to pass onto the HTML templates to display the web page correctly.
-  8. Templates Folder - This folder contains the HTML template files that are used when a view calls for a template to display with the necessary parameters. _Base.html_ is a HTML file that contains code that is to be used as a base for the site so all pages have the same basic design.
-    1. The registration sub-folder contains the templates that are used for the password reset functionality of the web application.
-  9. Static Folder - This folder contains any images that are displayed on the site and the CSS and JS files used to further design the pages of the web application. Add any new images into this folder and continue to edit the CSS and JS files in this folder if needed.
-  10. Templatetags Folder - The _custom\_tags.py_ file defines tags that can be used in the HTML templates to manipulate data if necessary from variables that are passed into the templates.
+## Development
+1. Clone the SolTax repository and create a new branch for development
 
-Other Files
-  1. Feedback\_sender.py - This file is used to send an email to Elizabeth, Carrie, and Thomas at 3pm each weekday, if someone submitted feedback through the web application. This also pings the website 3 times an hour each weekday from 9-5 so the dyno on heroku is constantly up in this time period. This means loading times should be faster.
-  2. Manage.py - Django file that boots the application up when called. Don&#39;t touch unless absolutely necessary.
-  3. Pipfile and Pipfile.lock - These files are for the virtual environment and heroku and list all the dependencies of the project and the versions used.
-  4. Procfile - A heroku file that gets the web application running on heroku. It runs python manage.py migrate to make any migrations necessary to the database. It then runs the application with the wsgi.py file and finally creates a cron job to run feedback\_sender.py
-  5. Requirements.txt - file that lists all dependencies is to be used to automatically install all dependencies at once. Keep updated with any new dependencies that are added.
+    __Working with Github in VS Code Tutorial__: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
 
-**Heroku**
+2. In the command line, run `pip install -r requirements.txt` to download the necessary packages
+3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_. Otherwise, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for sensitive information.
+ 
+| Variable | Description |
+| ------------- | ------------- |
+| azure_host | URL of database |
+| azure_name | Name of database |
+| azure_password | Account Password to access database |
+| azure_port | Port of database |
+| azure_user  | Account Username to access database |
+| email | Email Username used for SolTax feedback |
+| email_password | Email Password used for SolTax feedback |
+| secret_key | Key used to encrypt sensitive information |
 
-Login
+4. Connect to _UVA Anywhere_ VPN
+5. In the command line, run `python manage.py runserver`. Ensure that your command line is in the same directory as _manage.py_. 
+    - If the command is successful, SolTax should be running on your local server at [https://localhost8000](https://localhost8000) or [http://127.0.0.1:8000](http://127.0.0.1:8000). 
+    - Otherwise, address the runtime error as needed and run the command again. For additional help, see [Debugging Tips](#debugging-tips). 
+6. Make the additional needed changes to SolTax while running the server perodically to ensure the changes made are successful
+7. When all needed changes have been made and the local server runs successfully, push all your changes to the _dev_ branch. If using Git, in the command line, run `git add file_name` to add the file(s) that have been changed. Next, in the command line, run `git commit 'commit_name'` to name your commit and run `push origin -u dev` to push your changes to the _dev_ branch.
+8. The _dev_ branch deploys to a SolTax Developer web app which includes the preloaded configurations used by SolTax to test your changes on the Azure server. If changes are needed for the preloaded configurations, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for access. Changes pushed to the _dev_ branch will automatically be deployed to the developer web app and can be tracked in the _Actions_ tab on Github.
 
-The SolTax project is the only project in the profile under the name solar-tax-webapp.
+    __SolTax Developer Web App__: [https://solar-tax-webapp-dev.azurewebsites.net](https://solar-tax-webapp-dev.azurewebsites.net)
 
-To add new collaborators to the project click the &quot;manage access&quot; button on the project overview page and add the email address of the person to add to the project.
+9. After checking to ensure the developer Azure site is successful, merge your branch with the master branch to update the SolTax web app. Otherwise, if the deployment failed or the server failed to load, address the error as needed, push the changes to your branch, and redeploy the code. For additional help, see [Debugging Tips](#debugging-tips). 
 
-To view Postgres database information select &quot;Heroku Postgres&quot; under Installed add-ons. This will open a new page just for the database. The database credentials are under &quot;settings&quot; and then &quot;database credentials&quot;
+## Debugging Tips
 
-There is a Heroku CLI (command line interface) to interact with Heroku from the terminal, link is [here](https://devcenter.heroku.com/articles/heroku-cli).
+### Deprecated Packages
+1. Deprecated packages are outdated past their newest version and should be updated as it may pose both a security risk and result in runtime errors. The runtime error displayed will likely point to the packages that are needing to be updated. 
+2. Updating deprecated packages may require changing `import` statements, adding new lines of code in accordance with the documentation of the newest iteration often made in _settings.py_, or changing the version in _requirements.txt_ as indicated after the `==`.
 
-Heroku has config variables saved which are necessary for the application and should not be shared with anyone outside of the organization or be placed in the code. These config variables are listed under &quot;Settings&quot; and then &quot;Config Vars&quot;. To view them select &quot;Reveal Config Vars&quot;.
+### Package Dependencies
+1. As packages are updated, this often results in runtime errors as packages often call on each other and therefore rely on certain versions of a particular package. Therefore, _requirement.txt_ must outline packages that include the correct version of each package's dependencies in order to be successfully deployed.The runtime error displayed will likely outline the package's missing dependencies and their necessary versions.
+2. Changing package dependencies is a process of repeated trial and error, involving deprecating as needed after the `==` or changing the order of packages in  _requirement.txt_ to be successful. While the packages may run successfully on your computer, there will likely be errors when deploying on Azure as their operating systems differ. 
 
-The DATABASE\_URL is the url needed to access the PostgreSQL database for the live site. The two EMAIL\_HOST\_\*\*\*\* variables are the login information for the email that is used to send email notifications for feedback that is submitted. The STAKEHOLDER\_EMAIL\_\* variables are the emails where the email notifications are sent from feedback. To add your own email to receive these notifications and your email as a config var and edit _feedback\_sender.py_ to get the email and add it to the send\_mail function. The final config var is SECRET\_KEY this is used for security purposes more information can be found [here](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-SECRET_KEY).
+### Deployment Failure
+1. The error can be found by checking the deployment logs and clicking on the commit ID that was deployed or on the repoistory under actions in the respective workflow.
+2. As your computer's operating system likely differs from Azure, the error is likely from the result of a failure in [Package Dependencies](#package-dependencies). 
+3. If package dependencies cannot be reconciled, a potential solution is to dockerize the web app by placing it with your computer's operation system but the current iteration of the web app is not dockerized. 
 
-**PostgreSQL**
-
-This project uses a PostgreSQL database. You will need access to two databases, one for local development and testing, and access to the database for the live server.
-
-To download PostgreSQL visit their page [here](https://www.postgresql.org/download/).
-
-To connect to the live server database you need to get the database credentials from the Heroku page as described in the Heroku section above.
-
-For a local database follow the guide that was laid out in step 5 of "Project Setup" above.
-**Gmail**
-
-There is a gmail account for use on this project. 
-
-The sole purpose of this email is to send emails to users for password reset and to send Thomas, Carrie, and Elizabeth emails about feedback received.
-
-**Admin Site**
-
-Both the local and live sites have access to an admin site. These sites need a username and password. For your local server you need to create a superuser that can access the admin site. To do this you need to type _python manage.py createsuperuser_ into the command line while in the project directory. Fill out the command line prompts and then to access the admin site run the application using _python manage.py runserver_, go to localhost:8000/admin or _http://127.0.0.1:8000/_admin and sign in. For the live server there is already a superuser created with credentials. Contact XXXXXXXX at [xxxxx@virginia.edu](mailto:xxxxx@virginia.edu) for admin site login information. To get to the live server admin site visit https://solar-tax-webapp.herokuapp.com/admin/ 
-
-The admin site allows us to manually view all instances of any models created by users and allows us to change the parameter values if needed.
-
-**Local Development**
-
-Before running a local server create a new directory named hiddenVars with 3 files named secret_key.txt, email.txt, and email_password.txt. Put the correct variables that can be found on the Heroku site into these files. This helps set the correct settings variables for the local server. Also make sure that DEBUG is set to True and ALLOWED_HOSTS = [] before running a local server. DEBUG should be set to False and ALLOWED_HOSTS = ['solar-tax-webapp.herokuapp.com', 'localhost:8000', '127.0.0.1:8000'] for the live server.
-
-For local development make sure you are in the virtual environment you created for the project. Also before running the local server make sure you are located in the same directory as the _manage.py_ file. If you are not, you will not be able to run the local server. Make changes to the project as you see fit, then run your local server using _python manage.py runserver._ Test out the new feature on the local development server and add test cases to tests.py to ensure it does not impact other aspects of the project. Make sure to commit to the github repo consistently on a development branch to ensure progress is saved. Merge to the master branch when appropriate and this will automatically push all updates onto the live Heroku server. To make sure the Heroku server is created successfully after a change to the master branch is made, visit the project homepage and you will see the project being built on Heroku and then deployed.
+ ### Runtime Errors
+ 1. If the developer web app or local server displays an error, additional information can be found by setting `DEBUG = TRUE` in _settings.py_ but __must__ set back to `DEBUG = FALSE` before merging your branch with the master branch.
+ 2. The error is likely the result of [Deprecated Packages](#deprecataed-packages) or updating the code as needed to with the newest iteration of Django.

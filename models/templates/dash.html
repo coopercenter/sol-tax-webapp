@@ -7,16 +7,15 @@ each year, and a table showing the breakdown for each year. -->
 
 <button class="btn btn-lg btn-outline-danger local-pdf-button dontprint" type="submit" value="Create PDF" onclick="window.print()" title="Create PDF"><i class="icofont-file-pdf"></i></button>
 <div id="solar-tool-prototype" class="section level1">
-    <h1 class="data-header">Local Solar Revenue and Tax Analysis</h1>
 
-    <h2 class="simulation-name">Project Name: {{simulation.0.fields.name}}</h2> <!-- Get name of simulation -->
-
+    <h2 class="simulation-name"><strong> {{simulation.0.fields.name}} </strong></h2> <!-- Get name of simulation -->
+    <h5 class="data-header"> Solar Revenue and Tax Analysis </h5>
     <!-- <button class="btn btn-danger btn-lg pdf-button dontprint" onclick="window.print()">Create PDF</button> -->
     
     <div class="row">
         {% load custom_tags %}
         <div class = "col-xl-6 project-parameters print-col" id="dash-outline">
-            <h2 class="entered-data-title">Project Parameters</h2>
+            <h5 class="entered-data-title"><strong>Project Parameters</strong></h5>
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -96,14 +95,15 @@ each year, and a table showing the breakdown for each year. -->
                     {% endfor %}
                 </tbody>
             </table>
-            <p class="parameter-note">Note: The tax rate highlighted in green is used for M&T/Real Estate tax calculations.</p>
+            <p class="parameter-note"> Highlighted in green is the tax rate is used for M&T/Real Estate tax calculations </p>
         </div>
         
         <div class="col-sm-6 right-col">
             <div class="result-top-text">
                 <div class="result-title">
-                    <h3>Total expected lifetime revenue</h3>
-                    <p> (In 2020 $, discounted at {% get_discount_rate simulation %}% per year): </p>
+                    <h5><strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Total Expected Lifetime Revenue</strong></h5>
+                    <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        Discounted at {% get_discount_rate simulation %}% per year (2020 $) </p>
                 </div>
                 <div class="result-text">
                     <table class = "table table-striped result-table">
@@ -136,7 +136,7 @@ each year, and a table showing the breakdown for each year. -->
             </div>
 
             <div class="chart dontprint">
-                <h3 class="chart-title">Lineplot of Nominal Cashflows</h3>
+                <h5 class="chart-title"><strong> &nbsp; &nbsp; Lineplot of Nominal Cashflows</strong></h5>
                 
                 {% load static %}
                 {% load plotly_dash %}
@@ -157,19 +157,19 @@ each year, and a table showing the breakdown for each year. -->
 
     <div id="side-by-side-comparison" class="side-by-side-comparison">
         <div class="table-title">
-            <h3>Annual Cashflows Under the 2 Different Revenue Models</h3>
+            <h5><strong>Annual Cashflows Under the Two Different Revenue Options </strong> </h5>
             <p>(Rounded to the nearest thousand)</p>
-            <p>Please Note: These cashflows include revenue from the applied M&T/Real Estate tax or Revenue Share, increase in land value, and increased Composite Index requirements (if necessary).</p>
+            <p>Includes revenue from the M&T/Real Estate tax or Revenue Share, land value, and Composite Index (If applicable)</p>
         </div>
         
         <table class="table table-striped side-table">
             <thead>
                 <tr class="header">
                     <th scope="col">Year</th>
-                    <th scope="col">M&T/Real Estate Tax Nominal $</th>
-                    <th scope="col">Revenue Share Nominal $</th>
-                    <th scope="col">M&T/Real Estate Tax in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
-                    <th class="last-data" scope="col">Revenue Share in 2020 $ Discounted at {% get_discount_rate simulation %}%</th>
+                    <th scope="col">Nominal M&T/Real Estate Tax</th>
+                    <th scope="col">Nominal Revenue Share </th>
+                    <th scope="col">M&T/Real Estate Tax in 2020 $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
+                    <th class="last-data" scope="col">Revenue Share in 2020 $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
                 </tr>
             </thead>
             <tbody>
@@ -193,7 +193,7 @@ each year, and a table showing the breakdown for each year. -->
                     {% endif %}
                 {% endfor %}
                 <tr>
-                    <td>Totals</td>
+                    <td>Total</td>
                     <td><span class="dollar_value">{% get_table_totals calculations.cas_mt %}</span></td>
                     <td class="right-border-cell"><span class="dollar_value"> {% get_table_totals calculations.cas_rs %}</span></td>
                     <td><span class="dollar_value">{% get_table_totals calculations.tot_mt %}</span></td>

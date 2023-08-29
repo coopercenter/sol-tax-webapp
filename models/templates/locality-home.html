@@ -21,7 +21,7 @@
 
         <form action="/form/" method="POST" class="generateButton-form dontprint">
             {% csrf_token %}
-            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{user.username}}" name="generateButton">Generate New Project Analysis</button>
+            <button type="submit" class="btn btn-primary btn-lg generateButton" value = "{{user.username}}" name="generateButton">Create New Project </button>
         </form>
         
 
@@ -30,28 +30,43 @@
                 <table class="locality-summary-table">
                     <tr>
                         <td>
-                            <h4>Total Revenue Share Revenue</h4>
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
+                            <h5><strong>Increase in Revenue from Revenue Share</strong></h5>
                         </td>
                         <td>
-                            <h4><span class="dollar_value">{{total_rs_revenue}}</span></h4>
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
+                            <h5><span class="dollar_value difference">{{difference}}</span></h5>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h4>Total M&T/Real Estate Tax Revenue</h4>
+                            <h5>Total Revenue Share Revenue</h5>
                         </td>
                         <td>
-                            <h4><span class="dollar_value">{{total_mt_revenue}}</span></h4>
+                            <h5><span class="dollar_value">{{total_rs_revenue}}</span></h5>
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <h4>Increase in Revenue from Revenue Share</h4>
+                            <h5>Total M&T/Real Estate Tax Revenue</h5>
+
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
                         </td>
                         <td>
-                            <h4><span class="dollar_value difference">{{difference}}</span></h4>
+                            <h5><span class="dollar_value">{{total_mt_revenue}}</span></h5>
+
+                            <div style="line-height:50%;">
+                                <br>
+                            </div>
                         </td>
                     </tr>
+                
                 
                 </table>
             </div>
@@ -67,7 +82,7 @@
                         <div class="card-body">
                             
                             <table class="card-table table-striped">
-                                <h2>{{simulation.name}}</h2>
+                                <h5> <strong> {{simulation.name}} </strong></h5>
                                 <tr class="card-table-row">
                                     <td>
                                         <strong>Years</strong>
@@ -142,7 +157,7 @@
                 </div>
                 {% if forloop.counter|divisibleby:6 %}
                     <div class="dontshow fourth-panel">
-                        <h1 style="text-align: center;">The Virginia SolTax Model</h1>
+                        <h1 style="text-align: center;">The Virginia SolTax Tool</h1>
                         <h1 class="locality-home-header locality_name">{{locality.name}}</h1>
                     </div>
                 {% endif %}
@@ -150,157 +165,176 @@
             </div>
         
         {% endif %}
+    
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-8">
+                <div class="locality-info {% if gap == 'True' %} parameter-panel {% endif %}">
+                        <h5 class="locality-home-header"> <strong> Calculation Parameters </strong></h5>
+                        <table class="table-striped locality-info-table">
+                            <thead>
+                                <tr>
+                                    <td>
+                                        <strong>Parameter</strong>
+                                    </td>
+                                    <td class="value">
+                                        <strong>Value</strong>
+                                    </td>
+                                </tr>
+                            </thead>
+                            <tr>
+                                <td>
+                                    Use Composite Index for Calculations?
+                                </td>
+                                <td class="value">
+                                    <span>{{locality.use_composite_index}}</span>
+                                </td>
+                            </tr>
+                            <!-- <tr>
+                                <td>
+                                    Revenue Share Rate
+                                </td>
+                                <td class="value">
+                                    <span class="dollar_value">{{locality.revenue_share_rate}}</span> /MW
+                                </td>
+                            </tr> -->
+                            <tr>
+                                <td>
+                                    Discount Rate
+                                </td>
+                                <td class="value">
+                                    {{locality.discount_rate}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    M&T Tax Rate
+                                </td>
+                                <td class="value">
+                                    ${{locality.mt_tax_rate}} / $100 Assessed Value
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Real Property Rate
+                                </td>
+                                <td class="value">
+                                    ${{locality.real_property_rate}} / $100 Assessed Value
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Assessment Ratio
+                                </td>
+                                <td class="value">
+                                    {{locality.assessment_ratio}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <strong>Composite Index Parameters</strong>
+                                </td>
+                                <td>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Local True Value
+                                </td>
+                                <td class="dollar_value value">
+                                    {{locality.baseline_true_value}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Adjusted Gross Income
+                                </td>
+                                <td class="dollar_value value">
+                                    {{locality.adj_gross_income}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Taxable Retail Sales
+                                </td>
+                                <td class="dollar_value value">
+                                    {{locality.taxable_retail_sales}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Population
+                                </td>
+                                <td class="comma_value value">
+                                    {{locality.population}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Average Daily Student Membership (ADM)
+                                </td>
+                                <td class="comma_value value">
+                                    {{locality.adm}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Required Local Matching (Sum of RLE & RLM)
+                                </td>
+                                <td class="dollar_value value">
+                                    {{locality.required_local_matching}}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Education Budget Escalator
+                                </td>
+                                <td class="value">
+                                    {{locality.budget_escalator}}%
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    Years Between Assessment
+                                </td>
+                                <td class="value">
+                                    {{locality.years_between_assessment}}
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </div>
+            <div class="col-2">
+                <br><br><br><br><br><br><br>
+                    <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
+                        {% csrf_token %}
+                        <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
+                    </form>
+                    
+                    <br><br>
 
-        <div class="locality-info {% if gap == 'True' %} parameter-panel {% endif %}">
-            <h2 class="locality-home-header"> Parameters for Calculations</h2>
-            <table class="table-striped locality-info-table">
-                <thead>
-                    <tr>
-                        <td>
-                            <strong>Parameter</strong>
-                        </td>
-                        <td class="value">
-                            <strong>Value</strong>
-                        </td>
-                    </tr>
-                </thead>
-                <tr>
-                    <td>
-                        Use Composite Index for Calculations?
-                    </td>
-                    <td class="value">
-                        <span>{{locality.use_composite_index}}</span>
-                    </td>
-                </tr>
-                <!-- <tr>
-                    <td>
-                        Revenue Share Rate
-                    </td>
-                    <td class="value">
-                        <span class="dollar_value">{{locality.revenue_share_rate}}</span> /MW
-                    </td>
-                </tr> -->
-                <tr>
-                    <td>
-                        Discount Rate
-                    </td>
-                    <td class="value">
-                        {{locality.discount_rate}}%
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        M&T Tax Rate
-                    </td>
-                    <td class="value">
-                        ${{locality.mt_tax_rate}} / $100 Assessed Value
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Real Property Rate
-                    </td>
-                    <td class="value">
-                        ${{locality.real_property_rate}} / $100 Assessed Value
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Assessment Ratio
-                    </td>
-                    <td class="value">
-                        {{locality.assessment_ratio}}%
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <strong>Composite Index Parameters</strong>
-                    </td>
-                    <td>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Local True Value
-                    </td>
-                    <td class="dollar_value value">
-                        {{locality.baseline_true_value}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Adjusted Gross Income
-                    </td>
-                    <td class="dollar_value value">
-                        {{locality.adj_gross_income}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Taxable Retail Sales
-                    </td>
-                    <td class="dollar_value value">
-                        {{locality.taxable_retail_sales}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Population
-                    </td>
-                    <td class="comma_value value">
-                        {{locality.population}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Average Daily Student Membership (ADM)
-                    </td>
-                    <td class="comma_value value">
-                        {{locality.adm}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Required Local Matching (Sum of RLE & RLM)
-                    </td>
-                    <td class="dollar_value value">
-                        {{locality.required_local_matching}}
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Education Budget Escalator
-                    </td>
-                    <td class="value">
-                        {{locality.budget_escalator}}%
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Years Between Assessment
-                    </td>
-                    <td class="value">
-                        {{locality.years_between_assessment}}
-                    </td>
-                </tr>
-            </table>
+                    <form method="POST" action="update-user-parameters/" class="update-form dontprint">
+                        {% csrf_token %}
+                        <input class="btn btn-primary btn-lg" type="submit" value="Update Preloaded Parameters">
+                    </form>
+
+                    <br><br>
+
+                    <form method="POST" action="update-revenue-share/" class="update-form dontprint">
+                        {% csrf_token %}
+                        <input class="btn btn-success btn-lg" type="submit" value="Update Revenue Share Escalator">
+                    </form>
+
+                <br><br>
+
+            </div>
+            <div class="col-2"></div>
         </div>
     </div>
 
-    <form method="POST" action="update-user-parameters/" class="update-form dontprint">
-        {% csrf_token %}
-        <input class="btn btn-primary btn-lg" type="submit" value="Update User Parameters">
-    </form>
-
-    <form method="POST" action="update-depreciation-schedules/" class = "update-form dontprint">
-        {% csrf_token %}
-        <input class="btn btn-lg btn-info" type="submit" value="Update Depreciation Schedules">
-    </form>
-
-    <form method="POST" action="update-revenue-share/" class="update-form dontprint">
-        {% csrf_token %}
-        <input class="btn btn-success btn-lg" type="submit" value="Update Revenue Share Escalator">
-    </form>
+    <br>
+    <br>
 
     <div class="dontshow locality-rs {% if gap == 'True' %} parameter-panel {% endif %}">
         <h2 class="locality-home-header">Revenue Share Rates</h2>
@@ -328,9 +362,9 @@
     
     {% else %}
         <div class="locality-error-message">
-            <h2>Your are not logged in as <span class="locality_name">{{locality.name}}</span></h2>
+            <h2>You are not logged in as <span class="locality_name">{{locality.name}}</span></h2>
             <br>
-            <h2>Please Login to <span class="locality_name">{{locality.name}}</span>'s Account</h2>
+            <h2>Login to <span class="locality_name">{{locality.name}}</span>'s account</h2>
         </div>
     {% endif %}
 {% endblock %}
