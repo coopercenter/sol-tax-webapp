@@ -32,12 +32,12 @@ else:
 
 # SECURITY WARNING: Don't run with debug turned on in production!
 
-if os.path.exists('hiddenVars'):
+#if os.path.exists('hiddenVars'):
     DEBUG = True
-    ALLOWED_HOSTS = []
-else:
-    DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
+    ALLOWED_HOSTS = ['https://solar-tax-webapp-dev.azurewebsites.net']
+#else:
+    #DEBUG = False
+    #ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
 # ALLOWED_HOSTS = []
 
 # Application definition
