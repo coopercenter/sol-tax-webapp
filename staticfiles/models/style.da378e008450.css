@@ -1,0 +1,696 @@
+/* Overall Styles */
+body{
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    margin: 0;
+} 
+h2, h3, h4{
+    font-size: 28px;
+}
+.model-description li{
+    margin: -20px;
+}
+.footer-donate{
+    width: 150px;
+    border-radius: .25rem;
+    background-color: #dc3545;
+    height: 50px;
+    border: none;
+    font-size: 22px;
+    color: whitesmoke;
+    position: relative;
+    left: 45%;
+    margin-top: 20px;
+}
+.locality_name{
+    margin: 5px;
+}
+.not-log-button{
+    color: whitesmoke;
+    font-size: 18px;
+    margin: 5px 5px;
+}
+.log-button{
+    color: black;
+    font-size: 18px;
+    margin: 5px 5px;
+}
+
+.log-button:hover{
+    text-decoration: none;
+    color: black;
+}
+.parameter-note{
+    text-align: center;
+}
+.not-log-button:hover{
+    text-decoration: none;
+    color: rgb(197, 193, 193);
+}
+
+/* Table for model */
+.side-table th, .side-table td{
+    text-align: left; 
+}
+
+li{
+    padding: 1% 0;
+}
+
+/* Navbar */
+.site-name{
+    color: #232D4B;
+    /* color: red; */
+    text-decoration: none;
+}
+.site-name:hover{
+    color: rgb(131, 125, 125);
+    text-decoration: none;
+}
+.technical-appendix{
+    color: #232D4B;
+    text-decoration: none;
+    font-size: 20px;
+    padding: 10px 20px 0 0;
+}
+.technical-appendix:hover{
+    color: rgb(131, 125, 125);
+    text-decoration: none;
+}
+
+/* Middle */
+.middle{
+    height: auto;
+}
+
+/* Footer */
+.footer{
+    background-color: rgb(214, 214, 214);
+    padding: 5px 0;
+    line-height: 1;
+}
+.footer-text{
+    /* color: rgb(173, 171, 171); */
+    text-align: center;
+}
+
+/* Home Page */ 
+.model-description{
+    padding: 3% 5%;
+}
+
+
+/* Dropdown/Dropup Buttons*/ 
+/* .locality-dropup{
+    text-align: center;
+    padding: 5% 5% 2%;
+}
+.dropdown-menu a:hover{
+    background-image: none;
+    background-color:rgb(166, 198, 226);
+} */
+
+
+/* Form */
+.form-group{
+    padding: 0 10%;
+}
+.selected-locality{
+    padding: 1% 0;
+    text-align:  center;
+}
+.back-button{
+    text-align: center;
+    padding: 5% 0 5%;
+}
+
+/* Graph and Table Page */
+#solar-tool-prototype{
+    padding: 1% 7% 4.25% 4.25%;
+}
+.data-header{
+    text-align: center;
+    /* padding-bottom: 2%; */
+}
+/* Table */
+.side-table .last-data{
+    padding-right: 0;
+}
+.table-title{
+    padding-top: 5%;
+    text-align: center;
+}
+.sub-label{
+    margin-block-end: 0;
+}
+
+/* Graph */
+.right-col{
+    padding-left: 6%;
+    height: 700px;
+}
+.graph-bottom-text{
+    text-align: center;
+}
+.chart-title{
+    position: relative;
+    left: 100px;
+    padding-top: 5%;
+
+}
+.chart{
+    height: 300px;
+}
+.prototype-graph{
+    height: 200px;
+    width: 650px;
+}
+
+/* Data Entered */
+.entered-data-header{
+    font-weight: 500;
+}
+.entered-data-title{
+    text-align: center;
+    padding: 5% 0 2%;
+}
+.value-header{
+    text-align: right;
+}
+.table-striped tr:hover{
+    background-color: rgb(219, 219, 219);
+}
+.table-striped tbody tr:nth-of-type(odd):hover{
+    background-color: rgb(219, 219, 219);
+}
+.table td{
+    padding: .35rem 0 .35rem 0.5rem;
+}
+.table td.value-rate{
+    padding-left: 30px;
+}
+
+@media (min-width: 1200px) {
+    .side-by-side-comparison {
+      padding-top: 1%;
+    }
+}
+
+@media (max-width: 1100px) {
+    .side-by-side-comparison {
+        padding-top: 8%;
+    }
+}
+
+@media (max-width: 900px) {
+    .side-by-side-comparison{
+      padding-top: 15%;
+    }
+}
+
+@media (max-width: 735px) {
+    .side-by-side-comparison {
+      padding-top: 45%;
+    }
+}
+/* .side-by-side-comparison{
+    padding: 14% 0;
+} */
+
+
+/* Technical Page */
+.technical-text{
+    padding: 3%;
+}
+.locality-row{
+    margin-right:0px;
+}
+
+/* .locality-card{
+    width: 12rem;
+    margin: 25px 0 25px 25px;
+} */
+.simulation-card{
+    text-align: left;
+    margin: 20px auto;
+    width: 24rem;
+    height: auto;
+    font-size: 18px;
+}
+.view-button{
+    margin-top: 4%;
+}
+.delete-button{
+    margin-top: 4%;
+}
+
+/* .locality-home-body{
+    text-align: center;
+} */
+.locality-home-header{
+    text-align: center;
+    padding: 1%;
+}
+
+
+.locality-list-body{
+    height: 80vh;
+}
+.locality-list-header{
+    text-align: center;
+    padding: 2%;
+}
+
+.result-top-text{
+    padding-top: 5%;
+    font-size: 16px;
+}
+/* .result-title{
+    text-align: center;
+} */
+.result-text{
+    padding-top: 3%;
+    text-align:left;
+}
+
+.btn-light{
+    background-color: 	#007bff;
+    color: rgb(255, 255, 255);
+}
+
+.dropdown-menu a:hover{
+    background-color: rgb(219, 219, 219);
+}
+
+.right-border-cell{
+    border-right: solid 1px black;
+}
+
+.generateButton-form{
+    margin: 0 1% 2%;
+    text-align: center;
+}
+
+/* .generateButton{
+    
+} */
+
+
+
+.login-container{
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.login-field{
+    text-align: right;
+    position: relative;
+    right: 40px;
+}
+.login-form-1{
+    padding: 5% 28%;
+    box-shadow: 0 5px 6px 0 rgba(0, 0, 0, 0.2), 0 9px 26px 0 rgba(0, 0, 0, 0.19);
+    text-align:center;
+}
+.login-form-1 h1{
+    text-align: center;
+    color: #333;
+}
+.login-container form{
+    padding: 10%;
+}
+
+.btnSubmit
+{
+    width: 50%;
+    border-radius: 1rem;
+    padding: 1.5%;
+    border: none;
+    cursor: pointer;
+}
+.login-form-1 .btnSubmit{
+    font-weight: 600;
+    color: #fff;
+    background-color: #0062cc;
+}
+.login-form-1 .ForgetPwd{
+    color: #0062cc;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.update-form{
+    text-align: center;
+    padding: 0.5% 0 1.5%;
+}
+
+/* .update-form-right{
+    text-align: left;
+    padding: 0.5% 0 1.5%;
+    margin-left: 30px;
+} */
+/* .pdf-button{
+    margin: .5% 45px 1.5% 5px;
+    position: relative;
+    left: 46%;
+}*/
+.local-pdf-button{
+    text-align: left;
+    position: absolute;
+    margin: 1% 3%;
+} 
+
+.local-csv-button{
+    text-align: left;
+    position: absolute;
+    margin: 1% 7%;
+} 
+
+.card-body{
+    text-align: center;
+}
+.card-table{
+    width: 100%;
+    position: relative;
+    padding: 5px;
+    text-align: center;
+    /* background-color: red; */
+    height: 200px;
+    /* border: 1px solid; */
+}
+/* .card-table tbody tr:nth-of-type(odd){
+    background-color: rgb(240, 240, 240);
+} */
+.card-table-row{
+    /* border-bottom: 1px solid; */
+    text-align: left;
+    padding-bottom: 35px;
+}
+.card-table-value{
+    text-align: right;
+}
+
+/* .analysis-buttons .delete-button{
+    position: relative;
+    right: 10px;
+} */
+.rs-revenue-title{
+    color: #ef553b;
+}
+.mt-revenue-title{
+    color: #636efa;
+}
+
+.result-table{
+    width: 93%;
+}
+
+.locality-error-message{
+    text-align: center;
+    padding: 30px;
+}
+
+/* .locality-summary{
+    /* border: 1px solid gray; */
+    /* position: relative;
+    left: 28vw; 
+}*/
+
+.locality-summary-table{
+    border: 1px solid rgb(184, 183, 183);
+    border-radius: 5%;
+    text-align: left;
+    border-spacing: 10px;
+    margin: auto;
+}
+
+.locality-summary-table td{
+    padding: 5px 15px;
+}
+
+.locality-summary-table h4{
+    font-size: 24px;
+}
+.locality-info{
+    padding-bottom: 2%;
+}
+.locality-rs{
+    padding-bottom: 2%;
+}
+.rs_year_header{
+    width: 100px;
+}
+.locality-info-table{
+    margin: auto;
+}
+.locality-info-table{
+    text-align: left;
+    padding: 5px 5px;
+    font-size: 18px;
+}
+.locality-info-table .value{
+    text-align: right;
+}
+.locality-info-table td{
+    padding: .75% 0;
+}
+
+.mt-flowchart{
+    height: 400px;
+    display: block;
+    margin: auto;
+}
+.rs-table{
+    height: 250px;
+    display: block;
+    margin: auto;
+    margin-bottom: 20px;
+}
+#the-revenue-share-model{
+    padding-top: 10px;
+}
+
+.color{
+    background-color: #0da33267;
+}
+
+.logos{
+    text-align: center;
+    padding: 5px 0;
+}
+.eti-logo{
+    padding: 0 25px;
+    width: 450px;
+}
+.va-energy-logo{
+    padding-left: 25px;
+    width: 200px;
+}
+
+.depreciation_btn_form{
+    padding: 1%;
+}
+.depreciation-forms{
+    padding: 2% 0;
+    text-align: center;
+}
+.local-depreciation-form{
+    margin: auto;
+    width: 280px;
+}
+.local-rate-submit{
+    margin-top: 5%;
+}
+.depreciation-form-year{
+    padding: 0 10px 5px;
+}
+.depreciation-form-rate{
+    padding-bottom: 5px;
+}
+.depreciation-row{
+    margin-right: 0px;
+}
+
+.rs-forms{
+    padding: 2% 0;
+    text-align: center;
+}
+.rs-submit{
+    margin-top: 1%;
+    width: 325px;
+}
+.rs-form{
+    margin: auto;
+    width: 320px;
+}
+
+/* .navbar-button{
+    margin: 0 5px;
+    color: whitesmoke;
+} */
+
+.no-analysis-header{
+    padding-bottom: 15px;
+}
+
+.update-locality-all{
+    text-align: center;
+}
+.update-locality-header{
+    padding: 5% 0 2%;
+}
+/* .selectpicker{
+    padding-bottom: 5%;
+} */
+.update-locality-submit{
+    margin: 1% 1% 7.75%;
+}
+.signup{
+    text-align: center;
+    padding: 2% 0;
+}
+.signup-form{
+    /* background-color: red; */
+    width: 33%;
+    margin: auto;
+    text-align: left;
+    /* padding-bottom: 2%; */
+}
+.signup-form-submit{
+   position: relative;
+   left: 200px;
+   padding-top: 1%;
+}
+
+.password-reset-form{
+    text-align: center;
+    padding: 4% 2% 9.25%;
+}
+.password-reset-done{
+    text-align: center;
+    padding: 4% 2% 13.5%;
+    font-size: 25px;
+}
+.password-reset-confirm{
+    text-align: center;
+    padding: 4% 2%;
+}
+
+.password-change-form{
+    width: 33%;
+    margin: auto;
+    text-align: left;
+    padding: 2%;
+}
+
+.password-reset-complete{
+    text-align: center;
+    padding: 4% 2% 13.5%;
+    font-size: 25px;
+}
+
+.print-header{
+    text-align: center;
+}
+
+.simulation-name{
+    padding: 2% 0 1%;
+    text-align: center;
+}
+
+.feedback-form{
+    padding: 2%;
+    text-align: center;
+}
+
+.feedback-form-header{
+    padding-bottom: 1%;
+}
+
+.control-group{
+    padding: 1%;
+}
+
+/* .feedback-form-fields{
+    text-align: left;
+} */
+
+.feedback-success{
+    text-align: center;
+    padding: 9.6%;
+}
+.feedback-success-text{
+    padding: 2%;
+}
+#feedback-home{
+    color: whitesmoke;
+}
+#feedback-home:hover{
+    text-decoration: none;
+    color: rgb(197, 193, 193);
+}
+.helptext{
+    color: rgb(60, 60, 255);
+}
+
+.error-container{
+    text-align: center;
+    padding: 2%;
+}
+.error-header{
+    padding: 2%;
+}
+.error-button{
+    margin-bottom: 7.5%;
+}
+.dontshow{
+    display: none;
+}
+
+.revenue-share-help-text{
+    margin: 1%;
+}
+.revenue-share-help-text p{
+    margin: 0;
+}
+
+/* .print-row{
+    /* margin: 500px; 
+} */
+
+@media print{
+    .chart{
+        margin-top: 450px;
+        text-align: center;
+    }
+    .prototype-graph{
+        margin-left: 155px;
+    }
+    .side-by-side-comparison{
+        margin-top: 300px;
+    }
+    .locality-info{
+        margin-top: 50px;
+    }
+    .dontprint{
+        display: none;
+    }
+    .dontshow{
+        display: inline;
+    }
+    .fourth-panel{
+        width: 100%;
+        margin: 120px;
+    }
+    .parameter-panel{
+        margin-top: 500px;
+        /* width: 100%;
+        height: 20000px; */
+        /* color: blue; */
+        /* background-color: red; */
+    }
+    @media (min-width: 576px) {
+        .print-col{
+            flex: 0 0 auto;
+            width: 50%;
+        }
+    }
+}
