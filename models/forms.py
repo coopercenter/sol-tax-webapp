@@ -1,4 +1,5 @@
 import unicodedata
+from venv import logger
 from django import forms
 from django.forms import ModelForm
 from .models import Simulation, Locality, UserProfile
@@ -14,6 +15,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ValidationError
+import logging
 
 UserModel = get_user_model()
 
@@ -132,6 +134,7 @@ class PasswordResetUsernameForm(forms.Form):
         label=gettext_lazy("Email"),
         max_length=254,
         widget=forms.EmailInput(attrs={'autocomplete': 'email'})
+        
     )
 
     user = forms.CharField(
@@ -139,37 +142,78 @@ class PasswordResetUsernameForm(forms.Form):
         max_length = 150,
     )
 
-    #Function to send email to user
     def send_mail(self, subject_template_name, email_template_name,
-                  context, from_email, to_email, html_email_template_name=None):
-        """
-        Send a django.core.mail.EmailMultiAlternatives to `to_email`.
-        """
-        subject = loader.render_to_string(subject_template_name, context)
-        # Email subject *must not* contain newlines
-        subject = ''.join(subject.splitlines())
-        body = loader.render_to_string(email_template_name, context)
+                    context, from_email, to_email, html_email_template_name=None):
+        try:
+            subject = loader.render_to_string(subject_template_name, context)
+            subject = ''.join(subject.splitlines())
+            body = loader.render_to_string(email_template_name, context)
+            
+            if isinstance(to_email, str):
+                to_email = [to_email]
+            
+            email_message = EmailMultiAlternatives(subject, body, from_email, to_email)
+            
+            if html_email_template_name is not None:
+                html_email = loader.render_to_string(html_email_template_name, context)
+                email_message.attach_alternative(html_email, 'text/html')
+            
+            email_message.send()
+            logger.info("Email sent successfully to %s", to_email)
 
-        email_message = EmailMultiAlternatives(subject, body, from_email, [to_email])
-        if html_email_template_name is not None:
-            html_email = loader.render_to_string(html_email_template_name, context)
-            email_message.attach_alternative(html_email, 'text/html')
+        except Exception as e:
+            logger.error("Failed to send email to %s: %s", to_email, str(e))
+            raise
 
-        email_message.send()
 
-    def get_users(self, email, users):
+    def get_users(self, email, username):
         """Given an email, return matching user(s) who should receive a reset.
         This allows subclasses to more easily customize the default policies
         that prevent inactive users and users with unusable passwords from
         resetting their password.
         """
         email_field_name = UserModel.get_email_field_name()
-        user = UserModel.USERNAME_FIELD
+        user_field_name = UserModel.USERNAME_FIELD
+
+
+        # query = {
+        #     f'{email_field_name}__iexact': email,
+        #     f'{user_field_name}_iexact': username,
+        #     'is_active': True
+        # }
+
+        # print(query)
+
+        # print("Constructed Query " + {query})
+
         active_users = UserModel._default_manager.filter(**{
             '%s__iexact' % email_field_name: email,
-            '%s__iexact' % user: users,
-            'is_active': True,
+            '%s__iexact' % user_field_name: username,
+            # 'is_active': True,
         })
+
+        print("start active user")
+        print("email field name" + email_field_name)
+        print("user_field_name" + user_field_name)
+        print(email)
+        print(username)
+        print("is_active " + 'is_active')
+
+        print("end active users")
+
+        print(f"Filtered active users: {list(active_users)}")
+
+        # filtered_users = [
+        #     u for u in active_users
+        #     if u.has_usable_password() and _unicode_ci_compare(email, getattr(u, email_field_name))
+        # ]
+        # active_users = UserModel._default_manager.filter(**{
+        #     '%s__iexact' % email_field_name: email,
+        #     '%s__iexact' % user_field_name: username,
+        #     'is_active': True,
+        # })
+
+
         return (
             u for u in active_users
             if u.has_usable_password() and
@@ -177,25 +221,37 @@ class PasswordResetUsernameForm(forms.Form):
         )
 
     def save(self, domain_override=None,
-             subject_template_name='registration/password_reset_subject.txt',
-             email_template_name='registration/password_reset_email.html',
-             use_https=False, token_generator=default_token_generator,
-             from_email=None, request=None, html_email_template_name=None,
-             extra_email_context=None):
-        """
-        Generate a one-use only link for resetting password and send it to the
-        user.
-        """
+            subject_template_name='registration/password_reset_subject.txt',
+            email_template_name='registration/password_reset_email.html',
+            use_https=False, token_generator=default_token_generator,
+            from_email=None, request=None, html_email_template_name=None,
+            extra_email_context=None):
+                
+        print("here in save")
         email = self.cleaned_data["email"]
         username = self.cleaned_data["user"]
+        
+        print("email" + email)
+        print("userna,e" + username)
         if not domain_override:
             current_site = get_current_site(request)
             site_name = current_site.name
             domain = current_site.domain
         else:
             site_name = domain = domain_override
+
         email_field_name = UserModel.get_email_field_name()
-        for user in self.get_users(email, username):
+
+        user_field_name = UserModel.USERNAME_FIELD
+
+        users = self.get_users(email, username)
+
+        if not users:
+            print("no users found")
+            return
+        
+        for user in users:
+            print(user)
             user_email = getattr(user, email_field_name)
             context = {
                 'email': user_email,
@@ -207,7 +263,14 @@ class PasswordResetUsernameForm(forms.Form):
                 'protocol': 'https' if use_https else 'http',
                 **(extra_email_context or {}),
             }
+
+            # for key, value in context.items():
+            #     print(f"{key}: {value}")
+
+            print(context)
+            print("About to send mail")
             self.send_mail(
                 subject_template_name, email_template_name, context, from_email,
                 user_email, html_email_template_name=html_email_template_name,
             )
+            print("Mail sent")

@@ -209,22 +209,24 @@ STATIC_URL = '/static/'
 
 LOGIN_REDIRECT_URL = 'localityName'
 
-#EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
+EMAIL_HOST_USER = 'mattdcallen2004@gmail.com'
+EMAIL_HOST_PASSWORD = 'hdwprsfxxnjedphc'
+# if os.path.exists('hiddenVars/email.txt'):
+#     with open('hiddenVars/email.txt') as f:
+#         EMAIL_HOST_USER = str(f.read().strip())
+# else:
+#     EMAIL_HOST_USER = str(os.environ['EMAIL_HOST_USER'])
 
-if os.path.exists('hiddenVars/email.txt'):
-    with open('hiddenVars/email.txt') as f:
-        EMAIL_HOST_USER = str(f.read().strip())
-else:
-    EMAIL_HOST_USER = str(os.environ['EMAIL_HOST_USER'])
-
-if os.path.exists('hiddenVars/email_password.txt'):
-    with open('hiddenVars/email_password.txt') as f:
-        EMAIL_HOST_PASSWORD = str(f.read().strip())
-else:
-    EMAIL_HOST_PASSWORD= str(os.environ['EMAIL_HOST_PASSWORD'])
+# if os.path.exists('hiddenVars/email_password.txt'):
+#     with open('hiddenVars/email_password.txt') as f:
+#         EMAIL_HOST_PASSWORD = str(f.read().strip())
+# else:
+#     EMAIL_HOST_PASSWORD= str(os.environ['EMAIL_HOST_PASSWORD'])
+# DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 try:
     # Configure Django App for Heroku.
