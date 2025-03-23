@@ -76,7 +76,7 @@ The SolTax tool is a Django application which follows the MVT framework. MVT fra
 ## Development
 1. Clone the SolTax repository and create a new branch for development
 
-    __Working with Github in VS Code Tutorial__: [https://docs.djangoproject.com/en/3.1/intro/tutorial01/](https://docs.djangoproject.com/en/3.1/intro/tutorial01/)
+    __Working with Github in VS Code Tutorial__: [https://code.visualstudio.com/docs/sourcecontrol/github](https://code.visualstudio.com/docs/sourcecontrol/github)
 
 2. In the command line, run `pip install -r requirements.txt` to download the necessary packages
 3. Create _.txt_ files containing the following names and respective contents under a new _hiddenVars_ folder in the base directory. The file contains sensitive information that should not be shared. The contents may be found on Azure under _Settings_ :arrow_right: _Configuration_ :arrow_right: _Application settings_. Otherwise, contact Mary Beth Wetherell at [meh4q@virginia.edu](mailto:meh4q@virginia.edu) for sensitive information.
