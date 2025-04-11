@@ -213,7 +213,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'mattdcallen2004@gmail.com'
+EMAIL_HOST_USER = 'VaSolar@virginia.edu'
 EMAIL_HOST_PASSWORD = 'hdwprsfxxnjedphc'
 # if os.path.exists('hiddenVars/email.txt'):
 #     with open('hiddenVars/email.txt') as f:
