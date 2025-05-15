@@ -54,9 +54,9 @@ class SimulationForm(forms.ModelForm):
             'project_size': gettext_lazy('Project Size (MW)'),
             'total_acreage': gettext_lazy('Total Project acreage (Acres)'),
             'inside_fence_acreage': gettext_lazy('Solar Project Inside the Fence (Acres)'),
-            'baseline_land_value': gettext_lazy('Baseline Value of Land ($)'),
-            'inside_fence_land_value': gettext_lazy('Inside the Fence Value of Land ($)'),
-            'outside_fence_land_value': gettext_lazy('Outside the Fence Value of Land ($)'),
+            'baseline_land_value': gettext_lazy('Baseline Value of Land ($ per acre)'),
+            'inside_fence_land_value': gettext_lazy('Inside the Fence Value of Land ($ per acre)'),
+            'outside_fence_land_value': gettext_lazy('Outside the Fence Value of Land ($ per acre)'),
             'dominion_or_apco': gettext_lazy('Is the project operated by either an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative?'),
         }
         widgets = {
