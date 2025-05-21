@@ -30,6 +30,7 @@ import plotly.graph_objects as go
 import urllib, base64
 import PIL, PIL.Image, io
 import csv
+import win32com.client
 
 
 def create_csv_view(request):
@@ -489,11 +490,19 @@ class PasswordContextMixin:
         return context
 
 class PasswordResetUsernameView(PasswordContextMixin, FormView):
+    # outlook = win32com.client
+    # mail = outlook.CreateItem(0)
+    # mail.SentOnBehalfOfName = "VAsolar@virginia.edu"
+
+    # user_email = FormView.cleaned_data.get('email')
+    # print(user_email)
+    # # mail.To = user_email
+
     email_template_name = 'registration/email_template_name.txt'
     extra_email_context = None
     form_class = PasswordResetUsernameForm
-    from_email = None
-    html_email_template_name = 'registration/password_reset_email.html'
+    from_email = 'mattdcallen2004@gmail.com'
+    html_email_template_name = 'registration/password_reset_done.html'
     subject_template_name = 'registration/password_reset_subject.txt'
     success_url = reverse_lazy('password_reset_done')
     template_name = 'registration/password_reset_form.html'

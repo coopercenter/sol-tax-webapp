@@ -16,6 +16,8 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ValidationError
 import logging
+import win32com.client
+import pythoncom
 
 UserModel = get_user_model()
 
@@ -148,17 +150,25 @@ class PasswordResetUsernameForm(forms.Form):
             subject = loader.render_to_string(subject_template_name, context)
             subject = ''.join(subject.splitlines())
             body = loader.render_to_string(email_template_name, context)
+            html_body = loader.render_to_string('registration/password_reset_email.html', context)
+
             
             if isinstance(to_email, str):
                 to_email = [to_email]
             
-            email_message = EmailMultiAlternatives(subject, body, from_email, to_email)
-            
-            if html_email_template_name is not None:
-                html_email = loader.render_to_string(html_email_template_name, context)
-                email_message.attach_alternative(html_email, 'text/html')
-            
-            email_message.send()
+            pythoncom.CoInitialize()
+            outlook = win32com.client.Dispatch("Outlook.Application")
+
+            for recipient in to_email:
+                mail = outlook.CreateItem(0)
+                mail.Subject = subject
+                mail.To = recipient
+                mail.Body = body
+                mail.SentOnBehalfOfName = "VAsolar@virginia.edu"
+                if html_email_template_name:
+                    html_email = loader.render_to_string(html_email_template_name, context)
+                    mail.HTMLBody = html_body
+                mail.Send()
             logger.info("Email sent successfully to %s", to_email)
 
         except Exception as e:
@@ -273,4 +283,4 @@ class PasswordResetUsernameForm(forms.Form):
                 subject_template_name, email_template_name, context, from_email,
                 user_email, html_email_template_name=html_email_template_name,
             )
-            print("Mail sent")
+            print("Mail sent to " + user_email)
