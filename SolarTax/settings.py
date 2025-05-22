@@ -34,10 +34,10 @@ else:
 
 if os.path.exists('hiddenVars'):
     DEBUG = True
-    ALLOWED_HOSTS = ['https://solar-tax-webapp-dev.azurewebsites.net', '127.0.0.1:8000', 'localhost:8000']
+    ALLOWED_HOSTS = ['solar-tax-webapp-dev.azurewebsites.net', '127.0.0.1:8000', 'localhost:8000']
 else:
     DEBUG = False
-    ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
+    ALLOWED_HOSTS = ['solar-tax-webapp.azurewebsites.net', 'solar-tax-webapp-dev.azurewebsites.net', 'localhost:8000', '127.0.0.1:8000']
 # ALLOWED_HOSTS = []
 
 # Application definition
