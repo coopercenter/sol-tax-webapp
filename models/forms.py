@@ -173,8 +173,10 @@ class PasswordResetUsernameForm(forms.Form):
 
         
         try:
-            key = os.environ['SENDGRID_API_KEY']
-            sg = SendGridAPIClient(key)
+            if os.path.exists('hiddenVars/sg_api_key.txt'):
+                with open('hiddenVars/sg_api_key.txt') as f:
+                    SENDGRID_API_KEY = str(f.read().strip())
+            sg = SendGridAPIClient(SENDGRID_API_KEY)
             response = sg.send(message)
         except Exception as e:
             raise ValueError("SENDGRID_API_KEY is not set.")

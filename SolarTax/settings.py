@@ -125,6 +125,7 @@ if os.path.exists('hiddenVars/azure_port.txt'):
         PORT = str(f.read().strip())
 else:
     PORT = os.environ['PORT'] 
+ 
 
 
 DATABASES = {
