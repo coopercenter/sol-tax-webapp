@@ -126,6 +126,7 @@ if os.path.exists('hiddenVars/azure_port.txt'):
 else:
     PORT = os.environ['PORT'] 
 
+
 DATABASES = {
      'default': { 
          'ENGINE': 'django.db.backends.postgresql',
