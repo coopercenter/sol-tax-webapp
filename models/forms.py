@@ -159,8 +159,7 @@ class PasswordResetUsernameForm(forms.Form):
         if isinstance(to_email, str):
             to_email = [to_email]
         
-        # pythoncom.CoInitialize()
-        # outlook = win32com.client.Dispatch("Outlook.Application")
+
 
         message = Mail(
             from_email = 'VAsolar@virginia.edu',
@@ -169,13 +168,11 @@ class PasswordResetUsernameForm(forms.Form):
             html_content = html_body,
         )
 
-        # load_dotenv()
+        load_dotenv()
 
         
         try:
-            if os.path.exists('hiddenVars/sg_api_key.txt'):
-                with open('hiddenVars/sg_api_key.txt') as f:
-                    SENDGRID_API_KEY = str(f.read().strip())
+            SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
             sg = SendGridAPIClient(SENDGRID_API_KEY)
             response = sg.send(message)
         except Exception as e:
