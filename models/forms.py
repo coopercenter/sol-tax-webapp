@@ -169,10 +169,8 @@ class PasswordResetUsernameForm(forms.Form):
             html_content = html_body,
         )
 
-        load_dotenv()
+        # load_dotenv()
 
-        print("All environment variables loaded.")
-        print(f"SENDGRID_API_KEY exists: {'SENDGRID_API_KEY' in os.environ}")
         
         try:
             key = os.environ['SENDGRID_API_KEY']
