@@ -15,6 +15,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ValidationError
+from django.conf import settings
 import logging
 # import win32com.client
 # import pythoncom
@@ -172,8 +173,7 @@ class PasswordResetUsernameForm(forms.Form):
 
         
         try:
-            SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
-            sg = SendGridAPIClient(SENDGRID_API_KEY)
+            sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
             response = sg.send(message)
         except Exception as e:
             raise ValueError("SENDGRID_API_KEY is not set.")

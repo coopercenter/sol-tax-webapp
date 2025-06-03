@@ -125,6 +125,13 @@ if os.path.exists('hiddenVars/azure_port.txt'):
         PORT = str(f.read().strip())
 else:
     PORT = os.environ['PORT'] 
+
+if os.path.exists('hiddenVars/sg_api_key.txt'):
+    with open('hiddenVars/sg_api_key.txt') as f:
+        SENDGRID_API_KEY = str(f.read().strip())
+else:
+    SENDGRID_API_KEY = os.environ['SENDGRID_API_KEY']
+
  
 
 
