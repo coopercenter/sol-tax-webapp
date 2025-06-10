@@ -149,37 +149,73 @@ class PasswordResetUsernameForm(forms.Form):
     )
 
     def send_mail(self, subject_template_name, email_template_name,
-                    context, from_email, to_email, html_email_template_name=None):
-        mail_subject = loader.render_to_string(subject_template_name, context)
-        mail_subject = ''.join(mail_subject.splitlines())
-        body = loader.render_to_string(email_template_name, context)
-        html_body = loader.render_to_string('registration/password_reset_email.html', context)
+                        context, from_email, to_email, html_email_template_name=None):
+            mail_subject = loader.render_to_string(subject_template_name, context)
+            mail_subject = ''.join(mail_subject.splitlines())
+            body = loader.render_to_string(email_template_name, context)
+            html_body = loader.render_to_string('registration/password_reset_email.html', context)
+            
+            if os.path.exists('hiddenVars/sg_api_key.txt'):
+                with open('hiddenVars/sg_api_key.txt') as f:
+                    SENDGRID_KEY = str(f.read().strip())
+            else:
+                SENDGRID_KEY = os.environ['SENDGRID_API_KEY'] 
+            
+            if isinstance(to_email, str):
+                to_email = [to_email]
+
+            # print("Loaded API key:", os.getenv('SENDGRID_API_KEY'))
+
+
+            message = Mail(
+                from_email='vasolar@virginia.edu',
+                to_emails=to_email,
+                subject='Test Email',
+                html_content=html_body
+            )
+            try:
+                print("in try")
+                sg = SendGridAPIClient(SENDGRID_KEY)
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(str(e))
+
+
+    # def send_mail(self, subject_template_name, email_template_name,
+    #                 context, from_email, to_email, html_email_template_name=None):
+    #     mail_subject = loader.render_to_string(subject_template_name, context)
+    #     mail_subject = ''.join(mail_subject.splitlines())
+    #     body = loader.render_to_string(email_template_name, context)
+    #     html_body = loader.render_to_string('registration/password_reset_email.html', context)
 
         
-        if isinstance(to_email, str):
-            to_email = [to_email]
+    #     if isinstance(to_email, str):
+    #         to_email = [to_email]
         
-        # pythoncom.CoInitialize()
-        # outlook = win32com.client.Dispatch("Outlook.Application")
+    #     # pythoncom.CoInitialize()
+    #     # outlook = win32com.client.Dispatch("Outlook.Application")
 
-        message = Mail(
-            from_email = 'VAsolar@virginia.edu',
-            to_emails = to_email,
-            subject = mail_subject,
-            html_content = html_body,
-        )
+    #     message = Mail(
+    #         from_email = 'VAsolar@virginia.edu',
+    #         to_emails = to_email,
+    #         subject = mail_subject,
+    #         html_content = html_body,
+    #     )
 
-        load_dotenv()
+    #     load_dotenv()
 
-        print("All environment variables loaded.")
-        print(f"SENDGRID_API_KEY exists: {'SENDGRID_API_KEY' in os.environ}")
+    #     print("All environment variables loaded.")
+    #     print(f"SENDGRID_API_KEY exists: {'SENDGRID_API_KEY' in os.environ}")
         
-        try:
-            key = os.environ['SENDGRID_API_KEY']
-            sg = SendGridAPIClient(key)
-            response = sg.send(message)
-        except Exception as e:
-            raise ValueError("SENDGRID_API_KEY is not set.")
+    #     try:
+    #         key = os.environ['SENDGRID_API_KEY']
+    #         sg = SendGridAPIClient(key)
+    #         response = sg.send(message)
+    #     except Exception as e:
+    #         raise ValueError("SENDGRID_API_KEY is not set.")
 
 
 
