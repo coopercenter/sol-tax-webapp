@@ -111,9 +111,10 @@ li{
 
 
 /* Form */
-.form-group{
+/* .form-group{
     padding: 0 10%;
-}
+    align-items: center;
+} */
 .selected-locality{
     padding: 1% 0;
     text-align:  center;
@@ -188,6 +189,7 @@ li{
 .table td.value-rate{
     padding-left: 30px;
 }
+
 
 @media (min-width: 1200px) {
     .side-by-side-comparison {
@@ -570,15 +572,26 @@ li{
     font-size: 25px;
 }
 .password-reset-confirm{
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
     text-align: center;
-    padding: 4% 2%;
 }
 
 .password-change-form{
-    width: 33%;
+    flex-direction: column;
     margin: auto;
     text-align: left;
     padding: 2%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+
+.password-change-form label{
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
 }
 
 .password-reset-complete{
