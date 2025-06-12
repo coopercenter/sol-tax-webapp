@@ -158,86 +158,22 @@ class PasswordResetUsernameForm(forms.Form):
             else:
                 SENDGRID_KEY = os.environ['SENDGRID_API_KEY'] 
 
-            # SENDGRID_KEY = os.getenv('SENDGRID_API_KEY')
-
-            # if not SENDGRID_KEY:
-            #     raise ValueError("SENDGRID_API_KEY in Azure not set")
             
             if isinstance(to_email, str):
                 to_email = [to_email]
 
-            # print("Loaded API key:", os.getenv('SENDGRID_API_KEY'))
-
-
             message = Mail(
                 from_email='vasolar@virginia.edu',
                 to_emails=to_email,
-                subject='Test Email',
+                subject='SolTax Password Reset',
                 html_content=html_body
             )
             try:
-                print("in try")
                 sg = SendGridAPIClient(SENDGRID_KEY)
                 response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
+
             except Exception as e:
                 print(str(e))
-
-
-    # def send_mail(self, subject_template_name, email_template_name,
-    #                 context, from_email, to_email, html_email_template_name=None):
-    #     mail_subject = loader.render_to_string(subject_template_name, context)
-    #     mail_subject = ''.join(mail_subject.splitlines())
-    #     body = loader.render_to_string(email_template_name, context)
-    #     html_body = loader.render_to_string('registration/password_reset_email.html', context)
-
-        
-    #     if isinstance(to_email, str):
-    #         to_email = [to_email]
-        
-    #     # pythoncom.CoInitialize()
-    #     # outlook = win32com.client.Dispatch("Outlook.Application")
-
-    #     message = Mail(
-    #         from_email = 'VAsolar@virginia.edu',
-    #         to_emails = to_email,
-    #         subject = mail_subject,
-    #         html_content = html_body,
-    #     )
-
-    #     load_dotenv()
-
-    #     print("All environment variables loaded.")
-    #     print(f"SENDGRID_API_KEY exists: {'SENDGRID_API_KEY' in os.environ}")
-        
-    #     try:
-    #         key = os.environ['SENDGRID_API_KEY']
-    #         sg = SendGridAPIClient(key)
-    #         response = sg.send(message)
-    #     except Exception as e:
-    #         raise ValueError("SENDGRID_API_KEY is not set.")
-
-
-
-
-
-            # for recipient in to_email:
-            #     mail = outlook.CreateItem(0)
-            #     mail.Subject = subject
-            #     mail.To = recipient
-            #     mail.Body = body
-            #     mail.SentOnBehalfOfName = "VAsolar@virginia.edu"
-            #     if html_email_template_name:
-            #         html_email = loader.render_to_string(html_email_template_name, context)
-            #         mail.HTMLBody = html_body
-            #     mail.Send()
-            # logger.info("Email sent successfully to %s", to_email)
-
-        # except Exception as e:
-        #     logger.error("Failed to send email to %s: %s", to_email, str(e))
-        #     raise
 
 
     def get_users(self, email, username):
@@ -250,42 +186,11 @@ class PasswordResetUsernameForm(forms.Form):
         user_field_name = UserModel.USERNAME_FIELD
 
 
-        # query = {
-        #     f'{email_field_name}__iexact': email,
-        #     f'{user_field_name}_iexact': username,
-        #     'is_active': True
-        # }
-
-        # print(query)
-
-        # print("Constructed Query " + {query})
-
         active_users = UserModel._default_manager.filter(**{
             '%s__iexact' % email_field_name: email,
             '%s__iexact' % user_field_name: username,
             # 'is_active': True,
         })
-
-        # print("start active user")
-        # print("email field name" + email_field_name)
-        # print("user_field_name" + user_field_name)
-        # print(email)
-        # print(username)
-        # print("is_active " + 'is_active')
-
-        # print("end active users")
-
-        # print(f"Filtered active users: {list(active_users)}")
-
-        # filtered_users = [
-        #     u for u in active_users
-        #     if u.has_usable_password() and _unicode_ci_compare(email, getattr(u, email_field_name))
-        # ]
-        # active_users = UserModel._default_manager.filter(**{
-        #     '%s__iexact' % email_field_name: email,
-        #     '%s__iexact' % user_field_name: username,
-        #     'is_active': True,
-        # })
 
 
         return (
@@ -301,12 +206,9 @@ class PasswordResetUsernameForm(forms.Form):
             from_email=None, request=None, html_email_template_name=None,
             extra_email_context=None):
                 
-        # print("here in save")
         email = self.cleaned_data["email"]
         username = self.cleaned_data["user"]
         
-        # print("email" + email)
-        # print("userna,e" + username)
         if not domain_override:
             current_site = get_current_site(request)
             site_name = current_site.name
@@ -321,11 +223,9 @@ class PasswordResetUsernameForm(forms.Form):
         users = self.get_users(email, username)
 
         if not users:
-            print("no users found")
             return
         
         for user in users:
-            print(user)
             user_email = getattr(user, email_field_name)
             context = {
                 'email': user_email,
@@ -338,13 +238,8 @@ class PasswordResetUsernameForm(forms.Form):
                 **(extra_email_context or {}),
             }
 
-            # for key, value in context.items():
-            #     print(f"{key}: {value}")
 
-            # print(context)
-            # print("About to send mail")
             self.send_mail(
                 subject_template_name, email_template_name, context, from_email,
                 user_email, html_email_template_name=html_email_template_name,
             )
-            # print("Mail sent to " + user_email)
