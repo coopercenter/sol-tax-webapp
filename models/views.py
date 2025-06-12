@@ -30,7 +30,6 @@ import plotly.graph_objects as go
 import urllib, base64
 import PIL, PIL.Image, io
 import csv
-import win32com.client
 
 
 def create_csv_view(request):
