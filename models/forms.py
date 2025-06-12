@@ -152,11 +152,11 @@ class PasswordResetUsernameForm(forms.Form):
             body = loader.render_to_string(email_template_name, context)
             html_body = loader.render_to_string('registration/password_reset_email.html', context)
             
-            # if os.path.exists('hiddenVars/sg_api_key.txt'):
-            #     with open('hiddenVars/sg_api_key.txt') as f:
-            #         SENDGRID_KEY = str(f.read().strip())
-            # else:
-            #     SENDGRID_KEY = os.environ['SENDGRID_API_KEY'] 
+            if os.path.exists('hiddenVars/sg_api_key.txt'):
+                with open('hiddenVars/sg_api_key.txt') as f:
+                    SENDGRID_KEY = str(f.read().strip())
+            else:
+                SENDGRID_KEY = os.environ['SENDGRID_API_KEY'] 
 
             # SENDGRID_KEY = os.getenv('SENDGRID_API_KEY')
 
@@ -175,15 +175,15 @@ class PasswordResetUsernameForm(forms.Form):
                 subject='Test Email',
                 html_content=html_body
             )
-            # try:
-            #     print("in try")
-            #     sg = SendGridAPIClient(SENDGRID_KEY)
-            #     response = sg.send(message)
-            #     print(response.status_code)
-            #     print(response.body)
-            #     print(response.headers)
-            # except Exception as e:
-            #     print(str(e))
+            try:
+                print("in try")
+                sg = SendGridAPIClient(SENDGRID_KEY)
+                response = sg.send(message)
+                print(response.status_code)
+                print(response.body)
+                print(response.headers)
+            except Exception as e:
+                print(str(e))
 
 
     # def send_mail(self, subject_template_name, email_template_name,
