@@ -16,12 +16,9 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.safestring import mark_safe
 from django.core.exceptions import ValidationError
 import logging
-# import win32com.client
-# import pythoncom
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from dotenv import load_dotenv
 
 UserModel = get_user_model()
 
