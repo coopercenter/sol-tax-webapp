@@ -155,11 +155,16 @@ class PasswordResetUsernameForm(forms.Form):
             body = loader.render_to_string(email_template_name, context)
             html_body = loader.render_to_string('registration/password_reset_email.html', context)
             
-            if os.path.exists('hiddenVars/sg_api_key.txt'):
-                with open('hiddenVars/sg_api_key.txt') as f:
-                    SENDGRID_KEY = str(f.read().strip())
-            else:
-                SENDGRID_KEY = os.environ['SENDGRID_API_KEY'] 
+            # if os.path.exists('hiddenVars/sg_api_key.txt'):
+            #     with open('hiddenVars/sg_api_key.txt') as f:
+            #         SENDGRID_KEY = str(f.read().strip())
+            # else:
+            #     SENDGRID_KEY = os.environ['SENDGRID_API_KEY'] 
+
+            # SENDGRID_KEY = os.getenv('SENDGRID_API_KEY')
+
+            # if not SENDGRID_KEY:
+            #     raise ValueError("SENDGRID_API_KEY in Azure not set")
             
             if isinstance(to_email, str):
                 to_email = [to_email]
