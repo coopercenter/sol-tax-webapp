@@ -178,15 +178,15 @@ class PasswordResetUsernameForm(forms.Form):
                 subject='Test Email',
                 html_content=html_body
             )
-            try:
-                print("in try")
-                sg = SendGridAPIClient(SENDGRID_KEY)
-                response = sg.send(message)
-                print(response.status_code)
-                print(response.body)
-                print(response.headers)
-            except Exception as e:
-                print(str(e))
+            # try:
+            #     print("in try")
+            #     sg = SendGridAPIClient(SENDGRID_KEY)
+            #     response = sg.send(message)
+            #     print(response.status_code)
+            #     print(response.body)
+            #     print(response.headers)
+            # except Exception as e:
+            #     print(str(e))
 
 
     # def send_mail(self, subject_template_name, email_template_name,
