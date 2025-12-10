@@ -214,24 +214,28 @@ def user_home(request, username):
         locality_name = request.POST['locality']
         if locality_name != 'Choose Your Locality':
             locality = Locality.objects.get(name=locality_name)
-            user.discount_rate = locality.discount_rate
-            #user.revenue_share_rate = locality.revenue_share_rate
-            user.real_property_rate = locality.real_property_rate
-            user.mt_tax_rate = locality.mt_tax_rate
-            user.assessment_ratio = locality.assessment_ratio
-            user.baseline_true_value = locality.baseline_true_value
-            user.adj_gross_income = locality.adj_gross_income
-            user.taxable_retail_sales = locality.taxable_retail_sales
-            user.population = locality.population
-            user.adm = locality.adm
-            user.required_local_matching = locality.required_local_matching
-            user.budget_escalator = locality.budget_escalator
-            user.years_between_assessment = locality.years_between_assessment
-            user.use_composite_index = locality.use_composite_index
-            user.local_depreciation = locality.local_depreciation
-            user.scc_depreciation = locality.scc_depreciation
-            depreciation_ext(user.local_depreciation)
-            depreciation_ext(user.scc_depreciation)
+            
+            # Add null checks for all fields
+            user.discount_rate = locality.discount_rate if locality.discount_rate is not None else 6
+            user.real_property_rate = locality.real_property_rate if locality.real_property_rate is not None else 0
+            user.mt_tax_rate = locality.mt_tax_rate if locality.mt_tax_rate is not None else 0
+            user.assessment_ratio = locality.assessment_ratio if locality.assessment_ratio is not None else 100
+            user.baseline_true_value = locality.baseline_true_value if locality.baseline_true_value is not None else 0
+            user.adj_gross_income = locality.adj_gross_income if locality.adj_gross_income is not None else 0
+            user.taxable_retail_sales = locality.taxable_retail_sales if locality.taxable_retail_sales is not None else 0
+            user.population = locality.population if locality.population is not None else 0
+            user.adm = locality.adm if locality.adm is not None else 0
+            user.required_local_matching = locality.required_local_matching if locality.required_local_matching is not None else 0
+            user.budget_escalator = locality.budget_escalator if locality.budget_escalator is not None else 0
+            user.years_between_assessment = locality.years_between_assessment if locality.years_between_assessment is not None else 5
+            user.use_composite_index = locality.use_composite_index if locality.use_composite_index is not None else True
+            user.local_depreciation = locality.local_depreciation if locality.local_depreciation is not None else []
+            user.scc_depreciation = locality.scc_depreciation if locality.scc_depreciation is not None else []
+            
+            # Fix: Capture the return values
+            user.local_depreciation = depreciation_ext(user.local_depreciation)
+            user.scc_depreciation = depreciation_ext(user.scc_depreciation)
+            
             user.save()
 
     if user.mt_tax_rate == 0:
