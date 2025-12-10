@@ -2,7 +2,7 @@
 
 import datetime
 from django.db import migrations, models
-from django.utils.timezone import utc
+import datetime
 
 
 class Migration(migrations.Migration):
@@ -23,6 +23,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='feedback',
             name='date',
-            field=models.DateTimeField(default=datetime.datetime(2021, 6, 2, 15, 33, 48, 753225, tzinfo=utc)),
+            field=models.DateTimeField(default=datetime.datetime(2021, 6, 2, 15, 33, 48, 753225, tzinfo=datetime.timezone.utc)),
         ),
     ]

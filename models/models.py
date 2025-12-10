@@ -25,27 +25,30 @@ class Feedback(models.Model):
     def __str__(self):
         return self.email + "- " + str(self.date)
 
+def get_default_revenue_share_rate():
+    return [1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001]
+
 # Model that represents a user, someone who is generating analyses for solar projects
 # they are developing.
 class UserProfile(models.Model):
     name = models.CharField(max_length=200)
-    discount_rate = models.IntegerField(default = 6)
-    #revenue_share_rate = models.IntegerField(default = 1400)
+    discount_rate = models.IntegerField(default=6)
     real_property_rate = models.FloatField(default=0)
-    mt_tax_rate = models.FloatField(default = 0)
+    mt_tax_rate = models.FloatField(default=0)
     assessment_ratio = models.FloatField(default=100)
-    baseline_true_value = models.BigIntegerField(default = 0)
-    adj_gross_income = models.BigIntegerField(default = 0)
-    taxable_retail_sales = models.BigIntegerField(default = 0)
-    population = models.IntegerField(default = 0)
+    baseline_true_value = models.BigIntegerField(default=0)
+    adj_gross_income = models.BigIntegerField(default=0, null=True, blank=True)  # Allow null if needed
+    taxable_retail_sales = models.BigIntegerField(default=0, null=True, blank=True)
+    population = models.IntegerField(default=0)
     adm = models.FloatField(default=0)
-    required_local_matching = models.IntegerField(default = 0)
-    budget_escalator = models.FloatField(default = 0)
-    years_between_assessment = models.IntegerField(default = 5)
+    required_local_matching = models.IntegerField(default=0)
+    budget_escalator = models.FloatField(default=0)
+    years_between_assessment = models.IntegerField(default=5)
     use_composite_index = models.BooleanField(default=True)
     local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
-    scc_depreciation = ArrayField(models.FloatField(), default=list(get_scc_depreciation()))
-    revenue_share_rate = ArrayField(models.FloatField(), default=[1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001])
+    
+    scc_depreciation = ArrayField(models.FloatField(), default=get_scc_depreciation)  # Remove ()
+    revenue_share_rate = ArrayField(models.FloatField(), default=get_default_revenue_share_rate)
 
     class Meta:
         verbose_name_plural = "User Profiles"

@@ -5,11 +5,38 @@ def depreciation_ext(depreciation_schedule):
     Takes in schedule of effective rates for county + year of initial build
     Extends list with final effective rate to be available for calculations out to 2050
     '''
+    # DEBUG: Print what we received
+    print(f"DEBUG - Type: {type(depreciation_schedule)}")
+    print(f"DEBUG - Value: {depreciation_schedule}")
+    
+    # Convert set to list first
+    if isinstance(depreciation_schedule, set):
+        print("DEBUG - Converting set to list")
+        depreciation_schedule = sorted(list(depreciation_schedule))
+    
+    elif isinstance(depreciation_schedule, str):
+        print("DEBUG - Converting string to list")
+        import ast
+        try:
+            result = ast.literal_eval(depreciation_schedule)
+            # Convert to list if it parsed as a set
+            if isinstance(result, set):
+                depreciation_schedule = sorted(list(result))
+            else:
+                depreciation_schedule = result
+        except:
+            depreciation_schedule = []
+            
+    if not depreciation_schedule:
+        print("DEBUG - Empty schedule, returning []")
+        return []
+
+    print(f"DEBUG - After conversion, type: {type(depreciation_schedule)}")
     last_rate = depreciation_schedule[-1]
     while len(depreciation_schedule) < 35:
         depreciation_schedule.append(last_rate)
-        # print(len(depreciation_schedule))
 
+    return depreciation_schedule
 def effective_rate_ext (effective_rate_list, project_length):
     '''
     Takes in schedule of effective rates for county + year of initial build
