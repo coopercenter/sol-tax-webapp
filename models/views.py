@@ -653,6 +653,60 @@ def performCalculations(locality, simulation):
     M&T Tax Calculations
     '''  
 
+#     adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm, project_length)
+#     adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm, project_length)
+#     per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population, project_length)
+#     per_capita_retail_sales = get_retail_sales_per_capita(local_taxable_retail_sales, local_population, state_taxable_retail_sales, state_population, project_length)
+
+#     base_adm_true_values = get_baseline_true_values_adm(local_baseline_true_value, local_adm, state_true_value, state_adm)
+#     base_per_capita_true_values = get_baseline_true_values_per_capita(local_baseline_true_value, local_population, state_true_value, state_population)
+
+#     base_adm_composite = adm_composite_index(base_adm_true_values, adm_gross_income, adm_retail_sales)
+#     base_local_composite = per_capita_composite_index(base_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
+    
+#     base_composite_index = composite_index(base_adm_composite, base_local_composite)
+
+#     local_project_true_values = local_true_values(local_baseline_true_value, taxable_property_increase)
+#     state_project_true_values = state_total_true_values(state_true_value, taxable_property_increase)
+
+#     project_adm_true_values = get_true_values_adm(local_project_true_values, local_adm, state_project_true_values, state_adm)
+#     project_per_capita_true_values = get_true_values_per_capita(local_project_true_values, local_population, state_project_true_values, state_population)
+
+#     project_adm_composite = adm_composite_index(project_adm_true_values, adm_gross_income, adm_retail_sales)
+#     project_local_composite = per_capita_composite_index(project_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
+
+#     project_composite_index = composite_index(project_adm_composite, project_local_composite)
+
+#     locality_education_budget = required_local_matching / base_composite_index[0]
+
+#     base_required_education_contribution = baseline_required_education_contribution(locality_education_budget, budget_escalator, base_composite_index)
+#     project_required_education_contribution = pv_required_education_contribution(locality_education_budget, budget_escalator, project_composite_index)
+
+#     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
+#     print("composite indeces " + str(project_adm_composite) + str(project_local_composite))
+#     print(str(land_value_increase))
+
+#     net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
+
+#     adj_net_revenue = []
+#     for i in range(project_length):
+#         if i % years_between_assessment == 0:
+#             if(not use_composite_index):
+#                 adj_net_revenue.append(mt_and_property_income[i]/1000)
+#             else:
+#                 adj_net_revenue.append(net_revenue[i]/1000)
+#         else:
+#             # adj_net_revenue.append(adj_net_revenue[i -1])
+#             adj_net_revenue.append((net_revenue[i] if use_composite_index else mt_and_property_income[i]) / 1000
+# )
+
+#     cas_mt = adj_net_revenue
+#     tot_mt = total_adj_rev(cas_mt, discount_rate, initial_year)
+
+    '''
+    M&T Tax Calculations
+    '''
+
     adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm, project_length)
     adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm, project_length)
     per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population, project_length)
@@ -663,7 +717,6 @@ def performCalculations(locality, simulation):
 
     base_adm_composite = adm_composite_index(base_adm_true_values, adm_gross_income, adm_retail_sales)
     base_local_composite = per_capita_composite_index(base_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
-    
     base_composite_index = composite_index(base_adm_composite, base_local_composite)
 
     local_project_true_values = local_true_values(local_baseline_true_value, taxable_property_increase)
@@ -674,7 +727,6 @@ def performCalculations(locality, simulation):
 
     project_adm_composite = adm_composite_index(project_adm_true_values, adm_gross_income, adm_retail_sales)
     project_local_composite = per_capita_composite_index(project_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
-
     project_composite_index = composite_index(project_adm_composite, project_local_composite)
 
     locality_education_budget = required_local_matching / base_composite_index[0]
@@ -683,23 +735,17 @@ def performCalculations(locality, simulation):
     project_required_education_contribution = pv_required_education_contribution(locality_education_budget, budget_escalator, project_composite_index)
 
     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
-    print("composite indeces " + str(project_adm_composite) + str(project_local_composite))
-    print(str(land_value_increase))
 
-    net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
+    net_revenue = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
 
-    adj_net_revenue = []
-    for i in range(project_length):
-        if i % years_between_assessment == 0:
-            if(not use_composite_index):
-                adj_net_revenue.append(mt_and_property_income[i]/1000)
-            else:
-                adj_net_revenue.append(net_revenue[i]/1000)
-        else:
-            adj_net_revenue.append(adj_net_revenue[i -1])
+    # ✔ Correct annual M&T cashflow
+    cas_mt = [
+        (net_revenue[i] if use_composite_index else mt_and_property_income[i]) / 1000
+        for i in range(project_length)
+    ]
 
-    cas_mt = adj_net_revenue
     tot_mt = total_adj_rev(cas_mt, discount_rate, initial_year)
+
 
 
     '''
