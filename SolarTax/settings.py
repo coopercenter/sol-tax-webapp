@@ -58,6 +58,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'models.middleware.MaintenanceModeMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -243,3 +244,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 CSRF_TRUSTED_ORIGIN = ['https://solar-tax-webapp.azurewebsites.net', 'https://solar-tax-webapp-dev.azurewebsites.net']
+
+MAINTENANCE_MODE = True

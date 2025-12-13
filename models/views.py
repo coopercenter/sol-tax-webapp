@@ -30,7 +30,6 @@ import plotly.graph_objects as go
 import urllib, base64
 import PIL, PIL.Image, io
 import csv
-import win32com.client
 
 
 def create_csv_view(request):
@@ -214,28 +213,24 @@ def user_home(request, username):
         locality_name = request.POST['locality']
         if locality_name != 'Choose Your Locality':
             locality = Locality.objects.get(name=locality_name)
-            
-            # Add null checks for all fields
-            user.discount_rate = locality.discount_rate if locality.discount_rate is not None else 6
-            user.real_property_rate = locality.real_property_rate if locality.real_property_rate is not None else 0
-            user.mt_tax_rate = locality.mt_tax_rate if locality.mt_tax_rate is not None else 0
-            user.assessment_ratio = locality.assessment_ratio if locality.assessment_ratio is not None else 100
-            user.baseline_true_value = locality.baseline_true_value if locality.baseline_true_value is not None else 0
-            user.adj_gross_income = locality.adj_gross_income if locality.adj_gross_income is not None else 0
-            user.taxable_retail_sales = locality.taxable_retail_sales if locality.taxable_retail_sales is not None else 0
-            user.population = locality.population if locality.population is not None else 0
-            user.adm = locality.adm if locality.adm is not None else 0
-            user.required_local_matching = locality.required_local_matching if locality.required_local_matching is not None else 0
-            user.budget_escalator = locality.budget_escalator if locality.budget_escalator is not None else 0
-            user.years_between_assessment = locality.years_between_assessment if locality.years_between_assessment is not None else 5
-            user.use_composite_index = locality.use_composite_index if locality.use_composite_index is not None else True
-            user.local_depreciation = locality.local_depreciation if locality.local_depreciation is not None else []
-            user.scc_depreciation = locality.scc_depreciation if locality.scc_depreciation is not None else []
-            
-            # Fix: Capture the return values
-            user.local_depreciation = depreciation_ext(user.local_depreciation)
-            user.scc_depreciation = depreciation_ext(user.scc_depreciation)
-            
+            user.discount_rate = locality.discount_rate
+            #user.revenue_share_rate = locality.revenue_share_rate
+            user.real_property_rate = locality.real_property_rate
+            user.mt_tax_rate = locality.mt_tax_rate
+            user.assessment_ratio = locality.assessment_ratio
+            user.baseline_true_value = locality.baseline_true_value
+            user.adj_gross_income = locality.adj_gross_income
+            user.taxable_retail_sales = locality.taxable_retail_sales
+            user.population = locality.population
+            user.adm = locality.adm
+            user.required_local_matching = locality.required_local_matching
+            user.budget_escalator = locality.budget_escalator
+            user.years_between_assessment = locality.years_between_assessment
+            user.use_composite_index = locality.use_composite_index
+            user.local_depreciation = locality.local_depreciation
+            user.scc_depreciation = locality.scc_depreciation
+            depreciation_ext(user.local_depreciation)
+            depreciation_ext(user.scc_depreciation)
             user.save()
 
     if user.mt_tax_rate == 0:
@@ -653,60 +648,6 @@ def performCalculations(locality, simulation):
     M&T Tax Calculations
     '''  
 
-#     adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm, project_length)
-#     adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm, project_length)
-#     per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population, project_length)
-#     per_capita_retail_sales = get_retail_sales_per_capita(local_taxable_retail_sales, local_population, state_taxable_retail_sales, state_population, project_length)
-
-#     base_adm_true_values = get_baseline_true_values_adm(local_baseline_true_value, local_adm, state_true_value, state_adm)
-#     base_per_capita_true_values = get_baseline_true_values_per_capita(local_baseline_true_value, local_population, state_true_value, state_population)
-
-#     base_adm_composite = adm_composite_index(base_adm_true_values, adm_gross_income, adm_retail_sales)
-#     base_local_composite = per_capita_composite_index(base_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
-    
-#     base_composite_index = composite_index(base_adm_composite, base_local_composite)
-
-#     local_project_true_values = local_true_values(local_baseline_true_value, taxable_property_increase)
-#     state_project_true_values = state_total_true_values(state_true_value, taxable_property_increase)
-
-#     project_adm_true_values = get_true_values_adm(local_project_true_values, local_adm, state_project_true_values, state_adm)
-#     project_per_capita_true_values = get_true_values_per_capita(local_project_true_values, local_population, state_project_true_values, state_population)
-
-#     project_adm_composite = adm_composite_index(project_adm_true_values, adm_gross_income, adm_retail_sales)
-#     project_local_composite = per_capita_composite_index(project_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
-
-#     project_composite_index = composite_index(project_adm_composite, project_local_composite)
-
-#     locality_education_budget = required_local_matching / base_composite_index[0]
-
-#     base_required_education_contribution = baseline_required_education_contribution(locality_education_budget, budget_escalator, base_composite_index)
-#     project_required_education_contribution = pv_required_education_contribution(locality_education_budget, budget_escalator, project_composite_index)
-
-#     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
-#     print("composite indeces " + str(project_adm_composite) + str(project_local_composite))
-#     print(str(land_value_increase))
-
-#     net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
-
-#     adj_net_revenue = []
-#     for i in range(project_length):
-#         if i % years_between_assessment == 0:
-#             if(not use_composite_index):
-#                 adj_net_revenue.append(mt_and_property_income[i]/1000)
-#             else:
-#                 adj_net_revenue.append(net_revenue[i]/1000)
-#         else:
-#             # adj_net_revenue.append(adj_net_revenue[i -1])
-#             adj_net_revenue.append((net_revenue[i] if use_composite_index else mt_and_property_income[i]) / 1000
-# )
-
-#     cas_mt = adj_net_revenue
-#     tot_mt = total_adj_rev(cas_mt, discount_rate, initial_year)
-
-    '''
-    M&T Tax Calculations
-    '''
-
     adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm, project_length)
     adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm, project_length)
     per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population, project_length)
@@ -717,6 +658,7 @@ def performCalculations(locality, simulation):
 
     base_adm_composite = adm_composite_index(base_adm_true_values, adm_gross_income, adm_retail_sales)
     base_local_composite = per_capita_composite_index(base_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
+    
     base_composite_index = composite_index(base_adm_composite, base_local_composite)
 
     local_project_true_values = local_true_values(local_baseline_true_value, taxable_property_increase)
@@ -727,6 +669,7 @@ def performCalculations(locality, simulation):
 
     project_adm_composite = adm_composite_index(project_adm_true_values, adm_gross_income, adm_retail_sales)
     project_local_composite = per_capita_composite_index(project_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
+
     project_composite_index = composite_index(project_adm_composite, project_local_composite)
 
     locality_education_budget = required_local_matching / base_composite_index[0]
@@ -735,17 +678,23 @@ def performCalculations(locality, simulation):
     project_required_education_contribution = pv_required_education_contribution(locality_education_budget, budget_escalator, project_composite_index)
 
     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
+    print("composite indeces " + str(project_adm_composite) + str(project_local_composite))
+    print(str(land_value_increase))
 
-    net_revenue = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
+    net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
 
-    # ✔ Correct annual M&T cashflow
-    cas_mt = [
-        (net_revenue[i] if use_composite_index else mt_and_property_income[i]) / 1000
-        for i in range(project_length)
-    ]
+    adj_net_revenue = []
+    for i in range(project_length):
+        if i % years_between_assessment == 0:
+            if(not use_composite_index):
+                adj_net_revenue.append(mt_and_property_income[i]/1000)
+            else:
+                adj_net_revenue.append(net_revenue[i]/1000)
+        else:
+            adj_net_revenue.append(adj_net_revenue[i -1])
 
+    cas_mt = adj_net_revenue
     tot_mt = total_adj_rev(cas_mt, discount_rate, initial_year)
-
 
 
     '''
