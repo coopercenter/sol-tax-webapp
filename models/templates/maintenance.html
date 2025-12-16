@@ -1,74 +1,582 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Maintenance in Progress</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!--Maintenance Page that allows to see landing information.-->
+{% extends 'base.html' %}
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+{% block content %}
+{% load static %}
+<div class="container-fluid">
+    <div class="model-description">
 
-        body {
-            margin: 0;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa, #e4e7eb);
-            color: #333;
-        }
-
-        .maintenance-card {
-            background: white;
-            padding: 3rem 2.5rem;
-            max-width: 520px;
-            width: 90%;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
-            text-align: center;
-        }
-
-        .maintenance-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-        }
-
-        h1 {
-            margin: 0 0 1rem;
-            font-size: 1.75rem;
-            font-weight: 600;
-        }
-
-        p {
-            margin: 0;
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #555;
-        }
-
-        .subtext {
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: #777;
-        }
-    </style>
-</head>
-
-<body>
-    <div class="maintenance-card">
-        <div class="maintenance-icon">🚧</div>
-        <h1>We’re Performing Maintenance</h1>
+        <br>
+        <div class="card border-secondary">
+            <h5 class="card-header font-weight-bold">Soltax Update - 12/16/2025</h5>
+            <div class="card-body">
+                <h5>
+                <strong>
+                    This tool is currently under maintenance, you have access to this landing page,
+                    but please come back in a few weeks while we update the full product
+                </strong>
+                </h5>
+            </div>
+        </div>
+        <br><br>
+        <h2><strong>Introduction to SolTax</strong></h2>
+        <br>
         <p>
-            Our site is temporarily unavailable while we make improvements.
-            Please check back in a few weeks.
+            The Virginia SolTax Tool is designed to help Virginia localities estimate the revenues they could realize under the two distinct solar tax policy options 
+            permitted under state law: Machinery and Tools tax (M&T)/Real Estate and Revenue Share. Its purpose is to provide local officials with insights regarding 
+            which tax option may provide the greatest financial benefits for a locality.
         </p>
 
-        <div class="subtext">
-            Thank you for your patience.
+        <p>
+            With passage of <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+HB1131&amp;201+sum+HB1131">HB1131</a> in 2020, Virginia enabled localities to 
+            choose between two tax policy options to generate revenues from large-scale solar development. The default option is to levy a Machinery and Tools (M&T)/Real 
+            Estate tax on capital investments in solar generation facilities. Alternatively, a locality may adopt a Revenue Share ordinance, which in effect replaces the 
+            default M&T option. With a Revenue Share ordinance, localities receive income from solar facilities at a flat rate in dollars per megawatt of nameplate 
+            generation capacity per year. 
+        </p>
+
+        <p>
+            Both tax options have benefits and drawbacks depending on the characteristics of solar facilities expected to be built and the tax rates of the localities where 
+            they are being built. This tool permits the adjustment of project specifications as well as the ability to consider new investments in multiple years to allow 
+            examination of the revenue implications of alternative scenarios.
+        </p>
+
+        <p>
+            The revenues that a locality could realize under each of these two taxation arrangements involve calculations that are non-trivial in complexity. SolTax was developed 
+            by the Weldon Cooper Center at UVA, Virginia Energy and others to support local tax policy discussions and decision making.
+        </p>
+        <br>
+
+
+        <!-- jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+        <br>
+        <br>
+
+        <div id="the-decision-a-choice-between-two-revenue-model-options" class="section level2">
+            <h2><strong>A Choice Between Two Tax Policy Options</strong></h2>
+            <br>
+
+            <p><i>Explore the tabs to learn about the assumptions and calculations involved in the different tax policy options.</i></p>
+
+            <div class="btn-group">
+                <label class="btn btn-dark" id="model-outline-1-btn">
+                  <input type="button" class="btn-dark" style="border: none"  id="model-1-btn" autocomplete="off" checked value="M&amp;T Tax">
+                </label>
+                <label class="btn btn-outline-dark" id="model-outline-2-btn">
+                  <input type="button" class="btn-outline-dark" style="border: none" id="model-2-btn" autocomplete="off" value="Revenue Share Ordinance">
+                </label>
+            </div>
+            
+            <br><br>
+
+            <div id="model-1">
+                <div style="line-height:50%;">
+                    <br>
+                </div>
+                <div class="card border-secondary">
+                    <div class="card-body">
+                      <h5 class="card-title" align="left"><strong>Machinery &amp; Tools (M&amp;T)/Real Estate Tax</strong></h5>
+                        <p class="card-text" align="left">Machinery & Tools (M&amp;T)/Real Estate Tax is the default mechanism by which localities realize revenues from large-scale solar projects. 
+                            The tax is calculated as a percentage of the assessed value of certain capital investments made within a locality. In the case of large-scale solar projects, the 
+                            annual amount of the tax levy depends on several parameters:
+
+                                <div> 
+                                    <ul align="left">
+                                        <li>Notional dollar value of the initial capital investment made by project developers</li>
+                                        <li>Schedule of exemptions that apply specifically to utility-scale solar projects per <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter36/section58.1-3660/">§ 58.1-3660</a> of state law</li>
+                                        <li>Depreciation schedule applied to capital investments, whether applied by the State Corporation Commission or the locality (Whichever is applicable)</li>
+                                        <li>Size of the solar project in MW</li>
+                                        <li>Local M&amp;T tax rate and real estate rate which may vary by locality</li>
+                                    </ul>
+                                </div>
+                        </p>
+                        <p class="card-text" align="left">
+                            <br>
+                            For the M&amp;T/Real Estate tax model, the tax rate, depreciation schedule, and exemption rate applied to projects can vary based on the size of the solar project and who is operating the project. 
+                            There are three possible ways the M&amp;T/Real Estate tax model can be applied to a project based on these parameters:
+                            
+                        </p>
+
+                        <ul align="left">
+                            <li>
+                                If a project is 25 MW or less and is not owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an electric cooperative, the M&T tax rate is
+                                used along with the locality's depreciation schedule and the M&T stepdown exemption rate.
+                            </li>
+                            <li>
+                                If a project is greater than 25 MW and less than 150 MW OR is owned by an electric supplier, electric company (Dominion, APCo, or Old Dominion Power) or an<br>electric cooperative, the real estate tax rate is applied to the project along with the SCC
+                                depreciation schedule, the M&T stepdown exemption rate, and local <br>assessment ratios. Projects that are less than 25 MW and are owned by electric suppliers are taxed using these parameters in accordance with <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?221+sum+HB1087">HB1087</a>.
+                            </li>
+                            <li>
+                                All projects 150 MW and greater will use the real estate tax rate and the SCC depreciation schedule. There is no mandatory tax exemption applied on these projects.
+                            </li>
+                        </ul>
+
+                        <p align="left">
+                            <br>The 25 MW limit for projects comes from Virginia's definition of an electric supplier as defined in <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter26/section58.1-2600/">Virginia Code 58.1-2600</a> and 
+                            the local taxation of electric suppliers defined in <a href="https://law.lis.virginia.gov/vacode/title58.1/chapter26/section58.1-2606/">Virginia Code 58.1-2606 (Paragraph C)</a>. These two pieces of legislation state any 
+                            electric supplier cannot be taxed at a higher rate than the real property rate, and that an electric supplier is any person operating a facility that generates more than 25 MW of energy.
+                            <br><br>A breakdown of these categories of projects and their implications can be viewed in the image below. <br><br>
+                            <br><br>
+                            <img src="{% static "models/Flowchart.png" %}" alt="M&T Flowchart" class="mt-flowchart">
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="the-revenue-share-model" class="section level3">
+                <div class="card border-secondary" id="model-2" style="display: none">
+                    <div class="card-body">
+                      <h5 class="card-title" align="left"><strong>Revenue Share Ordinance</strong></h5>
+                      <p class="card-text" align="left">Starting in 2020, <a href="https://lis.virginia.gov/cgi-bin/legp604.exe?201+sum+SB762">SB762</a> established Revenue Share as an alternative method for localities to realize revenue from solar projects. The legislation allows a locality to assess a yearly
+                         flat rate through ordinance of up to $1400/MW on solar projects built within the jurisdiction. In Spring 2021, the legislation was amended to allow localities to increase the revenue share rate by 10% every 5 years starting July 
+                         1, 2026. The maximum revenue share rate per MW for yearly intervals are described in the table below. In Spring 2022, the legislation was amended to permit localities to apply revenue share rates to solar projects less than 5 MW. 
+                         Adopting a Revenue Share ordinance grants a 100% M&T tax exemption for solar projects in exchange for the revenue share.
+                        </p>
+                        <img src="{% static "models/rs_rate_table.png" %}" alt="M&T Flowchart" class="rs-table">
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div id="procedures-for-computing-cash-flows-under-the-two-models" class="section level1">
+            <h2><strong>Computing Cash Flows</strong></h2>
+            <br>
+            <p>The tool will prompt the user to input certain variables, which can be changed to refine the analysis. Based 
+                on the variables preloaded in the tool and those provided by the user, the tool will calculate the expected tax revenue for a locality under each of the two tax policy options. 
+                Results will be presented side by side, allowing for comparison.</p>
+            
+            <h5><b>User Entered Variables</b></h5>
+            <div style="line-height:50%;">
+                <br>
+            </div>
+            <p>These are the variables the User must enter when they <b>Create New Project</b>. Listed are default values.</p>
+            <ul>
+                <li>Initial year the solar project will operate in - 2026</li>
+                <li>Total capitalized investment into the solar project - 100,000,000</li>
+                <li>Size of the project in megawatts - 100MW</li>
+                <li>Total acreage of the project - 2000 Acres</li>
+                <li>Total acreage of the project that is "inside the fence" - 1000 Acres</li>
+                <li>Baseline ($1,000/Acre), inside fence ($10,000/Acre), and outside fence ($1,000/Acre) land values per acre</li>
+                <li>Operation by an electric supplier, electric company (Dominion, APCo, Old Dominion Power) or an electric cooperative</li>
+            </ul>
+            <br>
+
+            <h5><b>Preloaded Variables</b></h5>
+            <div style="line-height:25%;">
+                <br>
+            </div>
+            <p>
+                In addition to unique variables the user must enter, locality-specific parameters have been preloaded into SolTax. Preloaded variables are periodically updated by the Cooper Center, 
+                however the user may manually update any of these in the tool.
+            </p>
+            <table class="table table-striped table-sm table-bordered">
+                <thead>
+                  <tr>
+                    <th scope="col">Variable</th>
+                    <th scope="col">Source</th>
+                    <th scope="col">Effective Date(s)</th>
+                    <th scope="col">Last Updated</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Discount Rate</td>
+                    <td >Assumed at 6% (Reference <a href="#calculation-tabs">Future Cash Flows to Net Present Value</a>).</td>
+                    <td>2021 - Present</td>
+                    <td>July 1st, 2021</td>
+                  </tr>
+                  <tr>
+                    <td>Real Property Rate</td>
+                    <td><a href="https://virginia.app.box.com/s/enmtunc4lg288xy4zxerieda4bms4koj">Virginia Annual Local Tax Rates Survey</a></td>
+                    <td>2024</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>M&T Tax Rate</td>
+                    <td><a href="https://virginia.app.box.com/s/enmtunc4lg288xy4zxerieda4bms4koj">Virginia Annual Local Tax Rates Survey</a></td>
+                    <td>2024</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Assesment Ratio</td>
+                    <td ><a href="https://www.tax.virginia.gov/sites/default/files/inline-files/2023-assessment-sales-ratio-study.pdf">Virginia Sales Ratio Study</a></td>
+                    <td>2022</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Baseline True Value</td>
+                    <td ><a href="https://www.doe.virginia.gov/data-policy-funding/school-finance/budget-grants-management/composite-index-of-local-ability-to-pay">Virginia Department of Education</a></td>
+                    <td>2024-Present</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Adjusted Gross Income</td>
+                    <td ><a href="https://www.doe.virginia.gov/data-policy-funding/school-finance/budget-grants-management/composite-index-of-local-ability-to-pay">Virginia Department of Education</a></td>
+                    <td>2024-Present</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Taxable Retail Sales</td>
+                    <td ><a href="https://www.doe.virginia.gov/data-policy-funding/school-finance/budget-grants-management/composite-index-of-local-ability-to-pay">Virginia Department of Education</a></td>
+                    <td>2024-Present</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Population</td>
+                    <td ><a href="https://www.doe.virginia.gov/data-policy-funding/school-finance/budget-grants-management/composite-index-of-local-ability-to-pay">Virginia Department of Education</a></td>
+                    <td>2024-Present</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>ADM</td>
+                    <td ><a href="https://www.doe.virginia.gov/data-policy-funding/school-finance/budget-grants-management/composite-index-of-local-ability-to-pay">Virginia Department of Education</a></td>
+                    <td>2024-Present</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Required Local Matching</td>
+                    <td ><a href="https://rga.lis.virginia.gov/Published/2022/RD164/PDF">Virginia Department of Education</a></td>
+                    <td>2021</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>Local Depreciation Rate</td>
+                    <td ><a href="https://virginia.app.box.com/s/enmtunc4lg288xy4zxerieda4bms4koj">Virginia Annual Local Tax Rates Survey</a></td>
+                    <td>2024</td>
+                    <td>May 14, 2025</td>
+                  </tr>
+                  <tr>
+                    <td>SCC Depreciation Rate</td>
+                    <td><a href="https://www.vaco.org/wp-content/uploads/2021/03/SCC-Depreciation-Schedule-Utility-Scale-Solar-FY-21-Update.pdf">Virginia State Corporation Commission</a></td>
+                    <td>2021</td>
+                    <td>July 1st, 2021</td>
+                  </tr>
+                </tbody>
+            </table>
+            <br>
+
+            <p id="calculation-tabs"><i>Explore the tabs to learn about the assumptions and calculations involved in calculating cash flows.</i></p>
+
+            <div class="btn-group">
+                <label class="btn btn-dark" id="flow-1-outline-btn">
+                  <input type="button" class="btn-dark" style="border: none" id="flow-1-btn" autocomplete="off" checked value="Calculating M&amp;T">
+                </label>
+                <label class="btn btn-outline-dark" id="flow-2-outline-btn">
+                  <input type="button" class="btn-outline-dark" style="border: none" id="flow-2-btn" autocomplete="off" value="Calculating Revenue Share">
+                </label>
+                <label class="btn btn-outline-dark" id="flow-3-outline-btn">
+                  <input type="button" class="btn-outline-dark" style="border: none" id="flow-3-btn" autocomplete="off" value="Composite Index">
+                </label>
+                <label class="btn btn-outline-dark" id="flow-4-outline-btn">
+                    <input type="button" class="btn-outline-dark" style="border: none" id="flow-4-btn" autocomplete="off" value="Future Cash Flows to Net Present Value">
+                </label>
+                <label class="btn btn-outline-dark" id="flow-5-outline-btn">
+                    <input type="button" class="btn-outline-dark" style="border: none" id="flow-5-btn" autocomplete="off" value="Auxiliary Assumptions">
+                </label>
+                <label class="btn btn-outline-dark" id="flow-6-outline-btn">
+                    <input type="button" class="btn-outline-dark" style="border: none" id="flow-6-btn" autocomplete="off" value="Uncertainties &amp; Risks">
+                </label>
+            </div>
+
+            <br><br>
+
+            <div class="card border-secondary" id="flow-1">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Calculating M&amp;T </strong></h5>
+                  <p class="card-text" align="left">To calculate the expected tax revenue from the default M&T tax option, the tool will take each year’s expected solar investments 
+                    from the schedule provided by the user and break their lifetime into three periods that represent each stepdown as articulated in the M&T tax exemption policy, 
+                    HB 1434. Within each period, the yearly expected tax revenue will be calculated by multiplying the project’s assessed value with the appropriate exemption level 
+                    (80% exempt in the first 5 years, 70% for the next 5 years, then 60% for the rest of the project’s life) and the effective M&T tax rate for the indicated locality. 
+                    The effective M&T tax rate is derived by multiplying a locality’s statutory rate per $100 by its depreciation schedule, should it have one.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card border-secondary" id="flow-2" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Calculating Revenue Share</strong></h5>
+                  <p class="card-text" align="left">To calculate the value of tax revenue in an individual year from solar projects built in year  <span class="math inline">\(t\)</span>, the revenue share rate is multiplied by the total
+                    number of
+                    qualifying megawatts built in year <span class="math inline">\(t\)</span>.
+                    </p>
+                </div>
+            </div>
+
+            <div class="card border-secondary" id="flow-3" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Composite Index</strong></h5>
+                  <p class="card-text" align="left">
+                    <p class="card-text" align="left">In addition to these direct factors, the use of the M&amp;T tax may cause an additional indirect
+                        effect on local revenues, through its influence on state funding for education. Under Virginia law, the
+                        costs of supporting public schools is effectively shared between state and local governments. The
+                        state’s per-pupil contribution varies by locality: it is lower for wealthier counties that are better
+                        positioned to fund schools on their own, and greater for poorer counties. The exact amount of the state’s
+                        contribution is based on the value of the <a
+                            href="https://www.solunesco.com/2018/12/20/revisiting-the-composite-index-of-virginia/#:~:text=What%20is%20the%20Composite%20Index%20and%20how%20is%20it%20related%20to%20solar%3F&amp;text=The%20Composite%20Index%20of%20Local,paid%20by%20the%20local%20government.">Composite
+                            Index of Local Ability-to-Pay</a> 
+                        (CI), an estimate of each locality’s taxable wealth. To
+                        put the issue briefly: a new solar project may increase a locality’s CI, triggering a decrease in
+                        education funding from the state. The tool includes an option under <b>Preloaded Parameters</b> to toggle on or off calculations related to CI .</p>
+                </div>
+            </div>
+
+            <div class="card border-secondary" id="flow-4" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Future Cash Flows to Net Present Value</strong></h5>
+                  <p class="card-text" align="left">Under either tax policy option, a stream of future revenue flows can be converted to present-value
+                    equivalents
+                    by discounting at an appropriate discount rate. Let <span class="math inline">\(t = 0, 1, \ldots,
+                        T\)</span>
+                    index the several years over the planning period, where <span class="math inline">\(t=0\)</span>
+                    corresponds
+                    to the present year, and <span class="math inline">\(T\)</span> denotes the number of
+                    years
+                    until the limit of the planning horizon. For each
+                    year
+                    <span class="math inline">\(t\)</span>, let <span class="math inline">\(c_t\)</span> denote the cash
+                    flow
+                    received by the locality as revenue. The Net Present Value of this stream of cash flows is given by
+                    the
+                    well-known <span class="math inline">\(NPV\)</span> formula where <span
+                    class="math inline">\(r\)</span> denotes the discount rate the locality uses for its capital
+                    budgeting.
+                    </p>
+                    <p align="left"><span class="math display">\[ NPV = \sum_{t=0}^T \frac{c_t}{(1+r)^t} \]</span>
+                    The appropriate choice of the discount rate <span class="math inline">\(r\)</span> is not obvious,
+                    and
+                    can
+                    have a significant effect on the NPV calculation. For our base case, we will assume a 6 percent
+                    discount
+                    rate. The tool will allows users to enter
+                    alternative
+                    discount rates, allowing for the performance of a sensitivity analysis.</p>
+                </div>
+            </div>
+
+            <div class="card border-secondary" id="flow-5" style="display: none">
+                <div class="card-body">
+                  <h5 class="card-title" align="left"><strong>Auxiliary Assumptions</strong></h5>
+                  <p class="card-text" align="left">
+                    <ul align="left">
+                        <li>The policy environment will remain stable (i.e. The M&amp;T tax program will not sunset in 2030,
+                            and the Revenue Share remains in its current form in perpetuity)</li>
+                        <li>All new builds filed their interconnection request form after January 1, 2019 (The maximum MW
+                            level is higher for earlier dates)</li>
+                        <li>
+                            A locality's education budget will increase by 1 percent every year and every other value used for the 
+                            composite index calculations will remain constant over time
+                        </li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+
+            <div class="card border-secondary" id="flow-6" style="display: none">
+                <div class="card-body">
+                <h5 class="card-title" align="left"><strong>Uncertainties and Risks</strong></h5>
+                <p class="card-text" align="left">
+                    <ul align="left">
+                        <li>The calculation ignores any revenue that might come from already existing solar projects and if a
+                            revenue share is adopted, a locality cannot mandate that a preexisting project pay a revenue
+                            share rather than the traditional M&amp;T</li>
+                        <li>Increases in revenue from new solar builds may trigger reductions in state education funding,
+                            which may not be fully offset by solar revenue</li>
+                    </ul>
+                    </p>
+                </div>
+            </div>
+
+            <br>
+
+            <script type="text/javascript"> 
+                $("#model-1-btn").click(function(){
+                    $("#model-2").hide();
+                    $("#model-1").show();
+
+                    $("#model-1-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#model-outline-1-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#model-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#model-outline-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+    
+                $("#model-2-btn").click(function(){
+                    $("#model-1").hide();
+                    $("#model-2").show();
+
+                    $("#model-2-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#model-outline-2-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#model-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#model-outline-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+
+                $("#flow-1-btn").click(function(){
+                    $("#flow-1").show();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+
+                    $("#flow-1-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-1-outline-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+
+                $("#flow-2-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").show();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+
+                    $("#flow-2-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-2-outline-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-1-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+
+                $("#flow-3-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").show();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+
+                    $("#flow-3-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-3-outline-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-1-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+
+                $("#flow-4-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").show();
+                    $("#flow-5").hide();
+                    $("#flow-6").hide();
+
+                    $("#flow-4-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-4-outline-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-1-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+
+                $("#flow-5-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").show();
+                    $("#flow-6").hide();
+
+                    $("#flow-5-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-5-outline-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-1-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-6-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+
+                $("#flow-6-btn").click(function(){
+                    $("#flow-1").hide();
+                    $("#flow-2").hide();
+                    $("#flow-3").hide();
+                    $("#flow-4").hide();
+                    $("#flow-5").hide();
+                    $("#flow-6").show();
+
+                    $("#flow-6-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-6-outline-btn").removeClass("btn-outline-dark").addClass("btn-dark")
+                    $("#flow-1-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-1-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-2-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-4-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-5-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                    $("#flow-3-outline-btn").addClass("btn-outline-dark").removeClass("btn-dark")
+                });
+                
+            </script>
+
+            <br>
+
+        <!-- Acknowledgements -->
+        <div>
+            <h2><strong>Acknowledgements</strong></h2>
+            <br><p>A special thanks is extended to the following people for the guidance and feedback provided throughout the development process of the SolTax application.</p>
+            <ul>
+                <li>Robert Crockett, Advantus Strategies</li>
+                <li>Francis Hodsell, SolUnesco</li>
+                <li>Ken Jurman, Virginia Department of Mines, Minerals and Energy</li>
+                <li>Joe Lerch, Virginia Association of Counties</li>
+                <li>Scott Simpson, Halifax County</li>
+                <li>Tom Swartzwelder, King and Queen County</li>
+                <li>Bobby Tucker, State Corporation Commission</li>
+                <li>Todd Flowers, Dominion Energy</li>
+            </ul>
+        </div>
+
+        <br>
+        <br>
+
+        <div class="card border-secondary">
+            <p class="card-header font-weight-bold">Disclaimer</p>
+            <div class="card-body">
+                <p class="text-left">
+                    This is not a forecasting tool. This is a tool is to be used as a consulting tool for localities. The suggestions from models does not constitute legal advice.
+                </p>
+            </div>
         </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock content%}
