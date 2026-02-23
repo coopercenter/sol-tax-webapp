@@ -5,18 +5,19 @@ from django.db.models import UniqueConstraint
 from django.utils import timezone
 from django.core.validators import MaxValueValidator
 from django.core.exceptions import ValidationError
-
+from django.conf import settings
 
 
 def get_scc_depreciation():
-    return list([.9, .9, .9, .9, .9, .8729, .8470, .8196, .7906, .7598, .7271, .6925, .6568, .6170, .5758, .5321, .4858, .4367, .3847, .3295, .2711, .2091, .1434, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10, .10])
+    #print(f"Getting SCC depreciation rates from settings: {settings.SCC_DEPRECIATION_RATES}")
+    return list(settings.SCC_DEPRECIATION_RATES)
     
 class Feedback(models.Model):
     email = models.EmailField()
     message = models.CharField(max_length=5000)
     name = models.CharField(max_length=200, default="")
     organization = models.CharField(max_length=200, default="")
-    date = models.DateTimeField(default=timezone.now())
+    date = models.DateTimeField(default=timezone.now)
 
     class Meta:
         verbose_name_plural = "Feedback"
@@ -26,16 +27,17 @@ class Feedback(models.Model):
         return self.email + "- " + str(self.date)
 
 def get_default_revenue_share_rate():
-    return [1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001]
+    return settings.DEFAULT_REVENUE_SHARE_RATE
 
 # Model that represents a user, someone who is generating analyses for solar projects
 # they are developing.
 class UserProfile(models.Model):
     name = models.CharField(max_length=200)
-    discount_rate = models.IntegerField(default=6)
+    locality_name = models.CharField(max_length=200, null=True, blank=True)
+    discount_rate = models.IntegerField(default=settings.DEFAULT_DISCOUNT_RATE)
     real_property_rate = models.FloatField(default=0)
     mt_tax_rate = models.FloatField(default=0)
-    assessment_ratio = models.FloatField(default=100)
+    assessment_ratio = models.FloatField(default=1)
     baseline_true_value = models.BigIntegerField(default=0)
     adj_gross_income = models.BigIntegerField(default=0, null=True, blank=True)  # Allow null if needed
     taxable_retail_sales = models.BigIntegerField(default=0, null=True, blank=True)
@@ -45,8 +47,7 @@ class UserProfile(models.Model):
     budget_escalator = models.FloatField(default=0)
     years_between_assessment = models.IntegerField(default=5)
     use_composite_index = models.BooleanField(default=True)
-    local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True)
-    
+    local_depreciation = ArrayField(models.FloatField(), null=True, blank=True)
     scc_depreciation = ArrayField(models.FloatField(), default=get_scc_depreciation)  # Remove ()
     revenue_share_rate = ArrayField(models.FloatField(), default=get_default_revenue_share_rate)
 
@@ -61,11 +62,11 @@ class UserProfile(models.Model):
 # information so a user can model their parameters off of an already existing locality parameters
 class Locality(models.Model):
     name = models.CharField(max_length=200)
-    discount_rate = models.IntegerField(default = 6)
+    discount_rate = models.IntegerField(default = settings.DEFAULT_DISCOUNT_RATE)
     #revenue_share_rate = models.IntegerField(default = 1400)
     real_property_rate = models.FloatField(default=0)
     mt_tax_rate = models.FloatField(default = 0)
-    assessment_ratio = models.FloatField(default=100)
+    assessment_ratio = models.FloatField(default=1)
     baseline_true_value = models.BigIntegerField(default = 0)
     adj_gross_income = models.BigIntegerField(default = 0)
     taxable_retail_sales = models.BigIntegerField(default = 0)
@@ -73,10 +74,10 @@ class Locality(models.Model):
     adm = models.FloatField(default=0)
     required_local_matching = models.IntegerField(default = 0)
     budget_escalator = models.FloatField(default = 0)
-    years_between_assessment = models.IntegerField(default = 5)
+    years_between_assessment = models.IntegerField(default = settings.DEFAULT_YEARS_BETWEEN_ASSESSMENTS)
     use_composite_index = models.BooleanField(default=True)
-    local_depreciation = ArrayField(models.FloatField(blank=True), null=True, blank=True, size=35)
-    scc_depreciation = ArrayField(models.FloatField(), default=list(get_scc_depreciation()))
+    local_depreciation = ArrayField(models.FloatField(), null=True, blank=True, size=settings.MAX_DEPRECIATION_SCHEDULE_LENGTH)
+    scc_depreciation = ArrayField(models.FloatField(), default=get_scc_depreciation)
     
     class Meta:
         verbose_name_plural = "Localities"
@@ -90,8 +91,8 @@ class Simulation(models.Model):
     user = models.ForeignKey('UserProfile', on_delete=models.CASCADE, default="")
     name = models.CharField(max_length=150, blank=True)
     initial_investment = models.IntegerField(default = 100000000)
-    initial_year = models.IntegerField(default = 2021)
-    project_length = models.IntegerField(default = 30)
+    initial_year = models.IntegerField(default = settings.DEFAULT_INITIAL_YEAR)
+    project_length = models.IntegerField(default = settings.DEFAULT_PROJECT_LENGTH)
     project_size = models.IntegerField(default = 100)
     total_acreage = models.IntegerField(default = 2000)
     inside_fence_acreage = models.IntegerField(default = 1000)
