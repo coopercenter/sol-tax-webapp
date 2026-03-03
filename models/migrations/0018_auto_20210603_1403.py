@@ -3,6 +3,7 @@
 import datetime
 import django.contrib.postgres.fields
 from django.db import migrations, models
+from django.utils.timezone import utc
 
 
 class Migration(migrations.Migration):

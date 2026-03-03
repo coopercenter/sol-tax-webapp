@@ -46,11 +46,6 @@ def get_locality(sim):
     return locality.name
 
 @register.simple_tag
-def get_locality_name(sim):
-    user = UserProfile.objects.get(id = sim[0]["fields"]["user"])
-    return user.locality_name
-
-@register.simple_tag
 def get_totals(l):
     sum = 0
     print(l)

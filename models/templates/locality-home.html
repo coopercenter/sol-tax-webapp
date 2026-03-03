@@ -4,6 +4,7 @@
 {% load static %}
 {% block content %}
 
+
     {% if user.username == locality.name %}
     <div class="locality-home-body">
         <div class="dontshow">
@@ -16,7 +17,7 @@
             {% csrf_token %}
             <button class="btn btn-lg btn-outline-success local-csv-button dontprint" type="submit" value="Create CSV" title="Create CSV"><i class="icofont-file-excel"></i></button>
         </form>
-        <h1 class="locality-home-header locality_name dontprint">{% if locality.locality_name %}Locality: {{locality.locality_name}}{% endif %}</h1>
+        <h1 class="locality-home-header locality_name dontprint">{{locality.name}}</h1>
 
         <form action="/form/" method="POST" class="generateButton-form dontprint">
             {% csrf_token %}
