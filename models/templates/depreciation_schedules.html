@@ -13,6 +13,7 @@
                 </div>
                 <form action="/user-{{locality}}/" class="local-depreciation-form" method="POST" name="testing">
                     {% csrf_token %}
+                    <input type="hidden" name="referrer" value="change_local_depreciation">
                     <table>
                         <thead>
                             <tr>
@@ -49,6 +50,7 @@
             </div>
             <form action="/user-{{locality}}/" class="local-depreciation-form" method="POST">
                 {% csrf_token %}
+                <input type="hidden" name="referrer" value="change_scc_depreciation">
                 <table>
                     <thead>
                         <tr>

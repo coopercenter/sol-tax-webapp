@@ -14,50 +14,51 @@ include 'extends 'base.html'' at the top of the file to include the base html el
         integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
     <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6" crossorigin="anonymous"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">
-    <link rel="stylesheet" href="{% static "models/icofont/icofont.min.css" %}">
-    <link rel="stylesheet" href="{% static "models/style.css" %}">
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <link rel="stylesheet" href="{% static 'models/icofont/icofont.min.css' %}">
+    <link rel="stylesheet" href="{% static 'models/style.css' %}">
+    <!-- <script src="https://cdn.plot.ly/plotly-latest.min.js"></script> -->
+    <script src="https://cdn.plot.ly/plotly-2.33.0.min.js"></script>
+
 </head>
 <body>
-    <div class="header">
-        <div class="navbar navbar-expand-lg navbar-light bg-light">
-            <h1> <a href="/" class="site-name"> <strong> The Virginia SolTax Tool </strong></a></h1>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
-                <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-                    
-                    {% if user.is_authenticated %}
-                        <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
-                            {% csrf_token %}
-                            <input class="btn btn-primary not-log-button" type="submit" value="Preloaded Parameters">
-                        </form>
 
-                        <form method="POST" action="/user-{{user.username}}/">
-                            {% csrf_token %}
-                            <input class="btn btn-success not-log-button" type="submit" value="{{user.username}} Profile">
-                        </form>
+<!-- PLEASE UNCOMMENT THIS WHEN WE GET THE PAGE BACK RUNNING *************** THIS IS THE NAVBAR -->
+<div class="header">
+    <div class="navbar navbar-expand-lg navbar-light bg-light">
+        <h1> <a href="/" class="site-name"> <strong> The Virginia SolTax Tool </strong></a></h1>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+            <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+                
+                {% if user.is_authenticated %}
+                    <form method="POST" action="/user-{{user.username}}/update-user-parameters/">
+                        {% csrf_token %}
+                        <input class="btn btn-primary not-log-button" type="submit" value="Preloaded Parameters">
+                    </form>
 
-                        <!-- <button class="btn btn-info not-log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button> -->
-                        <button class="btn btn-secondary not-log-button"><a href="/logout/" class="not-log-button">Logout</a></button>
-                    {% else %}
-                        <button class="btn btn-success not-log-button"><a href="/signup/" class="not-log-button">Create Account</a></button>
-                        <!-- <button class="btn btn-info not-log-button"><a href="/feedback/" class="not-log-button">Questions/Feedback</a></button> -->
-                        <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></button>
+                    <form method="POST" action="/user-{{user.username}}/">
+                        {% csrf_token %}
+                        <input class="btn btn-success not-log-button" type="submit" value="{{user.username}} Profile">
+                    </form>
 
-                    {% endif %}
-                    <!-- <button class="btn btn-danger not-log-button"><a href="" class="not-log-button">Donate</a></button> -->
-                </ul>
-            </div>
-        </div>
-    </div>  
+                    <button class="btn btn-secondary not-log-button"><a href="/logout/" class="not-log-button">Logout</a></button>
+                {% else %}
+                    <button class="btn btn-success not-log-button"><a href="/signup/" class="not-log-button">Create Account</a></button>
+                    <button class="btn btn-primary not-log-button"><a href="/login/" class="not-log-button">Login</a></button>
 
-    <div class="header">
-        <div class="navbar navbar-expand-lg navbar-light bg-light d-none d-print-inline print-header">
-            <h1 class="dontprint"> The Virginia SolTax Tool </h1>
+                {% endif %}
+            </ul>
         </div>
     </div>
+</div>  
+
+<div class="header">
+    <div class="navbar navbar-expand-lg navbar-light bg-light d-none d-print-inline print-header">
+        <h1 class="dontprint"> The Virginia SolTax Tool </h1>
+    </div>
+</div>
 
     <div class="middle">
         {% block content %}
@@ -68,8 +69,8 @@ include 'extends 'base.html'' at the top of the file to include the base html el
     <div class="footer dontprint">
         <!-- <button class="footer-donate">Donate</button> -->
         <div class="logos">
-            <img src="{% static "models/ETI_Logo.png" %}" alt="ETI LOGO" class="eti-logo">
-            <img src="{% static "models/VAEnergyLogo.png" %}"" alt="DMME LOGO" class="va-energy-logo">
+            <img src="{% static 'models/ETI_Logo.png' %}" alt="ETI LOGO" class="eti-logo">
+            <img src="{% static 'models/VAEnergyLogo.png' %}" alt="DMME LOGO" class="va-energy-logo">
         </div>
         <br>
         <p class="subtitle footer-text"> Question or Feedback? Contact Elizabeth Marshall, Senior Program Manager, <a href = "mailto:emm2t@virginia.edu">emm2t@virginia.edu</a></p>
@@ -86,6 +87,6 @@ include 'extends 'base.html'' at the top of the file to include the base html el
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
-    <script src="{% static "models/index.js" %}"></script>
+    <script src="{% static 'models/index.js' %}"></script>
 </body>
 </html>

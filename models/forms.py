@@ -19,6 +19,7 @@ import logging
 import os
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from django.conf import settings
 
 UserModel = get_user_model()
 
@@ -51,12 +52,12 @@ class SimulationForm(forms.ModelForm):
         labels = {
             # Labels for each field of the form
             'name': gettext_lazy('Project Name'),
-            'initial_investment': gettext_lazy('Total Capitalized Investment ($)'),
+            'initial_investment': gettext_lazy('Total Capital Investment ($)'),
             'initial_year': gettext_lazy('Initial Year'),
             'project_length': gettext_lazy('Project Length (Years)'),
             'project_size': gettext_lazy('Project Size (MW)'),
             'total_acreage': gettext_lazy('Total Project acreage (Acres)'),
-            'inside_fence_acreage': gettext_lazy('Solar Project Inside the Fence (Acres)'),
+            'inside_fence_acreage': gettext_lazy('Solar Project Acreage Inside the Fence (Acres)'),
             'baseline_land_value': gettext_lazy('Baseline Value of Land ($ per acre)'),
             'inside_fence_land_value': gettext_lazy('Inside the Fence Value of Land ($ per acre)'),
             'outside_fence_land_value': gettext_lazy('Outside the Fence Value of Land ($ per acre)'),
@@ -66,8 +67,8 @@ class SimulationForm(forms.ModelForm):
             # Defines the input expected for each field of the form and sets minimum and maximum values for the inputs.
             'user': forms.HiddenInput(),
             'name': forms.TextInput(attrs={'class':'form-control'}),
-            'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':2020, 'max':2050}),
-            'project_length': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'initial_year': forms.NumberInput(attrs={'class': 'form-control', 'min':settings.EARLIEST_INITIAL_YEAR, 'max':settings.LATEST_INITIAL_YEAR}),
+            'project_length': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':settings.MAX_PROJECT_LENGTH}),
             'initial_investment': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'project_size': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'total_acreage': forms.NumberInput(attrs={'class':'form-control', 'min':0}),
@@ -87,15 +88,15 @@ class UserProfileUpdateForm(forms.ModelForm):
             #'revenue_share_rate': ugettext_lazy("Revenue Share Rate ($/MW)"), 
             'discount_rate': gettext_lazy("Discount Rate (%)"), 
             'mt_tax_rate': gettext_lazy("M&T Tax Rate ($/ $100 Assessed Value)"), 
-            'real_property_rate': gettext_lazy("Real Property Rate ($/ $100 Assessed Value)"), 
-            'assessment_ratio': gettext_lazy("Assessment Ratio (%)"), 
+            'real_property_rate': gettext_lazy("Real Property Tax Rate (Dollars per $100 Assessed Value)"), 
+            'assessment_ratio': gettext_lazy("Assessment Ratio (between 0 and 1)"), 
             'baseline_true_value': gettext_lazy("Baseline True Value ($)"), 
-            'adj_gross_income': gettext_lazy("Adjusted Gross Income ($)"), 
-            'taxable_retail_sales': gettext_lazy("Taxable Retail Sales ($)"), 
+            'adj_gross_income': gettext_lazy("Locality Adjusted Gross Income ($)"), 
+            'taxable_retail_sales': gettext_lazy("Locality Taxable Retail Sales ($)"), 
             'population': gettext_lazy("Population"), 
             'adm': gettext_lazy("Average Daily Student Membership (ADM)"), 
             'required_local_matching': gettext_lazy("Required Local Matching ($):"),
-            'budget_escalator': gettext_lazy("Budget Escalator (%)"), 
+            'budget_escalator': gettext_lazy("Budget Escalator (% increase per year)"), 
             'years_between_assessment': gettext_lazy("Years Between Assessment"),
             'use_composite_index': gettext_lazy("Use Composite Index for Calculations?"),
         }
@@ -104,17 +105,17 @@ class UserProfileUpdateForm(forms.ModelForm):
         } # Defines a help text to be displayed under the form entry box to help define the variable for the user.
         widgets = {
             #'revenue_share_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1400}),
-            'discount_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
-            'mt_tax_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
-            'real_property_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
-            'assessment_ratio': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'discount_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':20}),
+            'mt_tax_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':30}),
+            'real_property_rate': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':25}),
+            'assessment_ratio': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':1}),
             'baseline_true_value': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'adj_gross_income': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'taxable_retail_sales': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'population': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'adm': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
             'required_local_matching': forms.NumberInput(attrs={'class': 'form-control', 'min':0}),
-            'budget_escalator': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':100}),
+            'budget_escalator': forms.NumberInput(attrs={'class': 'form-control', 'min':0, 'max':20}),
             'years_between_assessment': forms.NumberInput(attrs={'class': 'form-control', 'min':1, 'max':30}),
             'use_composite_index': forms.CheckboxInput(attrs={'style': 'width:30px;height:35px;position:relative;top: 10px; margin:0 20px;'}),
         }

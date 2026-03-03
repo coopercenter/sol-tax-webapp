@@ -30,6 +30,7 @@ import plotly.graph_objects as go
 import urllib, base64
 import PIL, PIL.Image, io
 import csv
+from django.conf import settings
 
 
 def create_csv_view(request):
@@ -97,6 +98,7 @@ def create_csv_view(request):
 
     writer.writerow([''])
     writer.writerow(['Revenue Share Rates'])
+    # hardcoded values alert
     writer.writerow(["Year"] + [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061])
     writer.writerow(["Revenue Share Rate"] + [user_dict["revenue_share_rate"][i] for i in range(len(user_dict["revenue_share_rate"]))])
 
@@ -197,22 +199,37 @@ def localityName(request):
 
 
 def user_home(request, username):
-    if request.POST.get('simulation_id'):
-        simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
+    simulation_id = request.POST.get('simulation_id')
+    passed_locality_name = request.POST.get('locality')
+    discount_rate = request.POST.get('discount_rate')
+    use_composite_index = request.POST.get('use_composite_index')
+
+    if simulation_id:
+        simulation = Simulation.objects.get(id = simulation_id)
         simulation.delete()
 
     user = UserProfile.objects.get(name = username)
     simulations = user.simulation_set.all()
 
+    property_appreciation_schedule = settings.PROPERTY_APPRECIATION_SCHEDULE
+    #this_locality = Locality.objects.get(name=passed_locality_name)
+            
+    # hardcoded values alert
+    # This code block determines whether or not to show the user the gap between M&T and Revenue Share revenue. 
+    # We show the gap if there are 3 or 4 simulations, as this is when the user can start to see a trend but doesn't have enough simulations to be sure of that trend. 
+    # This is a fragile way to determine whether or not to show the gap, and we should revisit this in the future.
     remainder = len(simulations) % 6
     if remainder == 3 or remainder == 4:
         gap = "True"
     else:
         gap = "False"
-    if request.POST.get('locality'):
-        locality_name = request.POST['locality']
-        if locality_name != 'Choose Your Locality':
-            locality = Locality.objects.get(name=locality_name)
+    # 
+    # Referring page is the set locality page
+    if passed_locality_name:
+        #locality_name = request.POST['locality']
+        if passed_locality_name != 'Choose Your Locality':
+            locality = Locality.objects.get(name=passed_locality_name)
+            user.locality_name = passed_locality_name
             user.discount_rate = locality.discount_rate
             #user.revenue_share_rate = locality.revenue_share_rate
             user.real_property_rate = locality.real_property_rate
@@ -229,15 +246,21 @@ def user_home(request, username):
             user.use_composite_index = locality.use_composite_index
             user.local_depreciation = locality.local_depreciation
             user.scc_depreciation = locality.scc_depreciation
-            depreciation_ext(user.local_depreciation)
-            depreciation_ext(user.scc_depreciation)
+            # alert: the next two lines don't seem to do anything
+            # depreciation_ext(user.local_depreciation)
+            # depreciation_ext(user.scc_depreciation)
+            # Ensure depreciation schedules are the correct length and save to database. Is this really what you want to do here?
+            # This code only needs to be run when the user selects a locality, but is currently run every time the user visits their home page.
+            user.local_depreciation = depreciation_ext(user.local_depreciation)
+            user.scc_depreciation = depreciation_ext(user.scc_depreciation)
             user.save()
 
     if user.mt_tax_rate == 0:
         return HttpResponseRedirect("/update-user-"+user.name+"/")
 
-    if request.POST.get('discount_rate'):
-        user.discount_rate = int(request.POST.get('discount_rate'))
+    if discount_rate:
+        # Should the discount rate be an integer?
+        user.discount_rate = int(discount_rate)
         #user.revenue_share_rate = int(request.POST.get('revenue_share_rate'))
         user.mt_tax_rate = float(request.POST.get('mt_tax_rate'))
         user.real_property_rate = float(request.POST.get('real_property_rate'))
@@ -251,39 +274,52 @@ def user_home(request, username):
         user.budget_escalator = float(request.POST.get('budget_escalator'))
         user.years_between_assessment = int(request.POST.get('years_between_assessment'))
 
-        if request.POST.get('use_composite_index') == None:
+        if use_composite_index == None:
             user.use_composite_index = False
-        elif request.POST.get('use_composite_index') == "on":
+        elif use_composite_index == "on":
             user.use_composite_index = True
         user.save()
 
     if request.POST.get('local-1'):
         local = []
         for item in request.POST:
+            # hardcoded value alert
+            # document this item
             if item[:5] == "local":
+                #print(f"user_home-local-1 {item}\n")  
+                #print(f"Item/100: {float(request.POST.get(item))/100}\n")
                 local.append(float(request.POST.get(item))/100)
-        user.local_depreciation = local[:35]
+        # hardcoded value alert        if len(local) != 35:
+        # This code block is meant to ensure that the local depreciation schedule is the correct length, 
+        # but this is a fragile way to do this. We should consider a more robust way to ensure the local 
+        # depreciation schedule is the correct length.
+        user.local_depreciation = local[settings.MAX_PROJECT_LENGTH:]
         user.save()
 
     if request.POST.get('scc-1'):
         scc = []
         for item in request.POST:
+            # hardcoded value alert
+            # document this item
             if item[:3] == "scc":
                 scc.append(float(request.POST.get(item))/100)
         user.scc_depreciation = scc
         user.save()
 
+    # This needs documentation. We need to revisit why 2021 is hardcoded here.
     if request.POST.get('rs-2021'):
         new_rs = []
-        max_rs = [1400, 1540, 1694, 1863, 2050, 2255, 2480, 2728, 3001]
+        # document MAX_RS  value found in settings.py parameters block 
+        max_rs = settings.MAX_RS
         for item in request.POST:
-            print(item)
-            print(request.POST.get(item))
+            #print(item)
+            #print(request.POST.get(item))
             if item != 'csrfmiddlewaretoken':
                 new_rs.append(float(request.POST.get(item)))
         for i in range(len(new_rs)):
             if(new_rs[i] > max_rs[i]):
-                years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+                # hardcoded values alert 
+                years = settings.RS_YEARS
                 data = zip(years, user.revenue_share_rate)
                 return render(request, 'revenue_share_update.html', {'current_values': data, 'locality': user.name, 'error': 'For the year ' +  str((2021 + i*5)) + ' you entered ' + str(new_rs[i]) + ', however the maximum value allowed is ' + str(max_rs[i]) + '. Please try again.'})
         user.revenue_share_rate = new_rs
@@ -292,9 +328,11 @@ def user_home(request, username):
     total_mt = 0
     total_rs = 0
     for simulation in simulations:
-        calc = performCalculations(user, simulation)
+        calc = performCalculations(user, simulation, property_appreciation_schedule)
         calc.save()
         simulation.calculations = calc
+        # Why multiply by 1000? This is a fragile way to handle this, and we should consider changing how we 
+        # store revenue values in the database to avoid having to do this.
         total_mt += sum(calc.tot_mt)*1000
         total_rs += sum(calc.tot_rs)*1000
         simulation.save()
@@ -304,9 +342,15 @@ def user_home(request, username):
     
     user.save()
 
-    rs_years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+    # document RS_YEARS value found in settings.py parameters block 
+    rs_years = settings.RS_YEARS
     rs_data = zip(user.revenue_share_rate, rs_years)
-    return render(request, 'locality-home.html', {'locality': user, 'simulations':simulations, 'total_rs_revenue':total_rs, 'total_mt_revenue':total_mt, 'difference':difference, 'gap':gap, 'rs_data':rs_data})
+    return render(request, 'locality-home.html', {'locality': user, 
+                                                  'simulations':simulations, 
+                                                  'total_rs_revenue':total_rs, 
+                                                  'total_mt_revenue':total_mt, 
+                                                  'difference':difference, 
+                                                  'gap':gap, 'rs_data':rs_data})
 
 
 # Creates Scatter Plot using plotly
@@ -371,6 +415,8 @@ def form_dash(request):
 
 def dash(request, username, simulation_id):
     user = UserProfile.objects.get(name = username)
+     # This is meant to catch the case where a user tries to access the dash for a simulation that doesn't exist, 
+    # but this could be handled more gracefully.
     if user.mt_tax_rate == 0:
         return HttpResponseRedirect("/update-user-"+user.name+"/")
 
@@ -379,7 +425,7 @@ def dash(request, username, simulation_id):
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
         loc = UserProfile.objects.get(name = username)
 
-        calc = performCalculations(loc, simulation)
+        calc = performCalculations(loc, simulation, settings.PROPERTY_APPRECIATION_SCHEDULE)
         calc.save()
 
         context = {
@@ -387,13 +433,18 @@ def dash(request, username, simulation_id):
             'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
         }
 
-        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
+        return render(request, 'dash.html', {'simulation':sim, 
+                                             'locality':loc, 
+                                             'calculations':calc, 
+                                             'n':range(simulation.project_length), 
+                                             "graph":context,
+                                            'discounting_base_year': settings.DISCOUNTING_BASE_YEAR})
     if(request.POST.get('simulation_id')):
         simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
         sim = serializers.serialize("python", Simulation.objects.filter(id = simulation.id))
         loc = UserProfile.objects.filter(name = simulation.user)[0]
 
-        calc = performCalculations(loc, simulation)
+        calc = performCalculations(loc, simulation, settings.PROPERTY_APPRECIATION_SCHEDULE)
         calc.save()
 
         context = {
@@ -401,7 +452,12 @@ def dash(request, username, simulation_id):
             'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
         }
 
-        return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
+        return render(request, 'dash.html', {'simulation':sim, 
+                                             'locality':loc, 
+                                             'calculations':calc, 
+                                             'n':range(simulation.project_length),
+                                             "graph":context,
+                                            'discounting_base_year': settings.DISCOUNTING_BASE_YEAR})
     if request.method == 'POST':
         form = SimulationForm(request.POST)
         if form.is_valid():
@@ -417,7 +473,13 @@ def dash(request, username, simulation_id):
                 'plot1': scatter(calc.cas_mt, calc.cas_rs, simulation),
                 'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
             }
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
+            return render(request, 'dash.html', {'simulation':sim, 
+                                                 'locality':loc, 
+                                                 'calculations':calc, 
+                                                 'n':range(simulation.project_length), 
+                                                 "graph":context,
+                                                 'discounting_base_year': settings.DISCOUNTING_BASE_YEAR
+                                                 })
         
         else:
             simulation = Simulation.objects.get(id = request.POST.get('simulation_id'))
@@ -431,7 +493,11 @@ def dash(request, username, simulation_id):
                 'plot2': scatter(calc.cas_mt, calc.cas_rs, simulation)
             }
 
-            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 'calculations':calc, 'n':range(simulation.project_length), "graph":context})
+            return render(request, 'dash.html', {'simulation':sim, 'locality':loc, 
+                                                 'calculations':calc, 'n':range(simulation.project_length),
+                                                 'graph':context, 
+                                                 'discounting_base_year': settings.DISCOUNTING_BASE_YEAR
+                                                 })
     else:
         return HttpResponse('Error please select fill out the model generation form')
 # Create your views here.
@@ -500,7 +566,7 @@ class PasswordResetUsernameView(PasswordContextMixin, FormView):
     email_template_name = 'registration/email_template_name.txt'
     extra_email_context = None
     form_class = PasswordResetUsernameForm
-    from_email = 'mattdcallen2004@gmail.com'
+    from_email = settings.SOLTAX_EMAIL_ADDRESS
     html_email_template_name = 'registration/password_reset_done.html'
     subject_template_name = 'registration/password_reset_subject.txt'
     success_url = reverse_lazy('password_reset_done')
@@ -529,25 +595,29 @@ class PasswordResetUsernameView(PasswordContextMixin, FormView):
         return super().form_valid(form)
 
 def depreciationUpdate(request, username):
+    print(f"Depreciation update request for user {username}\n")
     user = UserProfile.objects.get(name = username)
+    # Review this code block. The depreciation schedule length arrangements are fragile.
     scc = user.scc_depreciation
-    depreciation_ext(scc)
-    scc=scc[:35]
+    scc = depreciation_ext(scc)
+    scc=scc[:settings.MAX_PROJECT_LENGTH]
     local = user.local_depreciation
-    depreciation_ext(local)
+    local = depreciation_ext(local)
 
-    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 'scc_depreciation': scc, 'locality': username})
+    return render(request, 'depreciation_schedules.html', {'local_depreciation': local, 
+                                        'scc_depreciation': scc, 'locality': username})
 
 def revenueShareUpdate(request, username):
     user = UserProfile.objects.get(name = username)
     rs = user.revenue_share_rate
-    years = [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]
+    #  [2021, 2026, 2031, 2036, 2041, 2046, 2051, 2056, 2061]. 
+    years = settings.REVENUE_SHARE_UPDATE_YEARS
     data = zip(years, rs)
 
     return render(request, 'revenue_share_update.html', {'current_values': data, 'locality': username})
 
-def performCalculations(locality, simulation):
-
+def performCalculations(locality, simulation, property_appreciation_schedule):
+    print(f"Performing calculations for simulation {simulation.id} and locality {locality.name}\n")
     '''
     Simulation Variables
     '''
@@ -573,99 +643,147 @@ def performCalculations(locality, simulation):
 
     revenue_share_rate = locality.revenue_share_rate
     adjusted_rs_rate = []
+    # hardcoded values alert
     if initial_year >= 2021:
         for i in range(initial_year, initial_year + project_length):
             index = (i - 2021) // 5
             adjusted_rs_rate.append(revenue_share_rate[index])
     else:
         adjusted_rs_rate = [revenue_share_rate[0] for i in range(project_length)]
-    print(adjusted_rs_rate)
+    # print(f"adjusted_rs_rate: {adjusted_rs_rate}")
     #     if(i % 5 == 1 and i != 1):
     #         revenue_share_rate.append(revenue_share_rate[i-1] * 1.1)
     #     else:
     #         revenue_share_rate.append(revenue_share_rate[i-1])
     # revenue_share_rate = [round(elem, 0) for elem in revenue_share_rate]
 
-
-    mt_tax_rate = locality.mt_tax_rate
-    real_property_rate = locality.real_property_rate
-    assessment_ratio = locality.assessment_ratio/100
+    '''
+    Tax rates are in terms of rates per $100 of value, so we need to divide by 100 to get the correct values 
+     for our calculations. Consider changing how we store 
+     tax rates in the database to avoid having to do this.
+    '''
+    mt_tax_rate = locality.mt_tax_rate/100
+    real_property_rate = locality.real_property_rate/100
+    # Possible error. Assessment ratios are all between 0 and 1, 
+    # but currently we are allowing users to input values between 0 and 100. 
+    # This is a fragile way to handle this, and we should consider changing the user input to be between 0 and 1, 
+    # or changing how we store assessment ratios in the database.
+    assessment_ratio = locality.assessment_ratio
     local_baseline_true_value = locality.baseline_true_value
     local_adj_gross_income = locality.adj_gross_income
     local_taxable_retail_sales = locality.taxable_retail_sales
     local_population = locality.population
     local_adm = locality.adm
     required_local_matching = locality.required_local_matching
+    # budget escalator is in terms of percentage, so we need to divide by 100 to get the correct value for our calculations.
     budget_escalator = locality.budget_escalator/100
     years_between_assessment = locality.years_between_assessment
     local_depreciation = locality.local_depreciation
     scc_depreciation = locality.scc_depreciation
-    effective_rate_ext(scc_depreciation, project_length)
-    effective_rate_ext(local_depreciation, project_length)
+    scc_depreciation = effective_rate_ext(scc_depreciation, project_length)
+    local_depreciation = effective_rate_ext(local_depreciation, project_length)
 
     '''
     State Variables
     '''
-    state_true_value = [1170092111098.94 for i in range(project_length)]
-    state_adj_gross_income = 269067675604.708
-    state_taxable_retail_sales = 100207273998.18
-    state_adm = 1239781.3
-    state_population = 8382993
-    mt_stepdown = [.8, .8, .8, .8, .8, .7, .7, .7, .7, .7, .6]
-    effective_rate_ext(mt_stepdown, project_length)
+    state_true_value = [settings.STATE_TRUE_VALUE for i in range(project_length)]
+    state_adj_gross_income = settings.STATE_ADJ_GROSS_INCOME
+    state_taxable_retail_sales = settings.STATE_TAXABLE_RETAIL_SALES
+    state_adm = settings.STATE_ADM
+    state_population = settings.STATE_POPULATION
+    mt_stepdown = settings.MT_STEPDOWN
+    mt_stepdown = effective_rate_ext(mt_stepdown, project_length)
 
-
-    if(project_size < 25 and not dominion_or_apco):
+    '''Determine effective tax rates, exemption rates, and depreciation schedules based on project size and 
+    whether or not the project is in Dominion or APCO territory.'''
+    if(project_size < settings.ACRE_LIMIT_25 and not dominion_or_apco):
         effective_tax_rate = [mt_tax_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
-    elif((project_size >= 25 or dominion_or_apco) and project_size < 150):
+        step_down = True
+        local_dep_schedule_used = True
+    elif((project_size >= settings.ACRE_LIMIT_25 or dominion_or_apco) and project_size < settings.ACRE_LIMIT_150):
         effective_tax_rate = [real_property_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation
+        step_down = True
+        local_dep_schedule_used = False
     else:
         effective_tax_rate = [real_property_rate for i in range(project_length)]
         effective_exemption_rate = [0 for i in range(project_length)]
         effective_depreciation_schedule = scc_depreciation
+        step_down = False
+        local_dep_schedule_used = False
+
     '''
     Land Value Calculations
     '''
 
-    current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year, project_length, years_between_assessment)
-    current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)  
+    current_value_of_land = current_land_value(total_project_acreage, baseline_land_value, initial_year, project_length, years_between_assessment, property_appreciation_schedule)
+    #print(f"current_value_of_land: {current_value_of_land}\n")
+
+    current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)
+    #print(f"current_revenue_from_land: {current_revenue_from_land}\n")
 
     solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio, project_length)
-
-    new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, outside_fence_land_value, initial_year, project_length, years_between_assessment)
+    #print(f"solar_project_valuation: {solar_project_valuation}\n")
+    new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, outside_fence_land_value, initial_year, project_length, years_between_assessment, property_appreciation_schedule)
+    #print(f"new_value_land: {new_value_land}\n")
     land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assessment_ratio)
+    #print(f"land_value_increase: {land_value_increase}\n")
     increase_in_gross_revenue = increased_county_gross_revenue_from_project(solar_project_valuation, effective_tax_rate, land_value_increase, real_property_rate)
+    #print(f"increase_in_gross_revenue: {increase_in_gross_revenue}\n")
 
     mt_and_property_income = total_gross_revenue_mt(current_revenue_from_land, increase_in_gross_revenue)
+    #print(f"mt_and_property_income: {mt_and_property_income}\n")
 
     taxable_property_increase = increase_in_taxable_property(land_value_increase, solar_project_valuation)
+    #print(f"taxable_property_increase: {taxable_property_increase}\n")
 
     '''
     M&T Tax Calculations
-    '''  
+    ''' 
 
+    '''print(f"M&T calculations for simulation {simulation.id} and locality {locality.name}\n")
+    print(f"local_adj_gross_income: {local_adj_gross_income}")
+    print(f"local_adm: {local_adm}")
+    print(f"state_adj_gross_income: {state_adj_gross_income}")
+    print(f"state_adm: {state_adm}")
+    print(f"project_length: {project_length}\n")
+   ''' 
     adm_gross_income = get_gross_income_adm(local_adj_gross_income, local_adm, state_adj_gross_income, state_adm, project_length)
+    #print(f"adm_gross_income: {adm_gross_income}\n")
     adm_retail_sales = get_retail_sales_adm(local_taxable_retail_sales, local_adm, state_taxable_retail_sales, state_adm, project_length)
+    #print(f"adm_retail_sales: {adm_retail_sales}\n")
     per_capita_gross_income = get_gross_income_per_capita(local_adj_gross_income, local_population, state_adj_gross_income, state_population, project_length)
+    #print(f"per_capita_gross_income: {per_capita_gross_income}\n")
     per_capita_retail_sales = get_retail_sales_per_capita(local_taxable_retail_sales, local_population, state_taxable_retail_sales, state_population, project_length)
+    #print(f"per_capita_retail_sales: {per_capita_retail_sales}\n")
 
     base_adm_true_values = get_baseline_true_values_adm(local_baseline_true_value, local_adm, state_true_value, state_adm)
+    #print(f"base_adm_true_values: {base_adm_true_values}\n")
     base_per_capita_true_values = get_baseline_true_values_per_capita(local_baseline_true_value, local_population, state_true_value, state_population)
+    #print(f"base_per_capita_true_values: {base_per_capita_true_values}\n")
 
     base_adm_composite = adm_composite_index(base_adm_true_values, adm_gross_income, adm_retail_sales)
+    #print(f"base_adm_composite: {base_adm_composite}\n")
     base_local_composite = per_capita_composite_index(base_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
+    #print(f"base_local_composite: {base_local_composite}\n")
+
     
     base_composite_index = composite_index(base_adm_composite, base_local_composite)
+    #print(f"base_composite_index: {base_composite_index}\n")
 
     local_project_true_values = local_true_values(local_baseline_true_value, taxable_property_increase)
+    #print(f"local_project_true_values: {local_project_true_values}\n")
     state_project_true_values = state_total_true_values(state_true_value, taxable_property_increase)
+    #print(f"state_project_true_values: {state_project_true_values}\n")
+
 
     project_adm_true_values = get_true_values_adm(local_project_true_values, local_adm, state_project_true_values, state_adm)
+    #print(f"project_adm_true_values: {project_adm_true_values}\n")
     project_per_capita_true_values = get_true_values_per_capita(local_project_true_values, local_population, state_project_true_values, state_population)
+    #print(f"project_per_capita_true_values: {project_per_capita_true_values}\n")
 
     project_adm_composite = adm_composite_index(project_adm_true_values, adm_gross_income, adm_retail_sales)
     project_local_composite = per_capita_composite_index(project_per_capita_true_values, per_capita_gross_income, per_capita_retail_sales)
@@ -678,8 +796,8 @@ def performCalculations(locality, simulation):
     project_required_education_contribution = pv_required_education_contribution(locality_education_budget, budget_escalator, project_composite_index)
 
     local_contribution_increase = increase_in_local_contribution(project_required_education_contribution, base_required_education_contribution)
-    print("composite indeces " + str(project_adm_composite) + str(project_local_composite))
-    print(str(land_value_increase))
+    #print(f"composite indices {project_adm_composite}{project_local_composite}\n")
+    #print(f"land_value_increase: {land_value_increase}")
 
     net_revenue  = net_total_revenue_from_project(mt_and_property_income, local_contribution_increase)
 

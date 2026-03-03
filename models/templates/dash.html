@@ -8,7 +8,7 @@ each year, and a table showing the breakdown for each year. -->
 <button class="btn btn-lg btn-outline-danger local-pdf-button dontprint" type="submit" value="Create PDF" onclick="window.print()" title="Create PDF"><i class="icofont-file-pdf"></i></button>
 <div id="solar-tool-prototype" class="section level1">
 
-    <h2 class="simulation-name"><strong> {{simulation.0.fields.name}} </strong></h2> <!-- Get name of simulation -->
+    <h2 class="simulation-name"><strong> {{simulation.0.fields.name}}: {% get_locality_name simulation %} </strong></h2> <!-- Get name of simulation -->
     <h5 class="data-header"> Solar Revenue and Tax Analysis </h5>
     <!-- <button class="btn btn-danger btn-lg pdf-button dontprint" onclick="window.print()">Create PDF</button> -->
     
@@ -33,6 +33,10 @@ each year, and a table showing the breakdown for each year. -->
                                 <tr>
                                     <td>User</td>
                                     <td class="value locality_name">{% get_locality simulation %}</td>
+                                </tr>
+                                <tr>
+                                    <td>Locality</td>
+                                    <td class="value locality_name">{% get_locality_name simulation %}</td>
                                 </tr>
                                 <tr>
                                     <td>Discount Rate</td>
@@ -103,7 +107,7 @@ each year, and a table showing the breakdown for each year. -->
                 <div class="result-title">
                     <h5><strong> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Total Expected Lifetime Revenue</strong></h5>
                     <p> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-                        Discounted at {% get_discount_rate simulation %}% per year (2020 $) </p>
+                        Discounted at {% get_discount_rate simulation %}% per year ({{ discounting_base_year }} $) </p>
                 </div>
                 <div class="result-text">
                     <table class = "table table-striped result-table">
@@ -168,8 +172,8 @@ each year, and a table showing the breakdown for each year. -->
                     <th scope="col">Year</th>
                     <th scope="col">Nominal M&T/Real Estate Tax</th>
                     <th scope="col">Nominal Revenue Share </th>
-                    <th scope="col">M&T/Real Estate Tax in 2020 $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
-                    <th class="last-data" scope="col">Revenue Share in 2020 $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
+                    <th scope="col">M&T/Real Estate Tax in {{discounting_base_year}} $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
+                    <th class="last-data" scope="col">Revenue Share in {{discounting_base_year}} $<br>(Discounted at {% get_discount_rate simulation %}%)</th>
                 </tr>
             </thead>
             <tbody>
