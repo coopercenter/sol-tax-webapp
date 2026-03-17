@@ -39,7 +39,7 @@ if os.path.exists('hiddenVars'):
     DEBUG = True
     ALLOWED_HOSTS = ['solar-tax-webapp-dev.azurewebsites.net','127.0.0.1', 'localhost']
 else:
-    DEBUG = False
+    DEBUG = True
     ALLOWED_HOSTS = ['solar-tax-webapp-dev.azurewebsites.net', 'solar-tax-webapp.azurewebsites.net', 'localhost', '127.0.0.1']
 # ALLOWED_HOSTS = []
 
