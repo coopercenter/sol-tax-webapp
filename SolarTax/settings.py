@@ -39,7 +39,7 @@ if os.path.exists('hiddenVars'):
     DEBUG = True
     ALLOWED_HOSTS = ['solar-tax-webapp-dev.azurewebsites.net','127.0.0.1', 'localhost']
 else:
-    DEBUG = True
+    DEBUG = False
     ALLOWED_HOSTS = ['solar-tax-webapp-dev.azurewebsites.net', 'solar-tax-webapp.azurewebsites.net', 'localhost', '127.0.0.1']
 # ALLOWED_HOSTS = []
 
@@ -64,6 +64,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'models.middleware.MaintenanceModeMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -209,6 +210,7 @@ MEDIA_URL = '/media/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 LOGIN_REDIRECT_URL = 'localityName'
 
