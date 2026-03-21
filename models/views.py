@@ -293,7 +293,7 @@ def user_home(request, username):
         # This code block is meant to ensure that the local depreciation schedule is the correct length, 
         # but this is a fragile way to do this. We should consider a more robust way to ensure the local 
         # depreciation schedule is the correct length.
-        user.local_depreciation = local[settings.MAX_PROJECT_LENGTH:]
+        user.local_depreciation = local[:settings.MAX_PROJECT_LENGTH:]
         user.save()
 
     if request.POST.get('scc-1'):
@@ -696,13 +696,13 @@ def performCalculations(locality, simulation, property_appreciation_schedule):
 
     '''Determine effective tax rates, exemption rates, and depreciation schedules based on project size and 
     whether or not the project is in Dominion or APCO territory.'''
-    if(project_size < settings.ACRE_LIMIT_25 and not dominion_or_apco):
+    if(project_size <= settings.ACRE_LIMIT_25 and not dominion_or_apco):
         effective_tax_rate = [mt_tax_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
         step_down = True
         local_dep_schedule_used = True
-    elif((project_size >= settings.ACRE_LIMIT_25 or dominion_or_apco) and project_size < settings.ACRE_LIMIT_150):
+    elif((project_size > settings.ACRE_LIMIT_25 or dominion_or_apco) and project_size <= settings.ACRE_LIMIT_150):
         effective_tax_rate = [real_property_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation
@@ -726,7 +726,7 @@ def performCalculations(locality, simulation, property_appreciation_schedule):
     #print(f"current_revenue_from_land: {current_revenue_from_land}\n")
 
     solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio, project_length)
-    #print(f"solar_project_valuation: {solar_project_valuation}\n")
+    print(f"solar_project_valuation: {solar_project_valuation}\n")
     new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, outside_fence_land_value, initial_year, project_length, years_between_assessment, property_appreciation_schedule)
     #print(f"new_value_land: {new_value_land}\n")
     land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assessment_ratio)
