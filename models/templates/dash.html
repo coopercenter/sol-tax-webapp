@@ -45,7 +45,7 @@ each year, and a table showing the breakdown for each year. -->
                                 <!-- <tr>
                                     <td>Revenue Share Rate</td>
                                     <td class="value"><span class="dollar_value">{get_rs_rate simulation}</span> /MW</td>
-                                </tr> -->
+                                </tr>
                                 <tr>
                                     <td class="{% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">Real Property Rate per $100 of Assessed Value</td>
                                     <td class="value {% if simulation.0.fields.project_size > 25 or simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_real_property_rate simulation %}</td>
@@ -53,6 +53,14 @@ each year, and a table showing the breakdown for each year. -->
                                 <tr>
                                     <td class="{% if simulation.0.fields.project_size < 25 and not simulation.0.fields.dominion_or_apco %} color {% endif %}">M&T Tax Rate per $100 of Assessed Value</td>
                                     <td class="value {% if simulation.0.fields.project_size < 25 and not simulation.0.fields.dominion_or_apco %} color {% endif %}">${% get_mt_rate simulation %}</td>
+                                </tr> -->
+                                <tr>
+                                    <td>Real Property Rate per $100 of Assessed Value</td>
+                                    <td class="value">${% get_real_property_rate simulation %}</td>
+                                </tr>
+                                <tr>
+                                    <td>M&T Tax Rate per $100 of Assessed Value</td>
+                                    <td class="value">${% get_mt_rate simulation %}</td>
                                 </tr>
                             {% elif field == 'initial_investment' %}
                                 <tr>
@@ -99,7 +107,7 @@ each year, and a table showing the breakdown for each year. -->
                     {% endfor %}
                 </tbody>
             </table>
-            <p class="parameter-note"> Highlighted in green is the tax rate is used for M&T/Real Estate tax calculations </p>
+            <!--  <p class="parameter-note"> Highlighted in green is the tax rate is used for M&T/Real Estate tax calculations </p> -->
         </div>
         
         <div class="col-sm-6 right-col">
