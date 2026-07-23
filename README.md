@@ -91,6 +91,7 @@ The SolTax tool is a Django application which follows the MVT framework. MVT fra
 | email | Email Username used for SolTax feedback |
 | email_password | Email Password used for SolTax feedback |
 | secret_key | Key used to encrypt sensitive information |
+| sg_api_key | SendGrid API Key found on Azure to support sending automatic emails |
 
 4. Connect to _UVA Anywhere_ VPN
 5. In the command line, run `python manage.py runserver`. Ensure that your command line is in the same directory as _manage.py_. 

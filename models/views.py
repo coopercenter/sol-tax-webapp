@@ -262,7 +262,15 @@ def user_home(request, username):
         for item in request.POST:
             if item[:5] == "local":
                 local.append(float(request.POST.get(item))/100)
+<<<<<<< HEAD
         user.local_depreciation = local[:35]
+=======
+        # hardcoded value alert        if len(local) != 35:
+        # This code block is meant to ensure that the local depreciation schedule is the correct length, 
+        # but this is a fragile way to do this. We should consider a more robust way to ensure the local 
+        # depreciation schedule is the correct length.
+        user.local_depreciation = local[:settings.MAX_PROJECT_LENGTH:]
+>>>>>>> origin/dev
         user.save()
 
     if request.POST.get('scc-1'):
@@ -614,12 +622,24 @@ def performCalculations(locality, simulation):
     mt_stepdown = [.8, .8, .8, .8, .8, .7, .7, .7, .7, .7, .6]
     effective_rate_ext(mt_stepdown, project_length)
 
+<<<<<<< HEAD
 
     if(project_size < 25 and not dominion_or_apco):
         effective_tax_rate = [mt_tax_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = local_depreciation
     elif((project_size >= 25 or dominion_or_apco) and project_size < 150):
+=======
+    '''Determine effective tax rates, exemption rates, and depreciation schedules based on project size and 
+    whether or not the project is in Dominion or APCO territory.'''
+    if(project_size <= settings.ACRE_LIMIT_25 and not dominion_or_apco):
+        effective_tax_rate = [mt_tax_rate for i in range(project_length)]
+        effective_exemption_rate = mt_stepdown
+        effective_depreciation_schedule = local_depreciation
+        step_down = True
+        local_dep_schedule_used = True
+    elif((project_size > settings.ACRE_LIMIT_25 or dominion_or_apco) and project_size <= settings.ACRE_LIMIT_150):
+>>>>>>> origin/dev
         effective_tax_rate = [real_property_rate for i in range(project_length)]
         effective_exemption_rate = mt_stepdown
         effective_depreciation_schedule = scc_depreciation
@@ -635,8 +655,14 @@ def performCalculations(locality, simulation):
     current_revenue_from_land = current_land_revenue(current_value_of_land, real_property_rate)  
 
     solar_project_valuation = solar_facility_valuation(initial_year, local_investment, effective_exemption_rate, effective_depreciation_schedule, assessment_ratio, project_length)
+<<<<<<< HEAD
 
     new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, outside_fence_land_value, initial_year, project_length, years_between_assessment)
+=======
+    print(f"solar_project_valuation: {solar_project_valuation}\n")
+    new_value_land = new_land_value(total_project_acreage, inside_fence_acreage, outside_fence_acreage, inside_fence_land_value, outside_fence_land_value, initial_year, project_length, years_between_assessment, property_appreciation_schedule)
+    #print(f"new_value_land: {new_value_land}\n")
+>>>>>>> origin/dev
     land_value_increase = increase_in_land_value(current_value_of_land, new_value_land, assessment_ratio)
     increase_in_gross_revenue = increased_county_gross_revenue_from_project(solar_project_valuation, effective_tax_rate, land_value_increase, real_property_rate)
 
