@@ -162,18 +162,44 @@ class PasswordResetUsernameForm(forms.Form):
             if isinstance(to_email, str):
                 to_email = [to_email]
 
-            message = Mail(
-                from_email='vasolar@virginia.edu',
-                to_emails=to_email,
-                subject='SolTax Password Reset',
-                html_content=html_body
-            )
-            try:
-                sg = SendGridAPIClient(SENDGRID_KEY)
-                response = sg.send(message)
+        message = Mail(
+            from_email = 'VAsolar@virginia.edu',
+            to_emails = to_email,
+            subject = mail_subject,
+            html_content = html_body,
+        )
 
-            except Exception as e:
-                print(str(e))
+        # load_dotenv()
+
+        
+        try:
+            if os.path.exists('hiddenVars/sg_api_key.txt'):
+                with open('hiddenVars/sg_api_key.txt') as f:
+                    SENDGRID_API_KEY = str(f.read().strip())
+            sg = SendGridAPIClient(SENDGRID_API_KEY)
+            response = sg.send(message)
+        except Exception as e:
+            raise ValueError("SENDGRID_API_KEY is not set.")
+
+
+
+
+
+            # for recipient in to_email:
+            #     mail = outlook.CreateItem(0)
+            #     mail.Subject = subject
+            #     mail.To = recipient
+            #     mail.Body = body
+            #     mail.SentOnBehalfOfName = "VAsolar@virginia.edu"
+            #     if html_email_template_name:
+            #         html_email = loader.render_to_string(html_email_template_name, context)
+            #         mail.HTMLBody = html_body
+            #     mail.Send()
+            # logger.info("Email sent successfully to %s", to_email)
+
+        # except Exception as e:
+        #     logger.error("Failed to send email to %s: %s", to_email, str(e))
+        #     raise
 
 
     def get_users(self, email, username):
