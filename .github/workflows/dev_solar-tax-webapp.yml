@@ -58,6 +58,6 @@ jobs:
         uses: azure/webapps-deploy@v2
         id: deploy-to-webapp
         with:
-          app-name: 'solar-tax-webapp'
+          app-name: 'solar-tax-webapp-dev'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6A8F67DF9FFB4907BAB3E0147A1E19FE }}
