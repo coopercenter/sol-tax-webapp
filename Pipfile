@@ -89,7 +89,7 @@ wrapt = "==1.15.0"
 zipp = "==3.15.0"
 "zope.interface" = "==6.0"
 sendgrid = "==6.10.0"
-pillow = "==12.3.0"
+pillow = "==13.0.0"
 
 [dev-packages]
 
